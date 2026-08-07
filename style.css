@@ -1,7 +1,48 @@
 /* =====================================================
-   ODINTECH - DARK THEME
+   ODINTECH - VARIABLES MODO CLARO Y OSCURO
    ===================================================== */
 
+:root {
+    /* MODO CLARO (Default) */
+    --bg-principal: #ffffff;
+    --bg-secundario: #f5f8fa;
+    --bg-card: #ffffff;
+    
+    --text-titulos: #10233e;
+    --text-parrafos: #647083;
+    
+    --border-color: #e5e9ee;
+    --border-card: #e5e9ee;
+    
+    --nav-bg: rgba(255, 255, 255, 0.96);
+    --nav-text: #10233e;
+    --logo-filter: none; /* Logo original oscuro */
+    
+    --section-label: #18aaa5;
+}
+
+body.dark-theme {
+    /* MODO OSCURO */
+    --bg-principal: #071526; 
+    --bg-secundario: #03111f;
+    --bg-card: rgba(255, 255, 255, 0.02);
+    
+    --text-titulos: #ffffff;
+    --text-parrafos: #94a3b8;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-card: rgba(255, 255, 255, 0.06);
+    
+    --nav-bg: rgba(3, 17, 31, 0.85);
+    --nav-text: #ffffff;
+    --logo-filter: brightness(0) invert(1); /* Logo blanco */
+    
+    --section-label: #ffffff;
+}
+
+/* =====================================================
+   BASE
+   ===================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -14,18 +55,24 @@ html {
 
 body {
     font-family: "Inter", sans-serif;
-    /* Fondo principal oscuro basado en la paleta del logo */
-    background: #03111f; 
-    color: #cbd5e1;
+    background: var(--bg-principal);
+    color: var(--text-parrafos);
     line-height: 1.6;
+    /* Transición suave al cambiar de tema */
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 a {
     color: inherit;
 }
 
+h1, h2, h3, h4, strong {
+    color: var(--text-titulos);
+    transition: color 0.3s ease;
+}
+
 .container {
-    width: min(1400px, 90%); /* Ampliado para que se adapte mejor a monitores grandes */
+    width: min(1400px, 90%);
     margin: 0 auto;
 }
 
@@ -33,26 +80,20 @@ a {
     max-width: 850px;
 }
 
-h1, h2, h3, h4, strong {
-    color: #ffffff;
-}
-
 /* =====================================================
-   HEADER
+   HEADER & NAVEGACIÓN
    ===================================================== */
-
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 72px;
-    
-    /* Fondo oscuro con efecto vidrio */
-    background: rgba(3, 17, 31, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .header-content {
@@ -74,7 +115,8 @@ h1, h2, h3, h4, strong {
     height: 42px;
     max-width: 170px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Fuerza el logo a blanco puro */
+    filter: var(--logo-filter);
+    transition: filter 0.3s ease;
 }
 
 .nav {
@@ -83,15 +125,15 @@ h1, h2, h3, h4, strong {
     gap: 30px;
 }
 
-.nav a {
+.nav a:not(.header-button) {
     text-decoration: none;
-    color: #ffffff; /* Texto de navegación en blanco */
+    color: var(--nav-text);
     font-size: 13px;
     font-weight: 500;
     transition: 0.25s ease;
 }
 
-.nav a:hover {
+.nav a:not(.header-button):hover {
     color: #18aaa5;
 }
 
@@ -102,6 +144,7 @@ h1, h2, h3, h4, strong {
     color: white !important;
     font-size: 12px !important;
     font-weight: 700;
+    text-decoration: none;
     transition: 0.25s ease;
 }
 
@@ -110,10 +153,26 @@ h1, h2, h3, h4, strong {
     transform: translateY(-2px);
 }
 
+/* Botón Dark/Light Mode */
+.theme-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-btn:hover {
+    transform: scale(1.1);
+}
+
 /* =====================================================
    BOTONES
    ===================================================== */
-
 .button {
     display: inline-flex;
     align-items: center;
@@ -148,26 +207,14 @@ h1, h2, h3, h4, strong {
 }
 
 /* =====================================================
-   HERO
+   HERO (Siempre Oscuro independientemente del tema)
    ===================================================== */
-
 .hero {
     min-height: 700px;
     padding: 130px 0 90px;
-    
-    /* Gradiente oscuro y sobrio */
     background: 
-        radial-gradient(
-            circle at 80% 25%, 
-            rgba(24, 201, 187, 0.15), 
-            transparent 45%
-        ),
-        linear-gradient(
-            125deg, 
-            #020b14 0%, 
-            #071d38 50%, 
-            #0a2e3a 100%
-        );
+        radial-gradient(circle at 80% 25%, rgba(24, 201, 187, 0.15), transparent 45%),
+        linear-gradient(125deg, #020b14 0%, #071d38 50%, #0a2e3a 100%);
     color: white;
     overflow: hidden;
 }
@@ -180,27 +227,13 @@ h1, h2, h3, h4, strong {
     align-items: center;
 }
 
-.eyebrow,
-.section-label {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: #ffffff; /* Todas las etiquetas pequeñas de sección en blanco */
-}
-
-.hero .eyebrow {
-    color: #ffffff; /* Etiqueta del hero en blanco */
-    margin-bottom: 20px;
-}
-
 .hero h1 {
     max-width: 680px;
     font-size: clamp(44px, 5vw, 68px);
     line-height: 1.04;
     letter-spacing: -3px;
     margin-bottom: 25px;
-    color: #ffffff;
+    color: #ffffff; /* Fuerzo a blanco */
 }
 
 .hero-text > p {
@@ -216,10 +249,12 @@ h1, h2, h3, h4, strong {
     margin-top: 32px;
 }
 
-/* =====================================================
-   HERO DASHBOARD
-   ===================================================== */
+.hero .eyebrow {
+    color: #ffffff;
+    margin-bottom: 20px;
+}
 
+/* Hero Dashboard */
 .hero-card {
     position: relative;
     min-height: 400px;
@@ -233,7 +268,6 @@ h1, h2, h3, h4, strong {
     min-height: 300px;
     padding: 24px;
     border-radius: 16px;
-    
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(18px);
@@ -322,6 +356,7 @@ h1, h2, h3, h4, strong {
 .floating-card strong {
     display: block;
     font-size: 12px;
+    color: #ffffff;
 }
 
 .floating-card small {
@@ -330,15 +365,8 @@ h1, h2, h3, h4, strong {
     color: #94a3b8;
 }
 
-.card-one {
-    top: 25px;
-    left: -20px;
-}
-
-.card-two {
-    right: -25px;
-    bottom: 25px;
-}
+.card-one { top: 25px; left: -20px; }
+.card-two { right: -25px; bottom: 25px; }
 
 .icon {
     width: 34px;
@@ -355,7 +383,6 @@ h1, h2, h3, h4, strong {
 /* =====================================================
    SECCIONES GENERALES
    ===================================================== */
-
 section {
     padding: 120px 0;
 }
@@ -366,33 +393,34 @@ section h2 {
     letter-spacing: -1.5px;
 }
 
+.eyebrow,
 .section-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--section-label);
     margin-bottom: 16px;
+    transition: color 0.3s ease;
 }
 
 /* =====================================================
-   PROBLEMA (Destacado y más grande)
+   PROBLEMA
    ===================================================== */
-
 .problem {
-    background: #071526; /* Fondo distinto para separar secciones */
-    padding: 150px 0; /* Más respiro arriba y abajo */
-}
-
-.problem .section-label {
-    font-size: 13px;
+    background: var(--bg-principal);
+    padding: 150px 0;
 }
 
 .problem h2 {
-    font-size: clamp(42px, 5.5vw, 65px); /* Letra mucho más grande */
+    font-size: clamp(42px, 5.5vw, 65px);
     max-width: 900px;
 }
 
 .problem .narrow > p {
     max-width: 800px;
     margin-top: 24px;
-    color: #94a3b8;
-    font-size: 20px; /* Texto descriptivo más grande */
+    font-size: 20px;
     line-height: 1.6;
 }
 
@@ -404,18 +432,17 @@ section h2 {
 }
 
 .problem-card {
-    padding: 40px 30px; /* Tarjetas más espaciosas */
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 40px 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
     border-radius: 12px;
     transition: 0.3s ease;
 }
 
 .problem-card:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.04);
     border-color: rgba(24, 170, 165, 0.3);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
 }
 
 .problem-card span,
@@ -428,21 +455,19 @@ section h2 {
 
 .problem-card h3 {
     margin: 22px 0 12px;
-    font-size: 24px; /* Título de tarjeta más grande */
+    font-size: 24px;
 }
 
 .problem-card p {
-    color: #94a3b8;
-    font-size: 15px; /* Texto más legible */
+    font-size: 15px;
     line-height: 1.6;
 }
 
 /* =====================================================
    PROPUESTA
    ===================================================== */
-
 .solution {
-    background: #03111f;
+    background: var(--bg-secundario);
 }
 
 .solution-grid,
@@ -457,13 +482,12 @@ section h2 {
 .large-text {
     font-size: 21px;
     line-height: 1.65;
-    color: #ffffff;
+    color: var(--text-titulos);
     font-weight: 500;
 }
 
 .solution p:not(.large-text),
 .difference p:not(.large-text) {
-    color: #94a3b8;
     margin-top: 17px;
     font-size: 15px;
 }
@@ -476,9 +500,8 @@ section h2 {
 /* =====================================================
    SERVICIOS
    ===================================================== */
-
 .services {
-    background: #071526;
+    background: var(--bg-principal);
 }
 
 .section-header {
@@ -488,15 +511,8 @@ section h2 {
     gap: 50px;
 }
 
-.section-header h2 {
-    max-width: 650px;
-}
-
-.section-header > p {
-    max-width: 350px;
-    color: #94a3b8;
-    font-size: 15px;
-}
+.section-header h2 { max-width: 650px; }
+.section-header > p { max-width: 350px; font-size: 15px; }
 
 .services-grid {
     display: grid;
@@ -509,8 +525,8 @@ section h2 {
     position: relative;
     min-height: 245px;
     padding: 35px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
     border-radius: 12px;
     transition: 0.3s ease;
 }
@@ -518,8 +534,7 @@ section h2 {
 .service:hover {
     border-color: #18aaa5;
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }
 
 .service h3 {
@@ -530,7 +545,6 @@ section h2 {
 .service p {
     max-width: 450px;
     margin-top: 12px;
-    color: #94a3b8;
     font-size: 14px;
 }
 
@@ -550,14 +564,11 @@ section h2 {
 /* =====================================================
    PROCESO
    ===================================================== */
-
 .process {
-    background: #03111f;
+    background: var(--bg-secundario);
 }
 
-.process > .container > h2 {
-    max-width: 600px;
-}
+.process > .container > h2 { max-width: 600px; }
 
 .process-grid {
     display: grid;
@@ -568,7 +579,7 @@ section h2 {
 
 .process-step {
     padding-right: 22px;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--border-color);
 }
 
 .process-step:last-child {
@@ -588,54 +599,44 @@ section h2 {
 
 .process-step p {
     margin-top: 12px;
-    color: #94a3b8;
     font-size: 14px;
 }
 
 /* =====================================================
    NOSOTROS
    ===================================================== */
-
 .difference {
-    background: #071526;
+    background: var(--bg-principal);
 }
 
-.difference h2 {
-    max-width: 550px;
-}
+.difference h2 { max-width: 550px; }
 
 /* =====================================================
-   FUTURO
+   FUTURO (Siempre Verde / Letras Blancas)
    ===================================================== */
-
 .future {
     padding: 100px 0;
-    /* Damos vuelta los colores para destacar usando tu verde brand */
     background: #18aaa5; 
-    color: #ffffff; /* Letras en blanco puro */
+    color: #ffffff; 
 }
 
 .future h2, 
 .future strong {
-    color: #ffffff; /* Títulos en blanco puro */
+    color: #ffffff;
 }
 
-.future-box {
-    max-width: 850px;
-}
+.future-box { max-width: 850px; }
 
 .future .section-label {
-    color: #ffffff; /* Etiqueta en blanco puro */
+    color: #ffffff; 
     opacity: 0.9;
 }
 
-.future h2 {
-    margin-bottom: 22px;
-}
+.future h2 { margin-bottom: 22px; }
 
 .future p {
     max-width: 650px;
-    color: #ffffff; /* Párrafos en blanco puro */
+    color: #ffffff; 
     font-size: 18px;
     font-weight: 500;
 }
@@ -643,19 +644,15 @@ section h2 {
 /* =====================================================
    CONTACTO
    ===================================================== */
-
 .contact {
-    background: #03111f;
+    background: var(--bg-secundario);
 }
 
-.contact h2 {
-    max-width: 650px;
-}
+.contact h2 { max-width: 650px; }
 
 .contact p {
     max-width: 550px;
     margin-top: 18px;
-    color: #94a3b8;
     font-size: 16px;
 }
 
@@ -669,7 +666,7 @@ section h2 {
 .contact-link {
     font-size: 20px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text-titulos);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -679,12 +676,11 @@ section h2 {
 }
 
 /* =====================================================
-   FOOTER
+   FOOTER (Siempre Oscuro)
    ===================================================== */
-
 footer {
     padding: 60px 0;
-    background: #010811; /* Aún más oscuro para cerrar */
+    background: #010811; 
     color: white;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -701,168 +697,60 @@ footer {
     height: 38px;
     max-width: 160px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Fuerza el logo a blanco puro */
+    filter: brightness(0) invert(1); /* Siempre blanco en el footer oscuro */
 }
 
 footer p {
     margin-top: 12px;
-    color: #ffffff; /* Textos en blanco puro */
+    color: #ffffff; 
     font-size: 12px;
 }
 
-.footer-right {
-    text-align: right;
-}
-
-.footer-right p {
-    margin-top: 6px;
-}
+.footer-right { text-align: right; }
+.footer-right p { margin-top: 6px; }
 
 /* =====================================================
    RESPONSIVE
    ===================================================== */
-
 @media (max-width: 900px) {
-    .nav {
-        display: none;
-    }
-    
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 50px;
-        text-align: center;
-    }
-    
-    .hero-text > p {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-    }
-    
-    .hero-card {
-        min-height: 350px;
-    }
-    
-    .problems-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .solution-grid,
-    .difference-grid,
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 45px;
-    }
-    
-    .process-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .process-step:nth-child(2) {
-        border-right: none;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    .nav a:not(.theme-btn) { display: none; } /* Oculta enlaces pero deja el botón switch visible */
+    .hero-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; }
+    .hero-text > p { margin-left: auto; margin-right: auto; }
+    .hero-buttons { justify-content: center; }
+    .hero-card { min-height: 350px; }
+    .problems-grid { grid-template-columns: 1fr; }
+    .solution-grid, .difference-grid, .contact-grid { grid-template-columns: 1fr; gap: 45px; }
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-step:nth-child(2) { border-right: none; }
+    .section-header { flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 600px) {
-    .header {
-        height: 65px;
-    }
+    .header { height: 65px; }
+    .header-logo { height: 36px; max-width: 145px; }
+    .header-button { display: none; } /* Ocultar botón hablemos en móvil para ahorrar espacio */
+    .theme-btn { margin-left: auto; }
     
-    .header-logo {
-        height: 36px;
-        max-width: 145px;
-    }
+    .hero { min-height: auto; padding: 115px 0 70px; }
+    .hero h1 { font-size: 40px; letter-spacing: -2px; }
+    .hero-text > p { font-size: 15px; }
+    .hero-buttons { flex-direction: column; }
+    .button { width: 100%; }
+    .dashboard { width: 100%; }
     
-    .header-button {
-        padding: 9px 14px;
-        font-size: 11px !important;
-    }
+    .card-one { left: -5px; top: 10px; }
+    .card-two { right: -5px; bottom: 15px; }
     
-    .hero {
-        min-height: auto;
-        padding: 115px 0 70px;
-    }
+    section { padding: 80px 0; }
+    .problem { padding: 100px 0; }
+    section h2 { font-size: 34px; }
     
-    .hero h1 {
-        font-size: 40px;
-        letter-spacing: -2px;
-    }
+    .services-grid, .process-grid { grid-template-columns: 1fr; }
     
-    .hero-text > p {
-        font-size: 15px;
-    }
+    .process-step { padding-bottom: 25px; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .process-step:last-child { border-bottom: none; }
     
-    .hero-buttons {
-        flex-direction: column;
-    }
-    
-    .button {
-        width: 100%;
-    }
-    
-    .dashboard {
-        width: 100%;
-    }
-    
-    .card-one {
-        left: -5px;
-        top: 10px;
-    }
-    
-    .card-two {
-        right: -5px;
-        bottom: 15px;
-    }
-    
-    section {
-        padding: 80px 0;
-    }
-    
-    .problem {
-        padding: 100px 0;
-    }
-    
-    section h2 {
-        font-size: 34px;
-    }
-    
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .process-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .process-step {
-        padding-bottom: 25px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    .process-step:last-child {
-        border-bottom: none;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 30px;
-    }
-    
-    .footer-right {
-        text-align: left;
-    }
-    
-    .footer-logo {
-        height: 35px;
-    }
+    .footer-content { flex-direction: column; align-items: flex-start; gap: 30px; }
+    .footer-right { text-align: left; }
+    .footer-logo { height: 35px; }
 }
