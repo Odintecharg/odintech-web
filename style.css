@@ -754,3 +754,62 @@ footer p {
     .footer-right { text-align: left; }
     .footer-logo { height: 35px; }
 }
+/* Botón animado de Sol/Luna */
+.theme-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    outline: none;
+}
+
+/* El círculo general */
+.icon-switch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--text-titulos);
+    position: relative;
+    transition: transform 0.5s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Modo Claro: Parece un Sol con rayos o centro */
+.icon-switch::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--text-titulos);
+    border-radius: 50%;
+    box-shadow: 
+        0 -10px 0 var(--text-titulos),
+        0 10px 0 var(--text-titulos),
+        -10px 0 0 var(--text-titulos),
+        10px 0 0 var(--text-titulos); /* Simula los rayos del sol */
+    transition: all 0.4s ease;
+}
+
+/* Modo Oscuro: Se transforma en la Luna menguante */
+body.dark-theme .icon-switch {
+    transform: rotate(360deg);
+    border-color: #ffffff;
+}
+
+body.dark-theme .icon-switch::before {
+    width: 14px;
+    height: 14px;
+    background: #03111f; /* Recorta el círculo simulando la sombra de la luna */
+    top: 2px;
+    left: 4px;
+    transform: none;
+    border-radius: 50%;
+    box-shadow: 4px 2px 0 0 #ffffff; /* Forma clásica de la luna creciente */
+}
