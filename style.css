@@ -25,7 +25,7 @@ a {
 }
 
 .container {
-    width: min(1120px, 90%);
+    width: min(1400px, 90%); /* Ampliado para que se adapte mejor a monitores grandes */
     margin: 0 auto;
 }
 
@@ -74,6 +74,7 @@ h1, h2, h3, h4, strong {
     height: 42px;
     max-width: 170px;
     object-fit: contain;
+    filter: brightness(0) invert(1); /* Fuerza el logo a blanco puro */
 }
 
 .nav {
@@ -84,7 +85,7 @@ h1, h2, h3, h4, strong {
 
 .nav a {
     text-decoration: none;
-    color: #cbd5e1;
+    color: #ffffff; /* Texto de navegación en blanco */
     font-size: 13px;
     font-weight: 500;
     transition: 0.25s ease;
@@ -185,10 +186,11 @@ h1, h2, h3, h4, strong {
     font-weight: 800;
     letter-spacing: 2.5px;
     text-transform: uppercase;
+    color: #ffffff; /* Todas las etiquetas pequeñas de sección en blanco */
 }
 
 .hero .eyebrow {
-    color: #66ddd5;
+    color: #ffffff; /* Etiqueta del hero en blanco */
     margin-bottom: 20px;
 }
 
@@ -365,7 +367,6 @@ section h2 {
 }
 
 .section-label {
-    color: #18aaa5;
     margin-bottom: 16px;
 }
 
@@ -611,12 +612,12 @@ section h2 {
     padding: 100px 0;
     /* Damos vuelta los colores para destacar usando tu verde brand */
     background: #18aaa5; 
-    color: #03111f;
+    color: #ffffff; /* Letras en blanco puro */
 }
 
 .future h2, 
 .future strong {
-    color: #03111f;
+    color: #ffffff; /* Títulos en blanco puro */
 }
 
 .future-box {
@@ -624,8 +625,8 @@ section h2 {
 }
 
 .future .section-label {
-    color: #03111f;
-    opacity: 0.8;
+    color: #ffffff; /* Etiqueta en blanco puro */
+    opacity: 0.9;
 }
 
 .future h2 {
@@ -634,7 +635,7 @@ section h2 {
 
 .future p {
     max-width: 650px;
-    color: rgba(3, 17, 31, 0.85);
+    color: #ffffff; /* Párrafos en blanco puro */
     font-size: 18px;
     font-weight: 500;
 }
@@ -700,11 +701,12 @@ footer {
     height: 38px;
     max-width: 160px;
     object-fit: contain;
+    filter: brightness(0) invert(1); /* Fuerza el logo a blanco puro */
 }
 
 footer p {
     margin-top: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: #ffffff; /* Textos en blanco puro */
     font-size: 12px;
 }
 
