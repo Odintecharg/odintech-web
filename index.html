@@ -32,6 +32,10 @@
                 <a href="#contacto" class="header-button">
                     Hablemos
                 </a>
+                <!-- Botón Modo Claro/Oscuro -->
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar a modo oscuro">
+                    🌓
+                </button>
             </nav>
         </div>
     </header>
@@ -39,7 +43,7 @@
     <main>
 
         <!-- =========================
-             HERO
+             HERO (Siempre Oscuro)
         ========================== -->
         <section class="hero" id="inicio">
             <div class="container hero-grid">
@@ -94,9 +98,7 @@
                     </div>
 
                     <div class="floating-card card-one">
-                        <div class="icon">
-                            ✓
-                        </div>
+                        <div class="icon">✓</div>
                         <div>
                             <strong>Más organización</strong>
                             <small>Información centralizada</small>
@@ -104,9 +106,7 @@
                     </div>
 
                     <div class="floating-card card-two">
-                        <div class="icon">
-                            ↑
-                        </div>
+                        <div class="icon">↑</div>
                         <div>
                             <strong>Más información</strong>
                             <small>Mejores decisiones</small>
@@ -295,7 +295,7 @@
         </section>
 
         <!-- =========================
-             FUTURO
+             FUTURO (Siempre Verde)
         ========================== -->
         <section class="future">
             <div class="container">
@@ -344,7 +344,7 @@
     </main>
 
     <!-- =========================
-         FOOTER
+         FOOTER (Siempre Oscuro)
     ========================== -->
     <footer>
         <div class="container footer-content">
@@ -365,5 +365,28 @@
         </div>
     </footer>
 
+    <!-- Script para Modo Claro/Oscuro -->
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // Revisar si ya había una preferencia guardada en el navegador
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+        }
+
+        // Cambiar tema al hacer click
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            
+            // Guardar preferencia
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
 </body>
 </html>
