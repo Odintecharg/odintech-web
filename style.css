@@ -762,16 +762,32 @@ footer p {
 
 @media (max-width: 600px) {
     .header { height: 65px; }
-    .header-logo { height: 30px; max-width: 120px; }
-    .nav { gap: 8px; }
+    .header-logo { height: 28px; max-width: 110px; }
     
+    /* Ocultamos los links de texto en celulares pequeños para que no se amontonen */
+    .nav a:not(.header-button) { 
+        display: none !important; 
+    }
+    
+    .nav { gap: 10px; }
+    
+    /* Mantenemos visible y compacto el botón principal y el del tema */
     .header-button { 
         display: inline-flex !important;
-        padding: 7px 10px;
+        padding: 6px 10px;
         font-size: 10px !important;
     }
     
-    .theme-btn { margin-left: 0; }
+    .theme-btn { 
+        width: 32px;
+        height: 32px;
+        margin-left: 0; 
+    }
+
+    .icon-switch {
+        width: 18px;
+        height: 18px;
+    }
     
     .hero { min-height: auto; padding: 115px 0 70px; }
     .hero h1 { font-size: 34px; letter-spacing: -2px; }
