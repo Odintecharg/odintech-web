@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OdinTech - Soluciones de software a medida, ecosistemas omnicanal e inteligencia de negocios para PyMEs y grandes empresas.">
+    <meta name="theme-color" content="#071d38">
+    <title>OdinTech | Ingeniería de Software y Soluciones a Medida</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo-link">
+                <img src="logo.png" alt="OdinTech" class="header-logo">
+            </a>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="#cloud">Desarrollo Cloud</a>
+                <a href="#omnicanal">Ecosistemas Integrales</a>
+                <a href="#business-intelligence">Analítica e Integración</a>
+                <a href="#contacto" class="header-button">Agendar Consultoría</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
+                    <div class="icon-switch"></div>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="hero" id="inicio" style="min-height: 550px; padding-top: 140px;">
+            <div class="container" style="text-align: center; max-width: 900px;">
+                <div class="eyebrow" style="color: #66ddd5;">
+                    ODINTECH · SOLUCIONES CORPORATIVAS
+                </div>
+                <h1 style="margin: 0 auto 25px; font-size: clamp(38px, 4.5vw, 60px);">
+                    Software diseñado para la escalabilidad de su empresa.
+                </h1>
+                <p style="margin: 0 auto; color: #94a3b8; font-size: 18px; line-height: 1.7;">
+                    Desarrollamos ecosistemas tecnológicos que se adaptan a la lógica exacta de su negocio. Desde plataformas cloud a medida hasta integraciones complejas de comercio electrónico y analítica de datos avanzados.
+                </p>
+                <div class="hero-buttons" style="justify-content: center; margin-top: 35px;">
+                    <a href="#servicios" class="button primary">
+                        Conocer nuestras arquitecturas
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="problem" id="servicios" style="padding: 100px 0;">
+            <div class="container">
+                <div class="narrow" style="margin-bottom: 50px;">
+                    <div class="section-label">NUESTRAS CAPACIDADES</div>
+                    <h2>Desarrollo de alto rendimiento, asegurado por soporte continuo.</h2>
+                    <p style="color: #94a3b8; font-size: 16px; margin-top: 15px;">
+                        No construimos sistemas estáticos. Proveemos plataformas vivas que evolucionan junto con las demandas de su mercado, respaldadas por un servicio de mantenimiento y actualización permanente.
+                    </p>
+                </div>
+
+                <div id="cloud" style="margin-bottom: 70px;">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; color: #18aaa5; border-left: 4px solid #18aaa5; padding-left: 12px;">
+                        01. Plataformas a Medida Cloud para PyMEs
+                    </h3>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-card); padding: 40px; border-radius: 12px;">
+                        <p style="font-size: 17px; margin-bottom: 20px;">
+                            Transformamos flujos de trabajo complejos en interfaces digitales intuitivas. Desarrollamos software de gestión operativa alojado en la nube, asegurando que su equipo tenga acceso a la información crítica desde cualquier ubicación, con protocolos de máxima seguridad.
+                        </p>
+                        <ul style="color: #94a3b8; list-style-type: none; margin-bottom: 25px;">
+                            <li style="margin-bottom: 10px;">✓ <strong>Procesos a medida:</strong> El sistema respeta sus reglas de negocio, no a la inversa.</li>
+                            <li style="margin-bottom: 10px;">✓ <strong>Accesibilidad total:</strong> Arquitectura 100% online y responsiva.</li>
+                            <li style="margin-bottom: 10px;">✓ <strong>Escalabilidad:</strong> Preparado para crecer en volumen de usuarios y transacciones sin perder rendimiento.</li>
+                        </ul>
+                        <a href="#contacto" class="button secondary" style="padding: 10px 18px; font-size: 12px; border-color: rgba(255,255,255,0.2);">Solicitar Análisis de Proyecto</a>
+                    </div>
+                </div>
+
+                <div id="omnicanal" style="margin-bottom: 70px;">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; color: #18aaa5; border-left: 4px solid #18aaa5; padding-left: 12px;">
+                        02. Ecosistemas Omnicanal (ERP + E-Commerce)
+                    </h3>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-card); padding: 40px; border-radius: 12px;">
+                        <p style="font-size: 17px; margin-bottom: 20px;">
+                            Unificamos la gestión de sus sucursales físicas con sus canales de venta digital. Administre su inventario, facturación y logística desde un único núcleo centralizado. Evite quiebres de stock y brinde una experiencia fluida a sus clientes en cualquier canal.
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+                            <div style="background: rgba(24, 170, 165, 0.05); padding: 20px; border-radius: 8px;">
+                                <strong style="color: #18aaa5; display: block; margin-bottom: 8px;">Despliegue On-Premise (Servidores Locales)</strong>
+                                <small style="color: #94a3b8; font-size: 14px;">Para empresas que requieren privacidad estricta y control absoluto de su base de datos. Instalamos la arquitectura completa en sus propias instalaciones.</small>
+                            </div>
+                            <div style="background: rgba(24, 170, 165, 0.05); padding: 20px; border-radius: 8px;">
+                                <strong style="color: #18aaa5; display: block; margin-bottom: 8px;">Infraestructura Cloud (Nube)</strong>
+                                <small style="color: #94a3b8; font-size: 14px;">Alta disponibilidad y reducción de costos en hardware físico. Alojamiento en servidores seguros de alto rendimiento garantizando 99.9% de Uptime.</small>
+                            </div>
+                        </div>
+                        <a href="#contacto" class="button secondary" style="padding: 10px 18px; font-size: 12px; border-color: rgba(255,255,255,0.2);">Diseñar Arquitectura Omnicanal</a>
+                    </div>
+                </div>
+
+                <div id="business-intelligence">
+                    <h3 style="font-size: 24px; margin-bottom: 20px; color: #18aaa5; border-left: 4px solid #18aaa5; padding-left: 12px;">
+                        03. Capa de Inteligencia sobre su Software Actual (BI)
+                    </h3>
+                    <div style="background: linear-gradient(135deg, rgba(24, 170, 165, 0.1) 0%, var(--bg-card) 100%); border: 1px solid rgba(24, 170, 165, 0.3); padding: 40px; border-radius: 12px; position: relative; overflow: hidden;">
+                        
+                        <strong style="color: #ffffff; background: #18aaa5; padding: 4px 12px; border-radius: 4px; font-size: 11px; letter-spacing: 1px; display: inline-block; margin-bottom: 15px;">INTEGRACIÓN SIN MIGRACIÓN</strong>
+                        
+                        <p style="font-size: 17px; margin-bottom: 20px;">
+                            ¿Cuenta con un sistema de gestión consolidado que su personal ya domina, pero le resulta imposible extraer reportes claros y métricas gerenciales? <br><br>
+                            <strong>No reemplace su software. Evoluciónelo.</strong> En OdinTech desarrollamos Tableros de Control y módulos de reporte a medida que se conectan directamente a la base de datos de su programa actual (Software Legacy o ERPs de terceros).
+                        </p>
+                        <ul style="color: #94a3b8; list-style-type: none; margin-bottom: 25px;">
+                            <li style="margin-bottom: 10px;">✓ <strong>Cero impacto operativo:</strong> Su equipo sigue usando el sistema de siempre. No hay curvas de aprendizaje.</li>
+                            <li style="margin-bottom: 10px;">✓ <strong>Auditoría en tiempo real:</strong> Extraemos los datos crudos y los convertimos en gráficos de rentabilidad, proyecciones y KPIs visuales.</li>
+                            <li style="margin-bottom: 10px;">✓ <strong>Puerta a la modernización:</strong> Integramos inteligencia hoy, preparando la estructura de sus datos para futuras mejoras tecnológicas.</li>
+                        </ul>
+                        <a href="#contacto" class="button primary" style="padding: 10px 18px; font-size: 12px;">Revolucione sus datos hoy</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="solution" style="padding: 100px 0;">
+            <div class="container solution-grid">
+                <div>
+                    <div class="section-label">COMPROMISO TÉCNICO</div>
+                    <h2>Un socio tecnológico a largo plazo.</h2>
+                </div>
+                <div>
+                    <p class="large-text">
+                        Nuestras soluciones incluyen un esquema de mantenimiento, monitorización y actualización continua.
+                    </p>
+                    <p>
+                        La tecnología avanza y los mercados cambian. Al contratar a OdinTech, usted asegura que su plataforma se mantenga operativa, segura y optimizada, recibiendo mejoras y soporte técnico constante mediante un abono de servicios claro y predecible.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contacto">
+            <div class="container contact-grid">
+                <div>
+                    <div class="section-label">CONSULTORÍA INICIAL</div>
+                    <h2>Hablemos sobre la escalabilidad de su negocio.</h2>
+                    <p>
+                        Agende una reunión con nuestros ingenieros de proyecto. Evaluaremos su infraestructura actual y delinearemos el camino más eficiente para la modernización de sus procesos.
+                    </p>
+                </div>
+                <div class="contact-box">
+                    <a href="mailto:odintecharg@hotmail.com" class="contact-link">
+                        odintecharg@hotmail.com
+                    </a>
+                    <a href="mailto:odintecharg@hotmail.com" class="button primary">
+                        Agendar Reunión Técnica
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <img src="logo.png" alt="OdinTech" class="footer-logo">
+                <p>Ingeniería de software de alta performance.</p>
+            </div>
+            <div class="footer-right">
+                <p>La Paz, Entre Ríos · Argentina</p>
+                <p>© 2026 OdinTech</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
