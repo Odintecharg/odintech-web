@@ -7,17 +7,17 @@
     --bg-principal: #ffffff;
     --bg-secundario: #f5f8fa;
     --bg-card: #ffffff;
-    
+
     --text-titulos: #10233e;
     --text-parrafos: #647083;
-    
+
     --border-color: #e5e9ee;
     --border-card: #e5e9ee;
-    
+
     --nav-bg: rgba(255, 255, 255, 0.96);
     --nav-text: #10233e;
     --logo-filter: none;
-    
+
     --section-label: #18aaa5;
 }
 
@@ -26,17 +26,17 @@ body.dark-theme {
     --bg-principal: #071526; 
     --bg-secundario: #03111f;
     --bg-card: rgba(255, 255, 255, 0.02);
-    
+
     --text-titulos: #ffffff;
     --text-parrafos: #94a3b8;
-    
+
     --border-color: rgba(255, 255, 255, 0.08);
     --border-card: rgba(255, 255, 255, 0.06);
-    
+
     --nav-bg: rgba(3, 17, 31, 0.85);
     --nav-text: #ffffff;
     --logo-filter: brightness(0) invert(1);
-    
+
     --section-label: #ffffff;
 }
 
@@ -754,7 +754,11 @@ footer p {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 900px) {
-    .nav a:not(.theme-btn) { display: none; }
+    /* Ocultamos los links de texto, pero DEJAMOS el botón principal visible */
+    .nav a:not(.header-button) { 
+        display: none; 
+    }
+    
     .hero-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; }
     .hero-text > p { margin-left: auto; margin-right: auto; }
     .hero-buttons { justify-content: center; }
@@ -768,12 +772,22 @@ footer p {
 
 @media (max-width: 600px) {
     .header { height: 65px; }
-    .header-logo { height: 36px; max-width: 145px; }
-    .header-button { display: none; }
-    .theme-btn { margin-left: auto; }
+    .header-logo { height: 32px; max-width: 130px; }
+    
+    /* El contenedor de navegación un poco más junto */
+    .nav { gap: 12px; }
+    
+    /* Hacemos el botón un poco más chico para que entre perfecto con el logo */
+    .header-button { 
+        display: inline-flex !important;
+        padding: 8px 12px;
+        font-size: 11px !important;
+    }
+    
+    .theme-btn { margin-left: 0; }
     
     .hero { min-height: auto; padding: 115px 0 70px; }
-    .hero h1 { font-size: 40px; letter-spacing: -2px; }
+    .hero h1 { font-size: 36px; letter-spacing: -2px; }
     .hero-text > p { font-size: 15px; }
     .hero-buttons { flex-direction: column; }
     .button { width: 100%; }
@@ -784,7 +798,7 @@ footer p {
     
     section { padding: 80px 0; }
     .problem { padding: 100px 0; }
-    section h2 { font-size: 34px; }
+    section h2 { font-size: 30px; }
     
     .services-grid, .process-grid { grid-template-columns: 1fr; }
     
