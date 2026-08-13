@@ -25,6 +25,7 @@
                 <img src="logo.png" alt="OdinTech" class="header-logo">
             </a>
             <nav class="nav">
+                <a href="odingo.html" style="color: #18aaa5; font-weight: 700;">OdinGo (Sistemas PyME)</a>
                 <a href="#soluciones">Soluciones</a>
                 <a href="#como-trabajamos">Cómo trabajamos</a>
                 <a href="#nosotros">Nosotros</a>
@@ -32,10 +33,10 @@
                 <a href="#contacto" class="header-button">
                     Hablemos
                 </a>
-                <!-- Botón Modo Claro/Oscuro -->
+                <!-- Botón Animado Modo Claro/Oscuro -->
                 <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
-    <div class="icon-switch"></div>
-</button>
+                    <div class="icon-switch"></div>
+                </button>
             </nav>
         </div>
     </header>
@@ -120,11 +121,11 @@
              PROBLEMA
         ========================== -->
         <section class="problem">
-    <div class="container">
-        <div class="narrow">
-            <div class="section-label">
-                <span style="font-size: 40px; font-weight: 900; display: block;">'EL PROBLEMA'</span>
-            </div>
+            <div class="container">
+                <div class="narrow">
+                    <div class="section-label">
+                        <span style="font-size: 40px; font-weight: 900; display: block;">'EL PROBLEMA'</span>
+                    </div>
                     <h2>
                         Tu empresa crece.<br>
                         Tu forma de gestionarla también debería hacerlo.
@@ -175,7 +176,7 @@
                         Simplificamos tus circuitos de trabajo, ordenamos la información y adaptamos la tecnología a tu realidad. Porque no creemos que tu empresa tenga que adaptarse al software.
                     </p>
                     <p class="highlight">
-                        Creemos que el software tiene que adaptarse a tu empresa.
+                        Creemos que el software tiene que adaptarse à tu empresa.
                     </p>
                 </div>
             </div>
@@ -222,7 +223,7 @@
                     <div class="service">
                         <span class="service-number">04</span>
                         <h3>Desarrollo a medida</h3>
-                        <p>Si necesitás algo diferente, desarrollamos una solución adaptada a tu empresa.</p>
+                        <p>Si necesitás algo diferente, desarrollamos una solución adaptada à tu empresa.</p>
                         <span class="arrow">→</span>
                     </div>
                 </div>
@@ -327,7 +328,7 @@
                         ¿Querés simplificar la gestión de tu empresa?
                     </h2>
                     <p>
-                        Contanos qué necesitás y vemos juntos cómo podemos ayudarte a optimizar tus procesos.
+                        Contanos qué necesitás y vemos juntos cómo podemos ayudarte à optimizar tus procesos.
                     </p>
                 </div>
                 <div class="contact-box">
@@ -370,17 +371,13 @@
         const themeBtn = document.getElementById('theme-toggle');
         const body = document.body;
         
-        // Revisar si ya había una preferencia guardada en el navegador
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
         }
 
-        // Cambiar tema al hacer click
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
-            
-            // Guardar preferencia
             if (body.classList.contains('dark-theme')) {
                 localStorage.setItem('theme', 'dark');
             } else {
