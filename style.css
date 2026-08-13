@@ -114,7 +114,7 @@ h1, h2, h3, h4, strong {
     gap: 25px;
 }
 
-.nav a:not(.header-button) {
+.nav a {
     text-decoration: none;
     color: var(--nav-text);
     font-size: 13px;
@@ -122,7 +122,7 @@ h1, h2, h3, h4, strong {
     transition: 0.25s ease;
 }
 
-.nav a:not(.header-button):hover {
+.nav a:hover {
     color: #18aaa5;
 }
 
@@ -743,7 +743,7 @@ footer p {
 .footer-right p { margin-top: 6px; }
 
 /* =====================================================
-   RESPONSIVE
+   RESPONSIVE (MÓVIL Y TABLET)
    ===================================================== */
 @media (max-width: 900px) {
     .nav a:not(.header-button) { 
@@ -764,14 +764,8 @@ footer p {
     .header { height: 65px; }
     .header-logo { height: 28px; max-width: 110px; }
     
-    /* Ocultamos los links de texto en celulares pequeños para que no se amontonen */
-    .nav a:not(.header-button) { 
-        display: none !important; 
-    }
+    .nav { gap: 8px; }
     
-    .nav { gap: 10px; }
-    
-    /* Mantenemos visible y compacto el botón principal y el del tema */
     .header-button { 
         display: inline-flex !important;
         padding: 6px 10px;
