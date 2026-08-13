@@ -16,7 +16,7 @@
     
     --nav-bg: rgba(255, 255, 255, 0.96);
     --nav-text: #10233e;
-    --logo-filter: none; /* Logo original oscuro */
+    --logo-filter: none;
     
     --section-label: #18aaa5;
 }
@@ -35,7 +35,7 @@ body.dark-theme {
     
     --nav-bg: rgba(3, 17, 31, 0.85);
     --nav-text: #ffffff;
-    --logo-filter: brightness(0) invert(1); /* Logo blanco */
+    --logo-filter: brightness(0) invert(1);
     
     --section-label: #ffffff;
 }
@@ -58,7 +58,6 @@ body {
     background: var(--bg-principal);
     color: var(--text-parrafos);
     line-height: 1.6;
-    /* Transición suave al cambiar de tema */
     transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
@@ -153,25 +152,67 @@ h1, h2, h3, h4, strong {
     transform: translateY(-2px);
 }
 
-/* Botón Dark/Light Mode */
+/* =====================================================
+   BOTÓN ANIMADO DE SOL/LUNA
+   ===================================================== */
 .theme-btn {
-    background: none;
+    background: transparent;
     border: none;
-    font-size: 18px;
     cursor: pointer;
-    padding: 5px;
-    transition: transform 0.3s ease;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    outline: none;
 }
 
-.theme-btn:hover {
-    transform: scale(1.1);
+.icon-switch {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--text-titulos);
+    position: relative;
+    transition: transform 0.5s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.icon-switch::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: var(--text-titulos);
+    border-radius: 50%;
+    box-shadow: 
+        0 -9px 0 var(--text-titulos),
+        0 9px 0 var(--text-titulos),
+        -9px 0 0 var(--text-titulos),
+        9px 0 0 var(--text-titulos);
+    transition: all 0.4s ease;
+}
+
+body.dark-theme .icon-switch {
+    transform: rotate(360deg);
+    border-color: #ffffff;
+}
+
+body.dark-theme .icon-switch::before {
+    width: 12px;
+    height: 12px;
+    background: #071526;
+    top: 2px;
+    left: 3px;
+    transform: none;
+    border-radius: 50%;
+    box-shadow: 3px 2px 0 0 #ffffff;
 }
 
 /* =====================================================
-   BOTONES
+   BOTONES GENERALES
    ===================================================== */
 .button {
     display: inline-flex;
@@ -207,7 +248,7 @@ h1, h2, h3, h4, strong {
 }
 
 /* =====================================================
-   HERO (Siempre Oscuro independientemente del tema)
+   HERO (Siempre Oscuro)
    ===================================================== */
 .hero {
     min-height: 700px;
@@ -233,7 +274,7 @@ h1, h2, h3, h4, strong {
     line-height: 1.04;
     letter-spacing: -3px;
     margin-bottom: 25px;
-    color: #ffffff; /* Fuerzo a blanco */
+    color: #ffffff;
 }
 
 .hero-text > p {
@@ -612,7 +653,7 @@ section h2 {
 .difference h2 { max-width: 550px; }
 
 /* =====================================================
-   FUTURO (Siempre Verde / Letras Blancas)
+   FUTURO
    ===================================================== */
 .future {
     padding: 100px 0;
@@ -676,7 +717,7 @@ section h2 {
 }
 
 /* =====================================================
-   FOOTER (Siempre Oscuro)
+   FOOTER
    ===================================================== */
 footer {
     padding: 60px 0;
@@ -697,7 +738,7 @@ footer {
     height: 38px;
     max-width: 160px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Siempre blanco en el footer oscuro */
+    filter: brightness(0) invert(1);
 }
 
 footer p {
@@ -713,7 +754,7 @@ footer p {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 900px) {
-    .nav a:not(.theme-btn) { display: none; } /* Oculta enlaces pero deja el botón switch visible */
+    .nav a:not(.theme-btn) { display: none; }
     .hero-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; }
     .hero-text > p { margin-left: auto; margin-right: auto; }
     .hero-buttons { justify-content: center; }
@@ -728,7 +769,7 @@ footer p {
 @media (max-width: 600px) {
     .header { height: 65px; }
     .header-logo { height: 36px; max-width: 145px; }
-    .header-button { display: none; } /* Ocultar botón hablemos en móvil para ahorrar espacio */
+    .header-button { display: none; }
     .theme-btn { margin-left: auto; }
     
     .hero { min-height: auto; padding: 115px 0 70px; }
@@ -753,63 +794,4 @@ footer p {
     .footer-content { flex-direction: column; align-items: flex-start; gap: 30px; }
     .footer-right { text-align: left; }
     .footer-logo { height: 35px; }
-}
-/* Botón animado de Sol/Luna */
-.theme-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    outline: none;
-}
-
-/* El círculo general */
-.icon-switch {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid var(--text-titulos);
-    position: relative;
-    transition: transform 0.5s ease, background 0.3s ease, border-color 0.3s ease;
-}
-
-/* Modo Claro: Parece un Sol con rayos o centro */
-.icon-switch::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 8px;
-    height: 8px;
-    background: var(--text-titulos);
-    border-radius: 50%;
-    box-shadow: 
-        0 -10px 0 var(--text-titulos),
-        0 10px 0 var(--text-titulos),
-        -10px 0 0 var(--text-titulos),
-        10px 0 0 var(--text-titulos); /* Simula los rayos del sol */
-    transition: all 0.4s ease;
-}
-
-/* Modo Oscuro: Se transforma en la Luna menguante */
-body.dark-theme .icon-switch {
-    transform: rotate(360deg);
-    border-color: #ffffff;
-}
-
-body.dark-theme .icon-switch::before {
-    width: 14px;
-    height: 14px;
-    background: #03111f; /* Recorta el círculo simulando la sombra de la luna */
-    top: 2px;
-    left: 4px;
-    transform: none;
-    border-radius: 50%;
-    box-shadow: 4px 2px 0 0 #ffffff; /* Forma clásica de la luna creciente */
 }
