@@ -3,40 +3,30 @@
    ===================================================== */
 
 :root {
-    /* MODO CLARO (Default) */
     --bg-principal: #ffffff;
     --bg-secundario: #f5f8fa;
     --bg-card: #ffffff;
-
     --text-titulos: #10233e;
     --text-parrafos: #647083;
-
     --border-color: #e5e9ee;
     --border-card: #e5e9ee;
-
     --nav-bg: rgba(255, 255, 255, 0.96);
     --nav-text: #10233e;
     --logo-filter: none;
-
     --section-label: #18aaa5;
 }
 
 body.dark-theme {
-    /* MODO OSCURO */
     --bg-principal: #071526; 
     --bg-secundario: #03111f;
     --bg-card: rgba(255, 255, 255, 0.02);
-
     --text-titulos: #ffffff;
     --text-parrafos: #94a3b8;
-
     --border-color: rgba(255, 255, 255, 0.08);
     --border-card: rgba(255, 255, 255, 0.06);
-
     --nav-bg: rgba(3, 17, 31, 0.85);
     --nav-text: #ffffff;
     --logo-filter: brightness(0) invert(1);
-
     --section-label: #ffffff;
 }
 
@@ -121,7 +111,7 @@ h1, h2, h3, h4, strong {
 .nav {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 25px;
 }
 
 .nav a:not(.header-button) {
@@ -137,7 +127,7 @@ h1, h2, h3, h4, strong {
 }
 
 .header-button {
-    padding: 10px 20px;
+    padding: 10px 18px;
     border-radius: 7px;
     background: #18aaa5;
     color: white !important;
@@ -145,6 +135,7 @@ h1, h2, h3, h4, strong {
     font-weight: 700;
     text-decoration: none;
     transition: 0.25s ease;
+    white-space: nowrap;
 }
 
 .header-button:hover {
@@ -166,6 +157,7 @@ h1, h2, h3, h4, strong {
     justify-content: center;
     position: relative;
     outline: none;
+    flex-shrink: 0;
 }
 
 .icon-switch {
@@ -248,7 +240,7 @@ body.dark-theme .icon-switch::before {
 }
 
 /* =====================================================
-   HERO (Siempre Oscuro)
+   HERO
    ===================================================== */
 .hero {
     min-height: 700px;
@@ -754,11 +746,9 @@ footer p {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 900px) {
-    /* Ocultamos los links de texto, pero DEJAMOS el botón principal visible */
     .nav a:not(.header-button) { 
         display: none; 
     }
-    
     .hero-grid { grid-template-columns: 1fr; gap: 50px; text-align: center; }
     .hero-text > p { margin-left: auto; margin-right: auto; }
     .hero-buttons { justify-content: center; }
@@ -772,22 +762,19 @@ footer p {
 
 @media (max-width: 600px) {
     .header { height: 65px; }
-    .header-logo { height: 32px; max-width: 130px; }
+    .header-logo { height: 30px; max-width: 120px; }
+    .nav { gap: 8px; }
     
-    /* El contenedor de navegación un poco más junto */
-    .nav { gap: 12px; }
-    
-    /* Hacemos el botón un poco más chico para que entre perfecto con el logo */
     .header-button { 
         display: inline-flex !important;
-        padding: 8px 12px;
-        font-size: 11px !important;
+        padding: 7px 10px;
+        font-size: 10px !important;
     }
     
     .theme-btn { margin-left: 0; }
     
     .hero { min-height: auto; padding: 115px 0 70px; }
-    .hero h1 { font-size: 36px; letter-spacing: -2px; }
+    .hero h1 { font-size: 34px; letter-spacing: -2px; }
     .hero-text > p { font-size: 15px; }
     .hero-buttons { flex-direction: column; }
     .button { width: 100%; }
