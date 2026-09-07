@@ -305,6 +305,14 @@ const DS = (() => {
 
   if (isMaster) setExtra(true);
   document.addEventListener("DOMContentLoaded", render);
+  if (window.innerWidth < 700) {
+    document.addEventListener("DOMContentLoaded", () => {
+      const d = document.createElement("div");
+      d.className = "pchint";
+      d.textContent = "💻 Tip: esta demo se disfruta mucho más desde una PC. En el celular podés recorrerla igual.";
+      document.querySelector("section .container")?.prepend(d);
+    });
+  }
 
   return {
     openKey, closeModal, useKey, reset, buy,
