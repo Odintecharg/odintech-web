@@ -14,21 +14,25 @@ const ODINGO_CONFIG = {
 };
 
 // ★★★ EDITA TUS PRECIOS AQUÍ ★★★
-// Planes por sistema (1 PC / 1 caja). IDs: "mensual" | "perpetua"
+// Niveles por sistema (1 PC / 1 caja). Planes: "mensual" | "perpetua"
+const TIER_PRICING = {
+  A: { mensual: 29900, perpetua: 490000 }, // Kiosco, Resto, Hotel
+  B: { mensual: 19900, perpetua: 250000 }, // Gimnasio, Turnero, Talleres, Lavadero
+};
 const ODINGO_PLANS = {
-  mensual: { id: "mensual", nombre: "Mensual", precio: 29900, per: "/mes", detalle: "Actualizaciones, soporte y backups incluidos" },
-  perpetua: { id: "perpetua", nombre: "Licencia perpetua", precio: 490000, per: "pago único", detalle: "Instalación + 12 meses de actualizaciones y soporte" },
+  mensual: { id: "mensual", nombre: "Mensual", per: "/mes", detalle: "Actualizaciones, soporte y backups incluidos" },
+  perpetua: { id: "perpetua", nombre: "Licencia perpetua", per: "pago único", detalle: "Instalación + 12 meses de actualizaciones y soporte" },
 };
 
 // Sistemas (el precio lo pone el plan elegido). "informes" tiene precio propio.
 const ODINGO_CATALOG = [
-  { id: "comercios", tag: "OdinGO · POS EXPRESS", nombre: "Kiosco / Comercios", desc: "POS con escáner, granel, mayorista, combos, caja y cuenta corriente." },
-  { id: "gastronomia", tag: "OdinGO · RESTO-ROTI", nombre: "Restaurant / Rotisería", desc: "Mesas, mostrador, delivery, cocina KDS, mixto restaurant+rotisería." },
-  { id: "gimnasios", tag: "OdinGO · GIMNASIO", nombre: "Gimnasios y Academias", desc: "Socios, cuotas, clases, ingresos, congelar, recordatorios con botón de WhatsApp." },
-  { id: "peluqueria", tag: "OdinGO · TURNERO", nombre: "Peluquerías y Estética", desc: "Agenda por profesional, cobranza mixta, comisiones, caja." },
-  { id: "talleres", tag: "OdinGO · TALLERES", nombre: "Talleres Mecánicos", desc: "Órdenes, control de ingreso imprimible, patentes, repuestos." },
-  { id: "hotel", tag: "OdinGO · HOTEL", nombre: "Hotel / Hospedaje", desc: "Reservas, recepción por colores, consumos, checkout, POS mostrador." },
-  { id: "lavadero", tag: "OdinGO · LAVADEROS", nombre: "Lavaderos & Servicios", desc: "Agenda, playa kanban en vivo, abonos, operarios y comisiones." },
+  { id: "comercios", tier: "A", tag: "OdinGO · POS EXPRESS", nombre: "Kiosco / Comercios", desc: "POS con escáner, granel, mayorista, combos, caja y cuenta corriente." },
+  { id: "gastronomia", tier: "A", tag: "OdinGO · RESTO-ROTI", nombre: "Restaurant / Rotisería", desc: "Mesas, mostrador, delivery, cocina KDS, mixto restaurant+rotisería." },
+  { id: "gimnasios", tier: "B", tag: "OdinGO · GIMNASIO", nombre: "Gimnasios y Academias", desc: "Socios, cuotas, clases, ingresos, congelar, recordatorios con botón de WhatsApp." },
+  { id: "peluqueria", tier: "B", tag: "OdinGO · TURNERO", nombre: "Peluquerías y Estética", desc: "Agenda por profesional, cobranza mixta, comisiones, caja." },
+  { id: "talleres", tier: "B", tag: "OdinGO · TALLERES", nombre: "Talleres Mecánicos", desc: "Órdenes, control de ingreso imprimible, patentes, repuestos." },
+  { id: "hotel", tier: "A", tag: "OdinGO · HOTEL", nombre: "Hotel / Hospedaje", desc: "Reservas, recepción por colores, consumos, checkout, POS mostrador." },
+  { id: "lavadero", tier: "B", tag: "OdinGO · LAVADEROS", nombre: "Lavaderos & Servicios", desc: "Agenda, playa kanban en vivo, abonos, operarios y comisiones." },
   { id: "informes", tag: "OdinGO · INFORMES", nombre: "OdinGO Informes (mensual)", desc: "Tablero web con ventas e indicadores desde tu celular.", precio: 35000, type: "suscripcion" },
 ];
 
@@ -54,16 +58,23 @@ const OdinGoStore = (() => {
     return ODINGO_CATALOG.find((p) => p.id === id);
   }
 
+  function planPrice(prod, plan) {
+    if (prod.tier && TIER_PRICING[prod.tier]) return TIER_PRICING[prod.tier][plan] || 0;
+    return 0;
+  }
+
   function linePrice(l) {
-    if (l.plan && ODINGO_PLANS[l.plan]) return ODINGO_PLANS[l.plan].precio;
     const p = findProduct(l.id);
-    return p ? p.precio || 0 : 0;
+    if (!p) return 0;
+    if (l.plan && ODINGO_PLANS[l.plan]) return planPrice(p, l.plan);
+    return p.precio || 0;
   }
 
   function lineLabel(l) {
+    const p = findProduct(l.id);
     if (l.plan && ODINGO_PLANS[l.plan]) {
       const pl = ODINGO_PLANS[l.plan];
-      return `${pl.nombre} (${money(pl.precio)} ${pl.per})`;
+      return `${pl.nombre} (${money(planPrice(p, l.plan))} ${pl.per})`;
     }
     return "Suscripción mensual";
   }
