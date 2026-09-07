@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -39,9 +39,17 @@
                     Sistemas OdinGO
                 </a>
 
+                <a href="#demo" style="color: #18aaa5; font-weight: 700;">
+                    Probar demo
+                </a>
+
                 <a href="#informes">
                     OdinGO Informes
                 </a>
+
+                <button id="cart-btn" class="cart-btn" onclick="OdinGoStore.setDrawer(true)" aria-label="Ver pedido">
+                    🛒 <span id="cart-count">0</span>
+                </button>
 
                 <a href="#licencias" class="header-button">
                     Ver Sistemas OdinGO
@@ -165,130 +173,111 @@
                     >
                         Soluciones desarrolladas para necesidades concretas.
                         Usted compra la licencia y el sistema queda instalado
-                        para su uso.
+                        para su uso. Todos incluyen <strong>carga masiva de datos</strong> y
+                        <strong>backup diario en su PC</strong>.
                     </p>
 
                 </div>
 
 
-                <div
-                    class="problems-grid"
-                    style="margin-top:0;"
-                >
+                <div class="problems-grid shop-grid" style="margin-top:0;">
 
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · VENTAS
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Comercios
-                        </h3>
-
-                        <p>
-                            Ventas, caja, productos, códigos de barra y stock.
-                            Ideal para kioscos, almacenes, despensas y
-                            comercios minoristas.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · POS EXPRESS</span>
+                        <h3 style="margin-top:10px;">Kiosco / Comercios</h3>
+                        <p>Escáner, granel por peso, precio mayorista, combos, cuenta corriente, caja con apertura/cierre y ticket.</p>
+                        <div class="shop-price" data-price-for="comercios">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('comercios')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-kiosco.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
-
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · SOCIOS
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Gimnasios y Academias
-                        </h3>
-
-                        <p>
-                            Socios, cuotas, vencimientos, pagos y seguimiento
-                            para gimnasios, academias y actividades con
-                            membresías.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · RESTO-ROTI</span>
+                        <h3 style="margin-top:10px;">Restaurant / Rotisería</h3>
+                        <p>Mesas por sector, mostrador, delivery, cocina KDS en tiempo real. Mixto restaurant + rotisería.</p>
+                        <div class="shop-price" data-price-for="gastronomia">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('gastronomia')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-gastronomia.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
-
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · TURNOS
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Peluquerías y Estética
-                        </h3>
-
-                        <p>
-                            Agenda, clientes, profesionales y servicios para
-                            peluquerías, barberías y centros de estética.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · GIMNASIO</span>
+                        <h3 style="margin-top:10px;">Gimnasios y Academias</h3>
+                        <p>Socios, cuotas, clases con cupo, ingresos diarios, congelar y recordatorios con botón de WhatsApp.</p>
+                        <div class="shop-price" data-price-for="gimnasios">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('gimnasios')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-gimnasio.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
-
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · VETERINARIA
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Veterinarias
-                        </h3>
-
-                        <p>
-                            Clientes, mascotas, historial, turnos y gestión
-                            básica para veterinarias y pet shops.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · TURNERO</span>
+                        <h3 style="margin-top:10px;">Peluquerías y Estética</h3>
+                        <p>Agenda por profesional, cobranza mixta (turno + mostrador), comisiones, caja diaria.</p>
+                        <div class="shop-price" data-price-for="peluqueria">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('peluqueria')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-turnero.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
-
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · GASTRONOMÍA
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Gastronomía
-                        </h3>
-
-                        <p>
-                            Productos, pedidos, mesas y caja para restaurantes,
-                            rotiserías, cafeterías y otros negocios gastronómicos.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · TALLERES</span>
+                        <h3 style="margin-top:10px;">Talleres Mecánicos</h3>
+                        <p>Órdenes por patente, control de ingreso imprimible, repuestos con stock, cobranza y caja.</p>
+                        <div class="shop-price" data-price-for="talleres">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('talleres')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-talleres.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · HOTEL</span>
+                        <h3 style="margin-top:10px;">Hotel / Hospedaje</h3>
+                        <p>Reservas sin solapar, recepción por colores, consumos a la habitación, checkout y POS.</p>
+                        <div class="shop-price" data-price-for="hotel">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('hotel')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-hotel.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
+                    </div>
 
-                    <div class="problem-card">
-
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">
-                            OdinGO · SERVICIOS
-                        </span>
-
-                        <h3 style="margin-top:10px;">
-                            Talleres y Servicios
-                        </h3>
-
-                        <p>
-                            Clientes, órdenes de trabajo, presupuestos y
-                            seguimiento para talleres y servicios técnicos.
-                        </p>
-
+                    <div class="problem-card shop-card">
+                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · LAVADEROS</span>
+                        <h3 style="margin-top:10px;">Lavaderos & Servicios</h3>
+                        <p>Agenda con patente, playa kanban en vivo, abonos, operarios con comisión, caja diaria.</p>
+                        <div class="shop-price" data-price-for="lavadero">$ ...</div>
+                        <div class="shop-actions">
+                            <button class="button primary shop-btn" onclick="OdinGoStore.add('lavadero')">Agregar 🛒</button>
+                            <a class="button secondary shop-btn" href="demo-lavadero.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                        </div>
                     </div>
 
                 </div>
 
+                <p style="color:#94a3b8;font-size:13px;margin-top:20px;">💳 Licencia por pago único con instalación incluida. Todos los sistemas traen carga masiva de datos y backup diario en tu PC.</p>
+
             </div>
 
+        </section>
+
+
+        <!-- DEMOS EN VIVO (página propia por sistema) -->
+        <section id="demo" style="padding:70px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color);">
+            <div class="container" style="text-align:center;max-width:800px">
+                <div class="section-label">OdinGO · DEMO EN VIVO</div>
+                <h2>Probálos antes de comprar.</h2>
+                <p style="color:#94a3b8;font-size:16px;margin:12px auto 0;">
+                    Cada tarjeta tiene su botón <strong>Probar demo en vivo</strong>: se abre el sistema con datos de ejemplo, sin instalar nada.
+                    Con la <strong>clave completa</strong> lo ves entero por 30 minutos.
+                </p>
+            </div>
         </section>
 
 
@@ -449,25 +438,19 @@
                             ¿Querés llevar el control de tu negocio estés donde estés?
                         </h3>
 
-                        <p
-                            style="
-                                color:#94a3b8;
-                                font-size:16px;
-                                line-height:1.6;
-                                margin-bottom:25px;
-                            "
-                        >
-                            Solicitanos un presupuesto para integrar
-                            <strong>OdinGO Informes</strong> a tu sistema.
+                        <div style="font-size:17px;color:#f1f5f9;margin-bottom:25px">
+                            <strong>$35.000/mes</strong> <span style="color:#94a3b8">· sin permanencia</span>
+                        </div>
+
+
+                        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                        <button class="button primary" onclick="OdinGoStore.add('informes')">
+                            Agregar Informes al pedido 🛒
+                        </button>
+                        </div>
+                        <p style="color:#94a3b8;font-size:13px;margin-top:16px">
+                            ¿Dudas? <a href="mailto:odintecharg@hotmail.com" style="color:#66ddd5">Escribinos</a>
                         </p>
-
-
-                        <a
-                            href="mailto:odintecharg@hotmail.com?subject=Solicitud%20de%20presupuesto%20-%20OdinGO%20Informes&body=SOLICITUD%20DE%20PRESUPUESTO%20-%20OdinGO%20INFORMES%0A%0APor%20favor%2C%20complete%20todos%20los%20campos%20solicitados%20a%20continuaci%C3%B3n%20para%20que%20podamos%20analizar%20su%20necesidad%20y%20enviarle%20un%20presupuesto.%0A%0A---%20DATOS%20DE%20CONTACTO%20---%0A%0ANombre%20y%20apellido%3A%0ADNI%3A%0ATel%C3%A9fono%3A%0AEmail%3A%0A%0A---%20DATOS%20DE%20LA%20EMPRESA%20---%0A%0AEmpresa%20%2F%20comercio%3A%0ARubro%3A%0ACiudad%3A%0AProvincia%3A%0APa%C3%ADs%3A%0A%0A---%20SISTEMA%20ACTUAL%20---%0A%0ASistema%20que%20utiliza%20actualmente%3A%0A%0A---%20NECESIDAD%20DE%20INFORMACI%C3%93N%20---%0A%0A%C2%BFQu%C3%A9%20informaci%C3%B3n%20necesita%20consultar%20desde%20su%20celular%20o%20computadora%3F%0A%0A%0A---%20INFORMACI%C3%93N%20ADICIONAL%20---%0A%0AComentarios%20o%20requerimientos%20adicionales%3A%0A%0A%0AGracias.%20Una%20vez%20recibidos%20estos%20datos%2C%20analizaremos%20su%20necesidad%20y%20le%20enviaremos%20la%20propuesta%20correspondiente.%0A%0AAtentamente%2C%0AOdinGO"
-                            class="button primary"
-                        >
-                            Solicitar presupuesto por email →
-                        </a>
 
                     </div>
 
@@ -503,7 +486,7 @@
                         font-size:clamp(34px,4vw,52px);
                     "
                 >
-                    ¿Está listo para llevar su empresa al siguiente nivel?
+                    ¿Necesitás algo a medida?
                 </h2>
 
 
@@ -515,10 +498,7 @@
                         margin:20px auto 30px;
                     "
                 >
-                    Cuando necesita algo más que un sistema estándar,
-                    podemos ayudarlo a mejorar procesos, automatizar tareas,
-                    integrar herramientas y desarrollar soluciones adaptadas
-                    a la forma en que trabaja su empresa.
+                    Sistemas a medida, SaaS multiusuario y multisucursal, en tu servidor o en la nube.
                 </p>
 
 
@@ -574,6 +554,27 @@
     </footer>
 
 
+    <!-- CARRITO / CHECKOUT -->
+    <div id="cart-overlay" class="cart-overlay" onclick="OdinGoStore.setDrawer(false)"></div>
+    <aside id="cart-drawer" class="cart-drawer" aria-label="Pedido">
+        <div class="cart-head"><strong>🧾 Tu pedido OdinGO</strong><button onclick="OdinGoStore.setDrawer(false)">✕</button></div>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="cart-form">
+            <input id="buyer-nombre" placeholder="Nombre y apellido">
+            <input id="buyer-email" placeholder="Email">
+            <input id="buyer-tel" placeholder="Teléfono / WhatsApp">
+            <textarea id="buyer-notas" rows="2" placeholder="Notas (ej: rubro de mi negocio, ciudad)"></textarea>
+        </div>
+        <div class="cart-foot">
+            <div class="cart-total-row"><span>Total</span><strong id="cart-total">$ 0</strong></div>
+            <button class="button primary" style="width:100%" onclick="OdinGoStore.checkoutWhatsApp()">Enviar pedido por WhatsApp →</button>
+            <button class="button secondary cart-mail" style="width:100%" onclick="OdinGoStore.checkoutEmail()">Enviar por Email</button>
+            <button class="link-btn" onclick="OdinGoStore.clear()">Vaciar pedido</button>
+            <small class="muted">Al enviar se abre WhatsApp/Email con el detalle. Coordinamos instalación y pago.</small>
+        </div>
+    </aside>
+
+    <script src="odingo-tienda.js"></script>
     <script>
 
         const themeBtn =
