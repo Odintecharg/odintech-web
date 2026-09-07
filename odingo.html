@@ -89,12 +89,7 @@
                 "
             >
 
-                <div
-                    class="eyebrow"
-                    style="color:#66ddd5;"
-                >
-                    OdinGO · SISTEMAS LISTOS PARA USAR
-                </div>
+                <div class="pill-hero"><span class="dot"></span>7 SISTEMAS · PAGO ÚNICO · INSTALACIÓN INCLUIDA</div>
 
                 <h1
                     style="
@@ -103,7 +98,7 @@
                     "
                 >
                     Compre su licencia.<br>
-                    Empiece a operar hoy.
+                    <span class="grad">Empiece a operar hoy.</span>
                 </h1>
 
                 <p
@@ -134,6 +129,12 @@
                         Ver Sistemas OdinGO
                     </a>
 
+                </div>
+
+                <div class="trust" style="justify-content:center">
+                    <span><b>✓</b> Carga masiva de datos</span>
+                    <span><b>✓</b> Backup diario en tu PC</span>
+                    <span><b>✓</b> Demo en vivo</span>
                 </div>
 
             </div>
@@ -609,6 +610,52 @@
         });
 
     </script>
+
+    <!-- Detalles visuales: aparición suave + sombra del header -->
+    <script>
+        (function () {
+            var header = document.querySelector('.header');
+            addEventListener('scroll', function () {
+                header.classList.toggle('scrolled', scrollY > 12);
+            }, { passive: true });
+            header.classList.toggle('scrolled', scrollY > 12);
+
+            // Entradas con impacto: cada bloque aparece desde su lado
+            function arm(el, cls, d) { el.classList.add(cls); el.dataset.d = d; wired.push(el); }
+            var wired = [];
+            document.querySelectorAll('.section-header > *, .narrow > *').forEach(function (el, i) { arm(el, 'reveal', i % 3); });
+            document.querySelectorAll('.solution-grid > *:first-child, .difference-grid > *:first-child, .contact-grid > *:first-child').forEach(function (el) { arm(el, 'reveal-l', 0); });
+            document.querySelectorAll('.solution-grid > *:last-child, .difference-grid > *:last-child, .contact-grid > *:last-child').forEach(function (el) { arm(el, 'reveal-r', 1); });
+            document.querySelectorAll('.problems-grid > *, .services-grid > *, .worlds > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
+            document.querySelectorAll('.process-grid > *, .stat, .contact-box > *').forEach(function (el, i) { arm(el, 'reveal', i % 6); });
+            if (!('IntersectionObserver' in window)) {
+                wired.forEach(function (el) { el.classList.add('in'); });
+                return;
+            }
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+            wired.forEach(function (el) { io.observe(el); });
+
+            // Barra fina de progreso de lectura
+            var bar = document.createElement('div');
+            bar.id = 'readbar';
+            document.body.appendChild(bar);
+            addEventListener('scroll', function () {
+                var h = document.documentElement;
+                var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+                bar.style.width = (p * 100).toFixed(2) + '%';
+            }, { passive: true });
+        })();
+    </script>
+
+    <!-- CTA fijo móvil -->
+    <div class="mcta">
+        <a class="a" href="#licencias">Ver sistemas</a>
+        <a class="b" href="mailto:odintecharg@hotmail.com">Hablemos</a>
+    </div>
 
 </body>
 </html>
