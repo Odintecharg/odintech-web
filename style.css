@@ -1000,6 +1000,10 @@ footer p {
 .shop-card { display: flex; flex-direction: column; }
 .shop-price { margin-top: 16px; font-size: 22px; font-weight: 800; color: var(--text-titulos); }
 .shop-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+.shop-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.plan-btn { padding: 11px 8px !important; font-size: 12px !important; width: 100%; }
+button.plan-btn.button.secondary { color: #C49A2C; border: 1px solid #C49A2C; background: transparent; }
+button.plan-btn.button.secondary:hover { background: #C49A2C; color: #fff; }
 .shop-btn { padding: 10px 14px; font-size: 12px; border: none; cursor: pointer; }
 button.button.secondary.shop-btn { color: #18aaa5; border: 1px solid rgba(24,170,165,.5); background: transparent; }
 button.button.secondary.shop-btn:hover { background: #18aaa5; color: #fff; }
