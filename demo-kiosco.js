@@ -767,4 +767,10 @@ const DK = (() => {
   };
 })();
 DK.go("pos");
+if (window.innerWidth < 700) {
+  var d = document.createElement("div");
+  d.className = "pchint";
+  d.textContent = "💻 Tip: esta demo se disfruta mucho más desde una PC. En el celular podés recorrerla igual.";
+  document.getElementById("root")?.prepend(d);
+}
 setInterval(() => { if (document.getElementById("lock-state")) DK && null; }, 60000);
