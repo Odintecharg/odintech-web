@@ -1402,4 +1402,6 @@ section h2 { text-wrap: balance; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 26px 8px; }
     .worlds { grid-template-columns: 1fr; }
     .world { padding: 32px 24px; }
+    #planes .problems-grid { grid-template-columns: 1fr !important; }
+    .plans-extra { grid-template-columns: 1fr !important; }
 }
