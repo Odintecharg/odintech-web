@@ -1,450 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="OdinTech desarrolla soluciones de software simples y adaptadas a las necesidades de cada empresa. Simplificamos la gestión de tu empresa aportando conocimiento en procesos.">
-    <meta name="theme-color" content="#071d38">
-    <title>OdinTech | Simplificamos la gestión de tu empresa</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OdinTech · Algo grande se está cocinando. Lanzamiento 01/10/2026.">
+<meta name="theme-color" content="#04070f">
+<title>OdinTech · Próximamente 01·10·2026</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Playfair+Display:ital,wght@1,500;1,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#04070f;color:#eef2f7;font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;
+background-image:radial-gradient(1.5px 1.5px at 12% 22%,#fff8,transparent),radial-gradient(1px 1px at 68% 8%,#fff6,transparent),radial-gradient(1.5px 1.5px at 84% 34%,#fff7,transparent),radial-gradient(1px 1px at 32% 66%,#fff5,transparent),radial-gradient(2px 2px at 52% 88%,#fff6,transparent),radial-gradient(1px 1px at 8% 78%,#fff5,transparent),radial-gradient(1.5px 1.5px at 44% 12%,#5eead488,transparent),radial-gradient(1px 1px at 76% 62%,#f5c86e77,transparent)}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;opacity:.5}
+.orb.a{width:480px;height:480px;background:#0d4f4a;top:-140px;right:-120px;animation:drift 16s ease-in-out infinite alternate}
+.orb.b{width:420px;height:420px;background:#3a2c10;bottom:-140px;left:-120px;animation:drift 20s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(-60px,50px) scale(1.12)}}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 6%}
+.top{display:flex;justify-content:space-between;align-items:center;padding:26px 0}
+.top img{height:34px;filter:brightness(0) invert(1)}
+.badge{font-size:11px;letter-spacing:3px;font-weight:800;color:#5eead4;border:1px solid #18aaa555;padding:8px 18px;border-radius:100px}
+.hero{min-height:82vh;display:flex;flex-direction:column;justify-content:center;padding:40px 0 30px}
+.kicker{font-family:"Playfair Display",serif;font-style:italic;font-size:clamp(20px,3vw,30px);color:#9fb3c8}
+h1{font-size:clamp(56px,11vw,150px);font-weight:900;line-height:.95;letter-spacing:-4px;margin:10px 0 6px}
+h1 .thin{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;letter-spacing:0;
+background:linear-gradient(92deg,#5eead4,#f5c86e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.date{font-size:clamp(22px,4vw,40px);font-weight:800;letter-spacing:6px;color:#fff;margin-top:14px}
+.sub{max-width:620px;color:#9fb3c8;font-size:17px;line-height:1.7;margin-top:18px}
+.count{display:flex;gap:14px;margin:34px 0 10px;flex-wrap:wrap}
+.cell{min-width:104px;text-align:center;border:1px solid #ffffff1c;border-radius:14px;padding:16px 10px;background:#ffffff08;backdrop-filter:blur(6px)}
+.cell b{display:block;font-size:clamp(30px,5vw,46px);font-weight:900;letter-spacing:-1px}
+.cell small{font-size:11px;letter-spacing:2.5px;color:#9fb3c8}
+section{padding:84px 0}
+h2{font-size:clamp(34px,5.5vw,62px);font-weight:900;letter-spacing:-2px;line-height:1.02}
+h2 em{font-family:"Playfair Display",serif;font-style:italic;font-weight:500;
+background:linear-gradient(92deg,#5eead4,#f5c86e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{color:#9fb3c8;font-size:17px;margin-top:14px;max-width:640px;line-height:1.7}
+.uni{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;margin-top:44px}
+.card{border:1px solid #ffffff1c;border-radius:18px;padding:36px 32px;background:#ffffff06;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s}
+.card:hover{transform:translateY(-6px)}
+.card.odingo{border-top:3px solid #18aaa5}
+.card.emp{border-top:3px solid #C49A2C}
+.card .tag{font-size:11px;font-weight:800;letter-spacing:2.5px}
+.odingo .tag{color:#5eead4}.emp .tag{color:#f5c86e}
+.card h3{font-size:26px;margin:12px 0 10px;letter-spacing:-.5px}
+.card p{color:#9fb3c8;font-size:15px;line-height:1.65}
+.card ul{list-style:none;margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.card li{font-size:12.5px;font-weight:600;border:1px solid #ffffff22;border-radius:100px;padding:6px 14px;color:#dbe4ee}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+.opt{border-radius:18px;padding:38px 30px;text-decoration:none;color:#fff;display:flex;flex-direction:column;gap:12px;min-height:300px;justify-content:flex-end;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.opt:hover{transform:translateY(-8px)}
+.opt .n{font-size:13px;font-weight:800;letter-spacing:3px;opacity:.75}
+.opt h3{font-size:30px;letter-spacing:-1px;line-height:1.05}
+.opt p{font-size:14.5px;opacity:.85;line-height:1.6}
+.opt .go{font-weight:800;font-size:14px;margin-top:6px}
+.opt.juego{background:linear-gradient(150deg,#0b3b39,#18aaa5)}
+.opt.enc{background:linear-gradient(150deg,#3a2f10,#C49A2C)}
+.opt.reg{background:linear-gradient(150deg,#1b2340,#3b5bdb)}
+footer{border-top:1px solid #ffffff14;padding:34px 0 44px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#7d8ea3;font-size:13px}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(max-width:760px){.uni,.trio{grid-template-columns:1fr}h1{letter-spacing:-2px}}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.orb{animation:none}}
+</style>
 </head>
-
 <body>
+<div class="stars"></div><div class="orb a"></div><div class="orb b"></div>
+<div class="wrap">
+  <div class="top"><img src="logo.png" alt="OdinTech"><span class="badge">PRÓXIMAMENTE</span></div>
 
-    <!-- =========================
-         HEADER
-    ========================== -->
-    <header class="header">
-        <div class="container header-content">
-            <a href="#inicio" class="logo-link">
-                <img src="logo.png" alt="OdinTech" class="header-logo">
-            </a>
-            <nav class="nav">
-    <a href="odingo.html" class="nav-link" style="color: #18aaa5; font-weight: 700;">OdinGO</a>
-
-    <a href="soluciones-a-medida.html" class="nav-link" style="color: #C49A2C; font-weight: 700;">Soluciones Empresariales</a>
-
-    <a href="#contacto" class="header-button">
-        Hablemos
-    </a>
-
-    <!-- Botón Modo Claro/Oscuro -->
-    <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
-        <div class="icon-switch"></div>
-    </button>
-</nav>
-        </div>
-    </header>
-
-    <main>
-
-        <!-- =========================
-             HERO (Siempre Oscuro)
-        ========================== -->
-        <section class="hero" id="inicio">
-            <div class="hero-grid-bg"></div>
-            <div class="container hero-grid">
-                <div class="hero-text">
-                    <div class="pill-hero"><span class="dot"></span>SOFTWARE PARA EMPRESAS · LA PAZ, ENTRE RÍOS</div>
-                    <h1>
-                        Software que se usa <span class="grad">de verdad</span>.
-                    </h1>
-                    <p>
-                        Sistemas <strong style="color:#e2e8f0">OdinGO</strong> listos para instalar en tu negocio,
-                        o <strong style="color:#e2e8f0">Soluciones Empresariales</strong> a medida si necesitás más.
-                        Instalamos, capacitamos y te acompañamos.
-                    </p>
-                    <div class="trust">
-                        <strong style="color:#e2e8f0">OdinGO</strong>
-                        <span><b>✓</b> Licencia por pago único</span>
-                        <span><b>✓</b> Instalación incluida</span>
-                        <span><b>✓</b> Backup diario en tu PC</span>
-                    </div>
-                    <div class="hero-buttons">
-                        <a href="odingo.html" class="button primary">
-                            Ver sistemas y precios
-                        </a>
-                        <a href="mailto:odintecharg@hotmail.com?subject=Quiero%20simplificar%20mi%20negocio" class="button secondary">
-                            Hablar ahora
-                        </a>
-                    </div>
-                </div>
-
-                <div class="hero-card">
-                    <div class="dashboard">
-                        <div class="dashboard-top">
-                            <span>ODINTECH</span>
-                            <span class="status">
-                                ● Online
-                            </span>
-                        </div>
-                        <div class="dashboard-title">
-                            Tu empresa, bajo control.
-                        </div>
-                        <div class="dashboard-grid">
-                            <div class="dashboard-box">
-                                <small>Ventas</small>
-                                <strong>$2.450.000</strong>
-                            </div>
-                            <div class="dashboard-box">
-                                <small>Operaciones</small>
-                                <strong>1.248</strong>
-                            </div>
-                            <div class="dashboard-box">
-                                <small>Clientes</small>
-                                <strong>380</strong>
-                            </div>
-                        </div>
-                        <div class="chart">
-                            <div class="chart-line"></div>
-                        </div>
-                    </div>
-
-                    <div class="floating-card card-one">
-                        <div class="icon">✓</div>
-                        <div>
-                            <strong>Más organización</strong>
-                            <small>Información centralizada</small>
-                        </div>
-                    </div>
-
-                    <div class="floating-card card-two">
-                        <div class="icon">↑</div>
-                        <div>
-                            <strong>Más información</strong>
-                            <small>Mejores decisiones</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================
-             LLAMADA A LA ACCIÓN
-        ========================== -->
-        <section style="background:#18aaa5;padding:64px 0">
-            <div class="container" style="text-align:center;max-width:760px">
-                <h2 style="color:#fff;margin-bottom:14px">
-                    ¿Hablamos de tu negocio?
-                </h2>
-                <p style="color:#e6fffd;font-size:17px;line-height:1.65;margin-bottom:28px">
-                    Contanos qué hacés y te decimos si te sirve un sistema OdinGO listo
-                    o si necesitás algo a medida. Nos ponemos en contacto y ya.
-                </p>
-                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-                    <a href="mailto:odintecharg@hotmail.com?subject=Quiero%20simplificar%20mi%20negocio" class="button primary" style="background:#fff;color:#0b3b39;box-shadow:none">
-                        Escribinos por mail →
-                    </a>
-                    <a href="odingo.html" class="button secondary" style="border-color:#fff;color:#fff">
-                        Ver sistemas primero
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================
-             PROPUESTA
-        ========================== -->
-        <section class="solution">
-            <div class="container solution-grid">
-                <div>
-    <div class="section-label">
-        NUESTRA PROPUESTA
+  <div class="hero">
+    <div class="kicker">Algo grande se está cocinando…</div>
+    <h1>El universo<br><span class="thin">OdinTech</span> despega</h1>
+    <div class="date">01 · 10 · 2026</div>
+    <p class="sub">Sistemas listos para instalar y soluciones a medida para empresas. Mientras tanto: jugá, contanos tus trabas y anotate para las promos de lanzamiento.</p>
+    <div class="count">
+      <div class="cell"><b id="c-d">0</b><small>DÍAS</small></div>
+      <div class="cell"><b id="c-h">0</b><small>HORAS</small></div>
+      <div class="cell"><b id="c-m">0</b><small>MIN</small></div>
+      <div class="cell"><b id="c-s">0</b><small>SEG</small></div>
     </div>
+  </div>
 
-    <h2>
-        Tecnología que se adapta a tu empresa.
-    </h2>
-
-    <p style="margin-top:20px; font-size:16px;">
-        Si no querés un programa desarrollado a medida ni cambiar tus procesos, tenemos <strong>OdinGO</strong>: sistemas pre armados, listos para instalar y empezar a usar. Sin vueltas.
-    </p>
-
-    <p style="margin-top:12px; font-size:16px;">
-        Y si tu empresa necesita más, también desarrollamos <strong>a medida</strong>, con mayor infraestructura tanto <strong>local</strong> (servidores, red, puestos de trabajo) como en la <strong>nube</strong>.
-    </p>
-
-    <div style="display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap;">
-
-        <a href="odingo.html"
-           class="button primary"
-           style="background: #18aaa5; border-color: #18aaa5;">
-            Conocé OdinGO
-        </a>
-
-        <a href="soluciones-a-medida.html"
-           class="button secondary"
-           style="color: #C49A2C; border-color: #C49A2C;">
-            Soluciones Empresariales
-        </a>
-
+  <section>
+    <h2 class="rv">Lo que <em>viene en camino</em></h2>
+    <p class="lead rv">Dos mundos, una sola empresa. Esto es lo que vas a encontrar desde el día uno.</p>
+    <div class="uni">
+      <div class="card odingo rv">
+        <div class="tag">OdinGO · SISTEMAS LISTOS</div>
+        <h3>7 sistemas pre armados</h3>
+        <p>Se instalan y empiezan a trabajar. Sin desarrollo, sin espera. Con carga masiva de datos, facturación ARCA y backup diario en tu PC. Funcionan sin internet.</p>
+        <ul><li>Kiosco</li><li>Resto</li><li>Gimnasio</li><li>Turnero</li><li>Talleres</li><li>Hotel</li><li>Lavadero</li></ul>
+      </div>
+      <div class="card emp rv">
+        <div class="tag">SOLUCIONES EMPRESARIALES</div>
+        <h3>A tu medida</h3>
+        <p>Software a medida, SaaS multiusuario y multisucursal, en tu servidor o en la nube. Con adopción acompañada.</p>
+        <ul><li>A medida</li><li>SaaS</li><li>Local + Nube</li></ul>
+      </div>
     </div>
+  </section>
+
+  <section>
+    <h2 class="rv">Mientras tanto, <em>hacé algo</em></h2>
+    <p class="lead rv">Tres formas de ir entrando en órbita antes del lanzamiento.</p>
+    <div class="trio">
+      <a class="opt juego rv" href="juego.html"><span class="n">01 · JUGAR</span><h3>Turno en el kiosco</h3><p>Escaneá productos y cobrá como un cajero de verdad. ¿Llegás a la meta?</p><span class="go">Jugar →</span></a>
+      <a class="opt enc rv" href="encuesta.html"><span class="n">02 · OPINAR</span><h3>¿Qué te frena?</h3><p>Contanos las barreras que ves al usar un sistema de gestión. Te leemos.</p><span class="go">Responder →</span></a>
+      <a class="opt reg rv" href="registro.html"><span class="n">03 · ANOTARME</span><h3>Promos de lanzamiento</h3><p>Dejá tus datos y enterate primero de precios y beneficios.</p><span class="go">Anotarme →</span></a>
+    </div>
+  </section>
+
+  <footer><span>© 2026 OdinTech · La Paz, Entre Ríos · Argentina</span><span>Lanzamiento 01·10·2026</span></footer>
 </div>
-                    <p class="large-text">
-                        El software tiene que adaptarse a tu empresa, no al revés.
-                                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================
-             SOLUCIONES
-        ========================== -->
-        <section class="services" id="soluciones">
-            <div class="container">
-                <div class="section-header">
-                    <div>
-                        <div class="section-label">
-                            DOS FORMAS DE TRABAJO
-                        </div>
-                        <h2>
-                            Uno está listo para instalar.<br>El otro, lo armamos a medida.
-                        </h2>
-                    </div>
-                </div>
-
-                <div class="worlds">
-                    <div class="world world-odingo">
-                        <span>OdinGO · SISTEMAS ARMADOS</span>
-                        <h3>¿Querés algo listo para usar?</h3>
-                        <p>Programas pre armados que se instalan y empiezan a trabajar. Sin desarrollo, sin espera.</p>
-                        <div class="chips">
-                            <span>Kiosco</span><span>Resto</span><span>Gimnasio</span><span>Turnero</span><span>Talleres</span><span>Hotel</span><span>Lavadero</span>
-                        </div>
-                        <a href="odingo.html" class="button primary">Ver catálogo OdinGO →</a>
-                    </div>
-                    <div class="world world-emp">
-                        <span>SOLUCIONES EMPRESARIALES</span>
-                        <h3>¿Necesitás una solución integral?</h3>
-                        <p>Software a medida, SaaS multiusuario y multisucursal, en tu servidor o en la nube. Con adopción acompañada.</p>
-                        <div class="chips">
-                            <span>A medida</span><span>SaaS</span><span>Multisucursal</span><span>Local + Nube</span><span>Capacitación</span>
-                        </div>
-                        <a href="soluciones-a-medida.html" class="button primary" style="background:#C49A2C;box-shadow:0 10px 25px rgba(196,154,44,.25)">Solución integral →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================
-             COMO TRABAJAMOS
-        ========================== -->
-        <section class="process" id="como-trabajamos">
-            <div class="container">
-                <div class="section-label">
-                    CÓMO TRABAJAMOS
-                </div>
-                <h2>
-                    Simple desde el primer día.
-                </h2>
-
-                <div class="process-grid">
-                    <div class="process-step">
-                        <span>01</span>
-                        <h3>Analizamos tu empresa</h3>
-                        <p>Estudiamos tus circuitos de trabajo y aportamos nuestro conocimiento en procesos para identificar tus verdaderas necesidades.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>02</span>
-                        <h3>Pensamos la solución</h3>
-                        <p>Buscamos la forma más simple y eficiente de resolver el problema y optimizar la operativa.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>03</span>
-                        <h3>Desarrollamos</h3>
-                        <p>Convertimos la idea en una herramienta de software a medida que puedas utilizar realmente.</p>
-                    </div>
-                    <div class="process-step">
-                        <span>04</span>
-                        <h3>Seguimos acompañando</h3>
-                        <p>Porque una empresa cambia y el software también tiene que evolucionar a la par de tu negocio.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================
-             NOSOTROS
-        ========================== -->
-        <section class="difference" id="nosotros">
-            <div class="container difference-grid">
-                <div>
-                    <div class="section-label">
-                        ODINTECH
-                    </div>
-                    <h2>
-                        Tecnología cercana.<br>
-                        Soluciones reales.
-                    </h2>
-                </div>
-                <div>
-                    <p class="large-text">
-                        Somos usuarios de sistemas todos los días, no solo quienes los programan.
-                    </p>
-                    <p>
-                        Nuestro mayor fuerte es adaptar los sistemas a cada empresa: entender cómo se trabaja en el día a día y dar soluciones prácticas a problemas reales, sin complicarle la vida a nadie.
-                    </p>
-                    <p>
-                        Por eso la adopción es sencilla y la capacitación también: acompañamos a tu equipo hasta que el sistema se usa con naturalidad, porque detrás de cada sistema hay personas que necesitan que las cosas simplemente funcionen.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- =========================
-             CONTACTO
-        ========================== -->
-        <section class="contact" id="contacto">
-            <div class="container contact-grid">
-                <div>
-                    <div class="section-label">
-                        HABLEMOS
-                    </div>
-                    <h2>
-                        ¿Querés simplificar la gestión de tu empresa?
-                    </h2>
-                    <p>
-                        Contanos qué necesitás y vemos juntos cómo podemos ayudarte a optimizar tus procesos.
-                    </p>
-                </div>
-                <div class="contact-box">
-                    <a href="mailto:odintecharg@hotmail.com" class="contact-link">
-                        odintecharg@hotmail.com
-                    </a>
-                    <a href="mailto:odintecharg@hotmail.com" class="button primary">
-                        Contactar a ODINTECH
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- =========================
-         FOOTER (Siempre Oscuro)
-    ========================== -->
-    <footer>
-        <div class="container footer-content">
-            <div>
-                <img src="logo.png" alt="OdinTech" class="footer-logo">
-                <p>
-                    Simplificamos la gestión de tu empresa.
-                </p>
-            </div>
-            <div class="footer-right">
-                <p>
-                    La Paz, Entre Ríos · Argentina
-                </p>
-                <p>
-                    © 2026 OdinTech
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Script para Modo Claro/Oscuro -->
-    <script>
-        const themeBtn = document.getElementById('theme-toggle');
-        const body = document.body;
-        
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-theme');
-        }
-
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('dark-theme');
-            if (body.classList.contains('dark-theme')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
-        });
-    </script>
-    <!-- Detalles visuales: aparición suave + sombra del header -->
-    <script>
-        (function () {
-            var header = document.querySelector('.header');
-            addEventListener('scroll', function () {
-                header.classList.toggle('scrolled', scrollY > 12);
-            }, { passive: true });
-            header.classList.toggle('scrolled', scrollY > 12);
-
-            // Entradas con impacto: cada bloque aparece desde su lado
-            function arm(el, cls, d) { el.classList.add(cls); el.dataset.d = d; wired.push(el); }
-            var wired = [];
-            document.querySelectorAll('.section-header > *, .narrow > *').forEach(function (el, i) { arm(el, 'reveal', i % 3); });
-            document.querySelectorAll('.solution-grid > *:first-child, .difference-grid > *:first-child, .contact-grid > *:first-child').forEach(function (el) { arm(el, 'reveal-l', 0); });
-            document.querySelectorAll('.solution-grid > *:last-child, .difference-grid > *:last-child, .contact-grid > *:last-child').forEach(function (el) { arm(el, 'reveal-r', 1); });
-            document.querySelectorAll('.problems-grid > *, .services-grid > *, .worlds > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
-            document.querySelectorAll('.process-grid > *, .stat, .contact-box > *').forEach(function (el, i) { arm(el, 'reveal', i % 6); });
-            if (!('IntersectionObserver' in window)) {
-                wired.forEach(function (el) { el.classList.add('in'); });
-                return;
-            }
-            var io = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-                });
-            }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-            wired.forEach(function (el) { io.observe(el); });
-
-            // Barra fina de progreso de lectura
-            var bar = document.createElement('div');
-            bar.id = 'readbar';
-            document.body.appendChild(bar);
-            addEventListener('scroll', function () {
-                var h = document.documentElement;
-                var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
-                bar.style.width = (p * 100).toFixed(2) + '%';
-            }, { passive: true });
-
-            // Contadores animados
-            var counters = document.querySelectorAll('[data-count]');
-            var cio = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    if (!e.isIntersecting) return;
-                    var el = e.target, target = parseInt(el.dataset.count, 10), t0 = null;
-                    cio.unobserve(el);
-                    function step(t) {
-                        if (!t0) t0 = t;
-                        var p = Math.min((t - t0) / 1200, 1);
-                        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-                        if (p < 1) requestAnimationFrame(step);
-                    }
-                    requestAnimationFrame(step);
-                });
-            }, { threshold: 0.5 });
-            counters.forEach(function (el) { cio.observe(el); });
-
-            // Tilt 3D sutil del dashboard (solo puntero fino)
-            var card = document.querySelector('.hero-card');
-            var dash = document.querySelector('.dashboard');
-            if (card && dash && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                card.addEventListener('mousemove', function (e) {
-                    var r = card.getBoundingClientRect();
-                    var x = (e.clientX - r.left) / r.width - 0.5;
-                    var y = (e.clientY - r.top) / r.height - 0.5;
-                    dash.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
-                    dash.style.setProperty('--rx', (-y * 10).toFixed(2) + 'deg');
-                });
-                card.addEventListener('mouseleave', function () {
-                    dash.style.setProperty('--rx', '0deg');
-                    dash.style.setProperty('--ry', '0deg');
-                });
-            }
-        })();
-    </script>
-    <!-- CTA fijo móvil -->
-    <div class="mcta">
-        <a class="a" href="odingo.html">Ver sistemas</a>
-        <a class="b" href="#contacto">Hablemos</a>
-    </div>
+<script>
+(function(){
+  var end = new Date('2026-10-01T00:00:00-03:00').getTime();
+  function pad(n){return String(n).padStart(2,'0')}
+  function tick(){
+    var d = Math.max(0, end - Date.now());
+    var dd = Math.floor(d/864e5), hh = Math.floor(d/36e5)%24, mm = Math.floor(d/6e4)%60, ss = Math.floor(d/1e3)%60;
+    document.getElementById('c-d').textContent = dd;
+    document.getElementById('c-h').textContent = pad(hh);
+    document.getElementById('c-m').textContent = pad(mm);
+    document.getElementById('c-s').textContent = pad(ss);
+  }
+  tick(); setInterval(tick, 1000);
+  var io = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+})();
+</script>
 </body>
 </html>
