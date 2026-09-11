@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Qué te frena? · Encuesta OdinTech</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#04070f;color:#eef2f7;font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:26px 6% 60px}
+a.back{color:#f5c86e;text-decoration:none;font-size:14px;font-weight:700}
+h1{font-size:clamp(30px,6vw,52px);font-weight:900;letter-spacing:-2px;margin:10px 0 6px}
+.sub{color:#9fb3c8;margin-bottom:24px;line-height:1.6}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid #ffffff22;border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .25s}
+.opt:hover{border-color:#C49A2C}
+.opt input{margin-top:4px;accent-color:#C49A2C;width:18px;height:18px}
+.opt b{display:block;font-size:15px}.opt small{color:#9fb3c8;font-size:13px}
+textarea,input[type=text],input[type=email]{width:100%;background:#ffffff0d;border:1px solid #ffffff2a;border-radius:10px;color:#fff;padding:12px;font-size:15px;font-family:inherit;margin-top:14px}
+label{display:block;font-size:13px;font-weight:700;margin:18px 0 -6px;color:#dbe4ee}
+button{width:100%;margin-top:22px;padding:15px;border:none;border-radius:12px;background:#C49A2C;color:#1a1405;font-size:16px;font-weight:900;cursor:pointer}
+.ok{background:#052e2b;border:1px solid #18aaa5;border-radius:12px;padding:20px;margin-top:20px;display:none;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="index.html">← Volver</a>
+<h1>¿Qué te frena?</h1>
+<p class="sub">Queremos hacer sistemas que se usen de verdad. Marcá todo lo que te haya frenado al usar un sistema de gestión.</p>
+<div id="ops">
+<label class="opt"><input type="checkbox" value="Precio"><span><b>El precio</b><small>Parece caro o no sé si lo voy a recuperar.</small></span></label>
+<label class="opt"><input type="checkbox" value="Miedo al cambio"><span><b>Miedo al cambio</b><small>Mi equipo no quiere dejar el cuaderno / Excel.</small></span></label>
+<label class="opt"><input type="checkbox" value="Capacitación"><span><b>Capacitación</b><small>Nadie me enseñó a usarlo bien.</small></span></label>
+<label class="opt"><input type="checkbox" value="Internet"><span><b>Internet</b><small>Si se cae la conexión, me quedo parado.</small></span></label>
+<label class="opt"><input type="checkbox" value="Soporte"><span><b>Soporte</b><small>Cuando falla, nadie responde.</small></span></label>
+<label class="opt"><input type="checkbox" value="Tiempo"><span><b>Tiempo</b><small>No tengo tiempo para instalar y aprender.</small></span></label>
+<label class="opt"><input type="checkbox" value="Datos"><span><b>Mis datos</b><small>No quiero que mi información ande dando vueltas.</small></span></label>
+</div>
+<label>Tu rubro</label><input type="text" id="rubro" placeholder="Ej: kiosco, taller, gimnasio…">
+<label>Contanos más (opcional)</label><textarea id="mas" rows="3" placeholder="Lo que quieras agregar…"></textarea>
+<label>Tu email (opcional, si querés que te respondamos)</label><input type="email" id="mail" placeholder="vos@tumail.com">
+<button onclick="send()">Enviar respuestas →</button>
+<div class="ok" id="ok">¡Gracias! Se abrió tu mail con las respuestas. Solo falta que aprietes enviar. ✉️</div>
+</div>
+<script>
+function send(){
+  const sel=[...document.querySelectorAll('#ops input:checked')].map(i=>i.value);
+  if(!sel.length){alert('Marcá al menos una opción 🙂');return}
+  const body='ENCUESTA · Barreras ante un sistema de gestión\n\nFrenos: '+sel.join(', ')+'\nRubro: '+(document.getElementById('rubro').value||'-')+'\nMás: '+(document.getElementById('mas').value||'-')+'\nEmail: '+(document.getElementById('mail').value||'-');
+  window.location.href='mailto:odintecharg@hotmail.com?subject='+encodeURIComponent('Encuesta · Barreras de gestión')+'&body='+encodeURIComponent(body);
+  document.getElementById('ok').style.display='block';
+}
+</script>
+</body>
+</html>
