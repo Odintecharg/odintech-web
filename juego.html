@@ -2,107 +2,159 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Turno en el kiosco · Juego OdinTech</title>
+<title>Cajero por un día · Juego OdinTech</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#071526;color:#eef2f7;font-family:Inter,system-ui,sans-serif;min-height:100vh}
-.wrap{max-width:900px;margin:0 auto;padding:26px 5% 60px}
+.wrap{max-width:920px;margin:0 auto;padding:26px 5% 60px}
 a.back{color:#5eead4;text-decoration:none;font-size:14px;font-weight:700}
-h1{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-2px;margin:10px 0 4px}
-.sub{color:#9fb3c8;margin-bottom:20px}
-.hud{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.hud div{flex:1;min-width:140px;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:12px 16px;text-align:center}
-.hud b{font-size:26px;display:block}
-.hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
-.belt{position:relative;height:230px;margin-bottom:18px;background:#ffffff08;border:1px solid #ffffff22;border-radius:14px;overflow:hidden}
-.belt::after{content:'— CAJA —';position:absolute;left:10px;bottom:8px;font-size:11px;letter-spacing:3px;color:#5eead4;font-weight:800}
-.prod{position:absolute;font-size:46px;cursor:pointer;text-align:center;user-select:none;animation-name:slide;animation-timing-function:linear;animation-fill-mode:forwards}
-.prod small{display:block;font-size:11px;margin-top:2px;color:#dbe4ee;font-weight:700;background:#04070fcc;border-radius:8px;padding:2px 8px}
-@keyframes slide{from{transform:translateX(0)}to{transform:translateX(calc(-1 * (100vw)))}}
-.prod:active{transform:scale(.85)}
-.gain{position:absolute;font-weight:900;color:#5eead4;font-size:18px;pointer-events:none;animation:up .8s ease forwards}
-@keyframes up{to{transform:translateY(-46px);opacity:0}}
-.ticket{background:#fff;color:#111;border-radius:14px;padding:20px 22px;font-family:'Courier New',monospace;margin-bottom:18px}
+h1{font-size:clamp(32px,6vw,54px);font-weight:900;letter-spacing:-2px;margin:10px 0 4px}
+.sub{color:#9fb3c8;margin-bottom:20px;line-height:1.6}
+.steps{display:flex;gap:8px;margin-bottom:20px}
+.step{flex:1;text-align:center;font-size:12px;font-weight:800;letter-spacing:1px;padding:10px 6px;border-radius:10px;background:#ffffff0d;border:1px solid #ffffff1c;color:#9fb3c8}
+.step.on{background:#18aaa5;border-color:#18aaa5;color:#fff}
+.step.done{background:#052e2b;border-color:#18aaa5;color:#5eead4}
+.panel{background:#ffffff0d;border:1px solid #ffffff22;border-radius:16px;padding:24px;margin-bottom:18px}
+.panel h3{margin-bottom:4px}.panel .d{color:#9fb3c8;font-size:14px;margin-bottom:16px}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gond{background:#04070f;border:1px solid #ffffff1c;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s,border-color .2s}
+.gond:hover{border-color:#18aaa5}.gond:active{transform:scale(.95)}
+.gond .e{font-size:40px}
+.gond b{display:block;font-size:13px;margin-top:6px}
+.gond .pr{color:#5eead4;font-weight:800;font-size:14px}
+.bcode{margin:10px auto 4px;height:44px;width:150px;background:#fff;border-radius:6px;padding:5px 10px;position:relative;overflow:hidden}
+.bcode::before{content:'';position:absolute;inset:5px 10px;
+background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 7px,transparent 7px 9px,#111 9px 10px,transparent 10px 14px)}
+.bcode span{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:9px;color:#111;font-family:monospace;letter-spacing:1px;background:#fff}
+.scanrow{display:flex;gap:10px;margin-top:16px}
+.scanrow input{flex:1;padding:14px;border-radius:10px;border:2px solid #18aaa5;background:#04070f;color:#fff;font-size:17px;font-family:monospace;letter-spacing:1px}
+.scanrow input.err{border-color:#ff6b6b;animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.beep{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#052e2b;border:1px solid #18aaa5;color:#5eead4;font-weight:800;padding:10px 22px;border-radius:100px;opacity:0;transition:opacity .2s;z-index:50}
+.beep.show{opacity:1}
+.ticket{background:#fff;color:#111;border-radius:14px;padding:20px 22px;font-family:'Courier New',monospace}
 .ticket h3{text-align:center;margin-bottom:8px}
-.ticket .row{display:flex;justify-content:space-between;font-size:15px;padding:3px 0}
+.ticket .row{display:flex;justify-content:space-between;font-size:15px;padding:3px 0;gap:8px}
+.ticket .row button{border:none;background:none;color:#c00;font-weight:900;cursor:pointer}
 .ticket .tot{border-top:2px dashed #111;margin-top:8px;padding-top:8px;font-size:20px;font-weight:bold;display:flex;justify-content:space-between}
-button.big{width:100%;padding:15px;border:none;border-radius:12px;background:#18aaa5;color:#fff;font-size:17px;font-weight:900;cursor:pointer}
+button.big{width:100%;padding:15px;border:none;border-radius:12px;background:#18aaa5;color:#fff;font-size:17px;font-weight:900;cursor:pointer;margin-top:14px}
 button.big:disabled{background:#475569;cursor:not-allowed}
-.payrow{display:flex;gap:10px;margin:14px 0}
-.payrow input{flex:1;padding:13px;border-radius:10px;border:1px solid #ffffff33;background:#ffffff0d;color:#fff;font-size:16px}
-.end{text-align:center;padding:30px 10px}
-.end .t{font-size:64px}
-@media(max-width:600px){.belt{grid-template-columns:repeat(2,1fr)}}
+button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;border:1px solid #ffffff33;color:#dbe4ee;font-weight:700;cursor:pointer;margin-top:10px}
+.payopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.pay{background:#04070f;border:2px solid #ffffff22;border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;transition:border-color .2s,transform .15s}
+.pay:hover{border-color:#18aaa5}.pay:active{transform:scale(.96)}
+.pay.sel{border-color:#5eead4;background:#052e2b}
+.pay .e{font-size:40px}.pay b{display:block;margin-top:8px}
+.qrbox{width:190px;height:190px;margin:16px auto;background:#fff;border-radius:12px;padding:12px;display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);gap:1px}
+.qrbox i{background:#fff}.qrbox i.b{background:#111}
+.cashrow{display:flex;gap:10px;margin-top:14px}
+.cashrow input{flex:1;padding:13px;border-radius:10px;border:1px solid #ffffff33;background:#04070f;color:#fff;font-size:16px}
+.end{text-align:center;padding:26px 10px}.end .t{font-size:64px}
+.hud{display:flex;gap:12px;margin-bottom:18px}
+.hud div{flex:1;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px;text-align:center}
+.hud b{font-size:24px;display:block}.hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
+@media(max-width:640px){.shelf{grid-template-columns:repeat(2,1fr)}.payopts{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <a class="back" href="index.html">← Volver</a>
-<h1>Turno en el kiosco 🛒</h1>
-<p class="sub">Tocá los productos para escanearlos. Meta: vender <b>$15.000</b> antes de que se acabe el tiempo. Después cobrás como un cajero de verdad.</p>
-<div class="hud"><div><b id="h-t">60</b><small>SEGUNDOS</small></div><div><b id="h-v">$0</b><small>VENDIDO</small></div><div><b id="h-m">$15.000</b><small>META</small></div></div>
-<div class="belt" id="belt"></div>
-<div class="ticket"><h3>🧾 TICKET</h3><div id="t-items"><div class="row"><span>Aún nada escaneado…</span><span></span></div></div><div class="tot"><span>TOTAL</span><span id="t-t">$0</span></div></div>
-<div class="payrow"><input id="paga" type="number" placeholder="El cliente paga con…"><button class="big" style="width:auto;padding:13px 26px" onclick="J.cobrar()">Cobrar</button></div>
-<button class="big" onclick="J.start()" id="btn-start">▶ Empezar turno</button>
+<h1>Cajero por un día 🧾</h1>
+<p class="sub">Pasá los productos por el lector como en un kiosco de verdad: escribí o tocá el código de barras, verificá el ticket y cobrá en efectivo o QR.</p>
+<div class="steps"><div class="step on" id="s1">1 · ESCANEAR</div><div class="step" id="s2">2 · VERIFICAR</div><div class="step" id="s3">3 · COBRAR</div></div>
+<div class="hud"><div><b id="h-t">90</b><small>SEGUNDOS</small></div><div><b id="h-v">$0</b><small>TICKET</small></div><div><b id="h-m">$15.000</b><small>META</small></div></div>
+
+<div class="panel" id="p-scan">
+<h3>Pasá por el lector 🔫</h3>
+<p class="d">Escribí el código con el lector (o tocalo en la góndola). Si el código no existe, la caja lo rechaza.</p>
+<div class="shelf" id="shelf"></div>
+<div class="scanrow"><input id="lector" placeholder="Código de barras + Enter" autocomplete="off"><button class="big" style="width:auto;margin:0;padding:14px 26px" onclick="J.leer()">Escanear</button></div>
+</div>
+
+<div class="panel" id="p-ticket">
+<h3>Ticket en verificación</h3>
+<p class="d">Revisá que pasó todo. Podés sacar lo que esté de más.</p>
+<div class="ticket"><div id="t-items"></div><div class="tot"><span>TOTAL</span><span id="t-t">$0</span></div></div>
+<button class="big" id="btn-ok" onclick="J.verificar()" disabled>Todo verificado, a cobrar →</button>
+</div>
+
+<div class="panel" id="p-pay" style="display:none">
+<h3>¿Cómo paga el cliente?</h3>
+<p class="d">Elegí el medio como en el mostrador.</p>
+<div class="payopts">
+<div class="pay" id="pay-ef" onclick="J.medio('ef')"><div class="e">💵</div><b>Efectivo</b></div>
+<div class="pay" id="pay-qr" onclick="J.medio('qr')"><div class="e">📱</div><b>QR</b></div>
+</div>
+<div id="box-ef" style="display:none"><div class="cashrow"><input id="paga" type="number" placeholder="Paga con…"><button class="big" style="width:auto;margin:0;padding:13px 26px" onclick="J.cobrarEf()">Cobrar</button></div></div>
+<div id="box-qr" style="display:none;text-align:center"><p class="d">El cliente escanea y paga <b id="qr-t">$0</b></p><div class="qrbox" id="qr"></div><button class="big" onclick="J.cobrarQr()">Ya pagó, cerrar venta</button></div>
+</div>
+
+<button class="ghost" onclick="J.start()">↻ Reiniciar turno</button>
 <div class="end" id="end" style="display:none"></div>
 </div>
+<div class="beep" id="beep">✓ BIP</div>
 <script>
-const J = (()=>{
-const PRODS=[['🥤',1200,'Gaseosa'],['🍫',400,'Alfajor'],['🧉',2100,'Yerba'],['🍞',1800,'Pan kg'],['🧀',7500,'Queso'],['🍕',9500,'Pizza'],['☕',2900,'Café'],['🍬',300,'Chicle'],['🧴',1000,'Lavandina']];
-const META=15000;let t=60,timer=null,spawnT=null,items=[],total=0,done=false;
+const J=(()=>{
+const PRODS=[['🥤','7790895000115',1200,'Gaseosa 1.5L'],['🍫','7790589000111',400,'Alfajor'],['🧉','7790387000555',2100,'Yerba 500g'],['🍞','7790387001003',1800,'Pan'],['🧀','7790387001001',7500,'Queso kg'],['☕','7790387000666',2900,'Café 250g']];
+const META=15000;let t=90,timer=null,items=[],total=0,verif=false,medio=null;
 const $=id=>document.getElementById(id);
 const fmt=n=>'$'+n.toLocaleString('es-AR');
-function spawn(){
-  if(done)return;
-  const b=$('belt');
-  const p=PRODS[Math.floor(Math.random()*PRODS.length)];
-  const d=document.createElement('div');d.className='prod';
-  const lvl=Math.min(total/META,1);
-  d.style.top=(8+Math.random()*62)+'%';
-  d.style.right='-90px';
-  d.style.animationDuration=(4.2-lvl*2.2)+'s';
-  d.innerHTML=p[0]+`<small>${p[2]} · ${fmt(p[1])}</small>`;
-  d.onclick=(e)=>{scan(d,p,e)};
-  d.onanimationend=()=>d.remove();
-  b.appendChild(d);
+function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[3]}</b><div class="pr">${fmt(p[2])}</div><div class="bcode"><span>${p[1]}</span></div></div>`).join('')}
+function beep(ok){const b=$('beep');b.textContent=ok?'✓ BIP · sumado':'✕ Código no existe';b.style.borderColor=ok?'#18aaa5':'#ff6b6b';b.style.color=ok?'#5eead4':'#ff6b6b';b.classList.add('show');clearTimeout(b._h);b._h=setTimeout(()=>b.classList.remove('show'),900)}
+function leer(){
+  const v=$('lector').value.trim();if(!v)return;
+  const p=PRODS.find(x=>x[1]===v);
+  if(p){add(p);beep(true)}else{beep(false);$('lector').classList.add('err');setTimeout(()=>$('lector').classList.remove('err'),350)}
+  $('lector').value='';$('lector').focus();
 }
-function scan(d,p,e){
-  if(done||!timer)return;
-  items.push(p);total+=p[1];draw();
-  const g=document.createElement('div');g.className='gain';g.textContent='+'+fmt(p[1]);
-  g.style.left=(e.clientX-$('belt').getBoundingClientRect().left-20)+'px';g.style.top=(e.clientY-$('belt').getBoundingClientRect().top-10)+'px';
-  $('belt').appendChild(g);setTimeout(()=>g.remove(),800);
-  d.remove();
-}
+function pick(i){add(PRODS[i]);beep(true);$('lector').focus()}
+function add(p){items.push(p);total+=p[2];draw()}
 function draw(){
-  $('h-v').textContent=fmt(total);
-  $('t-t').textContent=fmt(total);
-  $('t-items').innerHTML=items.map(p=>`<div class="row"><span>${p[0]} ${p[2]}</span><span>${fmt(p[1])}</span></div>`).join('')||'<div class="row"><span>Aún nada…</span><span></span></div>';
-  if(total>=META)finish(true);
+  $('h-v').textContent=fmt(total);$('t-t').textContent=fmt(total);
+  $('t-items').innerHTML=items.map((p,i)=>`<div class="row"><span>${p[0]} ${p[3]} <small style="color:#666">${p[1]}</small></span><span>${fmt(p[2])} <button onclick="J.del(${i})">✕</button></span></div>`).join('')||'<div class="row"><span>Nada escaneado todavía…</span><span></span></div>';
+  $('btn-ok').disabled=!items.length;
 }
-function start(){
-  t=60;items=[];total=0;done=false;$('end').style.display='none';$('btn-start').disabled=true;$('belt').innerHTML='';draw();spawn();
-  clearInterval(timer);clearInterval(spawnT);
-  const loop=()=>{if(!done){spawn();spawnT=setTimeout(loop,Math.max(380,750-total/META*400))}};
-  loop();
-  timer=setInterval(()=>{t--;$('h-t').textContent=t;if(t<=0)finish(total>=META)},1000);
+function del(i){items.splice(i,1);total=items.reduce((a,p)=>a+p[2],0);draw()}
+function step(n){[1,2,3].forEach(k=>{const e=$('s'+k);e.classList.toggle('on',k===n);e.classList.toggle('done',k<n)})}
+function verificar(){
+  if(!items.length)return;verif=true;step(3);$('p-pay').style.display='block';
+  $('qr-t').textContent=fmt(total);qr();
+  $('p-pay').scrollIntoView({behavior:'smooth'});
 }
-function cobrar(){
-  if(done||!timer||!items.length){return}
+function medio(m){
+  medio=m;$('pay-ef').classList.toggle('sel',m==='ef');$('pay-qr').classList.toggle('sel',m==='qr');
+  $('box-ef').style.display=m==='ef'?'block':'none';$('box-qr').style.display=m==='qr'?'block':'none';
+}
+function qr(){
+  const q=$('qr');q.innerHTML='';let s=total||1;
+  for(let i=0;i<81;i++){s=(s*9301+49297)%233280;const b=document.createElement('i');if(s/233280>.48)b.className='b';q.appendChild(b)}
+}
+function cobrarEf(){
   const paga=parseInt(($('paga').value||'0'),10);
   if(paga<total){alert('Falta plata: el total es '+fmt(total));return}
-  finish(true,paga-total);
+  finish(paga-total,'💵 Efectivo');
 }
-function finish(win,vuelto){
-  done=true;clearInterval(timer);clearInterval(spawnT);$('btn-start').disabled=false;
+function cobrarQr(){finish(0,'📱 QR')}
+function finish(vuelto,como){
+  clearInterval(timer);
   const e=$('end');e.style.display='block';
-  e.innerHTML=win
-    ?`<div class="t">🎉</div><h2>¡Contratado como cajero!</h2><p>Vendiste ${fmt(total)}${vuelto?` · Vuelto ${fmt(vuelto)}`:''}. El 01·10·2026 vas a poder probar el sistema real.</p><br><a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`
-    :`<div class="t">⏰</div><h2>Se acabó el turno</h2><p>Vendiste ${fmt(total)} de ${fmt(META)}. <a href="#" onclick="J.start();return false" style="color:#5eead4;font-weight:800">Probar de nuevo</a></p>`;
+  e.innerHTML=`<div class="t">${total>=META?'🎉':'👏'}</div><h2>${total>=META?'¡Turno perfecto!':'Turno completo'}</h2>
+  <p>Vendiste ${fmt(total)} cobrado con ${como}${vuelto?` · Vuelto ${fmt(vuelto)}`:''}.</p>
+  <p style="margin-top:8px">Esto es un juego: el sistema real escanea, verifica y cobra así todos los días.</p><br>
+  <a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`;
+  e.scrollIntoView({behavior:'smooth'});
 }
-return{start,cobrar};
+function start(){
+  t=90;items=[];total=0;verif=false;medio=null;$('end').style.display='none';$('p-pay').style.display='none';
+  $('pay-ef').classList.remove('sel');$('pay-qr').classList.remove('sel');$('box-ef').style.display='none';$('box-qr').style.display='none';
+  step(1);draw();clearInterval(timer);
+  timer=setInterval(()=>{t--;$('h-t').textContent=t;if(t<=0){clearInterval(timer);if(items.length&&!verif)verificar()}},1000);
+  setTimeout(()=>$('lector').focus(),100);
+}
+shelf();draw();start();
+document.getElementById('lector').addEventListener('keydown',e=>{if(e.key==='Enter')leer()});
+return{start,leer,pick,del,verificar,medio,cobrarEf,cobrarQr};
 })();
 </script>
 </body>
