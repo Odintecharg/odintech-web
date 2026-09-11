@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anotarme · Promos OdinTech</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#04070f;color:#eef2f7;font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:26px 6% 60px}
+a.back{color:#7aa2ff;text-decoration:none;font-size:14px;font-weight:700}
+h1{font-size:clamp(30px,6vw,52px);font-weight:900;letter-spacing:-2px;margin:10px 0 6px}
+.sub{color:#9fb3c8;margin-bottom:20px;line-height:1.6}
+.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}
+label{display:block;font-size:12.5px;font-weight:700;margin:14px 0 5px;color:#dbe4ee}
+label span{color:#ff8a8a}
+input,select{width:100%;background:#ffffff0d;border:1px solid #ffffff2a;border-radius:10px;color:#fff;padding:12px;font-size:15px;font-family:inherit}
+select option{color:#111}
+button{width:100%;margin-top:24px;padding:15px;border:none;border-radius:12px;background:#3b5bdb;color:#fff;font-size:16px;font-weight:900;cursor:pointer}
+.ok{background:#052e2b;border:1px solid #18aaa5;border-radius:12px;padding:20px;margin-top:20px;display:none;text-align:center}
+.hint{font-size:12px;color:#7d8ea3;margin-top:4px}
+@media(max-width:560px){.row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="index.html">← Volver</a>
+<h1>Anotame en las promos</h1>
+<p class="sub">Lanzamiento 01·10·2026. Dejá tus datos y te avisamos primero con precios y beneficios.</p>
+<div class="row"><div><label>Nombre <span>*</span></label><input id="r-nom"></div><div><label>Apellido <span>*</span></label><input id="r-ape"></div></div>
+<label>Comercio <span>*</span></label><input id="r-com" placeholder="Nombre de tu negocio">
+<label>Tipo de comercio <span>*</span></label>
+<select id="r-tipo"><option value="">Seleccionar…</option><option>Kiosco / Almacén</option><option>Restaurante / Rotisería / Bar</option><option>Gimnasio / Academia</option><option>Peluquería / Estética</option><option>Taller mecánico</option><option>Hotel / Hospedaje</option><option>Lavadero / Servicios</option><option>Otro rubro</option></select>
+<label>País <span>*</span></label>
+<select id="r-pais" onchange="RG.pais()"><option>Argentina</option><option>Uruguay</option><option>Paraguay</option><option>Chile</option><option>Bolivia</option><option>Brasil</option><option>Otro</option></select>
+<div id="r-ar">
+<label>Provincia <span>*</span></label>
+<select id="r-prov" onchange="RG.prov()"><option value="">Seleccionar…</option></select>
+<label>Ciudad <span>*</span></label>
+<input id="r-ciu" list="r-cius" placeholder="Escribí para buscar" oninput="RG.ciu(this.value)"><datalist id="r-cius"></datalist>
+<div class="hint" id="r-src"></div>
+</div>
+<div id="r-ext" style="display:none">
+<label>Provincia / Región <span>*</span></label><input id="r-reg">
+<label>Ciudad <span>*</span></label><input id="r-cix">
+</div>
+<label>Email <span>*</span></label><input id="r-mail" type="email" placeholder="vos@tumail.com">
+<label>Teléfono / WhatsApp <span>*</span></label><input id="r-tel" placeholder="Ej: 3454 12-3456">
+<button onclick="RG.send()">Anotarme →</button>
+<div class="ok" id="ok">¡Listo! Se abrió tu mail con tus datos. Solo falta que aprietes enviar. ✉️</div>
+</div>
+<script>
+const RG=(()=>{
+const PROVS=[["02","CABA"],["06","Buenos Aires"],["10","Catamarca"],["22","Chaco"],["26","Chubut"],["14","Córdoba"],["18","Corrientes"],["30","Entre Ríos"],["34","Formosa"],["38","Jujuy"],["42","La Pampa"],["46","La Rioja"],["50","Mendoza"],["54","Misiones"],["58","Neuquén"],["62","Río Negro"],["66","Salta"],["70","San Juan"],["74","San Luis"],["78","Santa Cruz"],["82","Santa Fe"],["86","Santiago del Estero"],["90","Tucumán"],["94","Tierra del Fuego"]];
+const BASE={"02":["CABA"],"06":["La Plata","Mar del Plata","Bahía Blanca","Quilmes","Tandil","Junín","Pinamar"],"10":["San Fernando del Valle de Catamarca","Belén"],"22":["Resistencia","Sáenz Peña"],"26":["Trelew","Puerto Madryn","Comodoro Rivadavia"],"14":["Córdoba","Villa María","Río Cuarto","Carlos Paz"],"18":["Corrientes","Goya"],"30":["Paraná","Concordia","Gualeguaychú","La Paz","Victoria"],"34":["Formosa","Clorinda"],"38":["San Salvador de Jujuy","Palpalá"],"42":["Santa Rosa","General Pico"],"46":["La Rioja","Chilecito"],"50":["Mendoza","San Rafael","Godoy Cruz"],"54":["Posadas","Oberá","Puerto Iguazú"],"58":["Neuquén","San Martín de los Andes"],"62":["Viedma","Bariloche","General Roca"],"66":["Salta","Orán"],"70":["San Juan"],"74":["San Luis","Villa Mercedes","Merlo"],"78":["Río Gallegos","El Calafate"],"82":["Santa Fe","Rosario","Rafaela","Venado Tuerto"],"86":["Santiago del Estero","La Banda"],"90":["San Miguel de Tucumán","Yerba Buena"],"94":["Ushuaia","Río Grande"]};
+const $=id=>document.getElementById(id);
+let locs=[];
+$('r-prov').innerHTML='<option value="">Seleccionar…</option>'+PROVS.map(([id,n])=>`<option value="${id}">${n}</option>`).join('');
+function pais(){const ar=$('r-pais').value==='Argentina';$('r-ar').style.display=ar?'':'none';$('r-ext').style.display=ar?'none':''}
+async function prov(){
+  const id=$('r-prov').value;locs=[...(BASE[id]||[])];
+  $('r-cius').innerHTML=locs.map(c=>`<option value="${c}">`).join('');
+  $('r-src').textContent=locs.length?locs.length+' sugerencias. Escribí para buscar en todo el país.':'';
+  if(!id)return;
+  try{const r=await fetch(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${id}&campos=nombre&max=300`);const j=await r.json();
+  const api=[...new Set((j.localidades||[]).map(l=>l.nombre))].filter(n=>!locs.includes(n));locs=[...locs,...api];
+  $('r-cius').innerHTML=locs.map(c=>`<option value="${c}">`).join('');$('r-src').textContent=locs.length+' localidades disponibles.'}catch{$('r-src').textContent='Sugerencias básicas (sin conexión).'}
+}
+let t=null;
+function ciu(v){
+  const id=$('r-prov').value;if(!id||v.trim().length<3)return;
+  clearTimeout(t);t=setTimeout(async()=>{
+    try{const r=await fetch(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${id}&nombre=${encodeURIComponent(v.trim())}&campos=nombre&max=20`);const j=await r.json();
+    const all=[...new Set([...(j.localidades||[]).map(l=>l.nombre),...locs])];
+    $('r-cius').innerHTML=all.slice(0,60).map(c=>`<option value="${c}">`).join('')}catch{}
+  },400);
+}
+function send(){
+  const g=id=>($(id)?.value||'').trim();
+  const ar=$('r-pais').value==='Argentina';
+  const d={nom:g('r-nom'),ape:g('r-ape'),com:g('r-com'),tipo:$('r-tipo').value,pais:$('r-pais').value,
+    prov:ar?(PROVS.find(([id])=>id===$('r-prov').value)||[])[1]||'':g('r-reg'),ciu:ar?g('r-ciu'):g('r-cix'),
+    mail:g('r-mail'),tel:g('r-tel')};
+  if(!d.nom||!d.ape||!d.com||!d.tipo||!d.prov||!d.ciu||!d.tel)return alert('Completá todos los campos obligatorios 🙂');
+  if(!/.+@.+\..+/.test(d.mail))return alert('Revisá el email 🙂');
+  const body=`ALTA PROMOS LANZAMIENTO\n\nNombre: ${d.nom}\nApellido: ${d.ape}\nComercio: ${d.com}\nTipo: ${d.tipo}\nPaís: ${d.pais}\nProvincia: ${d.prov}\nCiudad: ${d.ciu}\nEmail: ${d.mail}\nTel: ${d.tel}`;
+  window.location.href='mailto:odintecharg@hotmail.com?subject='+encodeURIComponent('Alta promos · '+d.com)+'&body='+encodeURIComponent(body);
+  $('ok').style.display='block';
+}
+return{pais,prov,ciu,send};
+})();
+</script>
+</body>
+</html>
