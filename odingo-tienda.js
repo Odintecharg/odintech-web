@@ -40,7 +40,7 @@ const ODINGO_CATALOG = [
   { id: "hotel", tag: "OdinGO · HOTEL", nombre: "Hotel / Hospedaje", desc: "Reservas, recepción por colores, consumos, checkout, POS mostrador.", precio: 490000, type: "modulo" },
   { id: "lavadero", tag: "OdinGO · LAVADEROS", nombre: "Lavaderos & Servicios", desc: "Agenda, playa kanban en vivo, abonos, operarios y comisiones.", precio: 250000, type: "modulo" },
   { id: "mantenimiento", tag: "OdinGO · MANTENIMIENTO", nombre: "Mantenimiento OdinGO (mensual)", desc: "Actualizaciones, mejoras, mantenimiento y soporte. Contratación mínima: 6 meses.", precio: 25000, type: "mantenimiento" },
-  { id: "informes", tag: "OdinGO · INFORMES", nombre: "OdinGO Informes (mensual)", desc: "Si tenés otro sistema, analizamos la integración y ves tus datos desde el celular.", precio: 35000, type: "suscripcion" },
+  { id: "informes", tag: "OdinCLOUD · INFORMES", nombre: "OdinCLOUD Informes (mensual)", desc: "Si tenés otro sistema, analizamos la integración y ves tus datos desde el celular.", precio: 35000, type: "suscripcion" },
 ];
 
 const OdinGoStore = (() => {
