@@ -15,11 +15,14 @@ h1{font-size:clamp(32px,6vw,56px);font-weight:900;letter-spacing:-2px;margin:10p
 .hud div{flex:1;min-width:140px;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:12px 16px;text-align:center}
 .hud b{font-size:26px;display:block}
 .hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
-.belt{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;min-height:150px}
-.prod{background:#ffffff0d;border:1px solid #ffffff22;border-radius:14px;padding:22px 10px;font-size:44px;cursor:pointer;text-align:center;transition:transform .15s;animation:pop .35s cubic-bezier(.16,1,.3,1)}
-.prod small{display:block;font-size:12px;margin-top:8px;color:#dbe4ee;font-weight:700}
-.prod:active{transform:scale(.92)}
-@keyframes pop{from{transform:scale(.4);opacity:0}}
+.belt{position:relative;height:230px;margin-bottom:18px;background:#ffffff08;border:1px solid #ffffff22;border-radius:14px;overflow:hidden}
+.belt::after{content:'— CAJA —';position:absolute;left:10px;bottom:8px;font-size:11px;letter-spacing:3px;color:#5eead4;font-weight:800}
+.prod{position:absolute;font-size:46px;cursor:pointer;text-align:center;user-select:none;animation-name:slide;animation-timing-function:linear;animation-fill-mode:forwards}
+.prod small{display:block;font-size:11px;margin-top:2px;color:#dbe4ee;font-weight:700;background:#04070fcc;border-radius:8px;padding:2px 8px}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(calc(-1 * (100vw)))}}
+.prod:active{transform:scale(.85)}
+.gain{position:absolute;font-weight:900;color:#5eead4;font-size:18px;pointer-events:none;animation:up .8s ease forwards}
+@keyframes up{to{transform:translateY(-46px);opacity:0}}
 .ticket{background:#fff;color:#111;border-radius:14px;padding:20px 22px;font-family:'Courier New',monospace;margin-bottom:18px}
 .ticket h3{text-align:center;margin-bottom:8px}
 .ticket .row{display:flex;justify-content:space-between;font-size:15px;padding:3px 0}
@@ -48,20 +51,30 @@ button.big:disabled{background:#475569;cursor:not-allowed}
 <script>
 const J = (()=>{
 const PRODS=[['🥤',1200,'Gaseosa'],['🍫',400,'Alfajor'],['🧉',2100,'Yerba'],['🍞',1800,'Pan kg'],['🧀',7500,'Queso'],['🍕',9500,'Pizza'],['☕',2900,'Café'],['🍬',300,'Chicle'],['🧴',1000,'Lavandina']];
-const META=15000;let t=60,timer=null,items=[],total=0,done=false;
+const META=15000;let t=60,timer=null,spawnT=null,items=[],total=0,done=false;
 const $=id=>document.getElementById(id);
 const fmt=n=>'$'+n.toLocaleString('es-AR');
 function spawn(){
   if(done)return;
-  const b=$('belt');b.innerHTML='';
-  const n=3+Math.floor(Math.random()*2);
-  const used=[...PRODS].sort(()=>Math.random()-.5).slice(0,n);
-  used.forEach((p,i)=>{const d=document.createElement('div');d.className='prod';d.innerHTML=p[0]+`<small>${p[2]} · ${fmt(p[1])}</small>`;d.onclick=()=>scan(i);d._p=p;b.appendChild(d)});
+  const b=$('belt');
+  const p=PRODS[Math.floor(Math.random()*PRODS.length)];
+  const d=document.createElement('div');d.className='prod';
+  const lvl=Math.min(total/META,1);
+  d.style.top=(8+Math.random()*62)+'%';
+  d.style.right='-90px';
+  d.style.animationDuration=(4.2-lvl*2.2)+'s';
+  d.innerHTML=p[0]+`<small>${p[2]} · ${fmt(p[1])}</small>`;
+  d.onclick=(e)=>{scan(d,p,e)};
+  d.onanimationend=()=>d.remove();
+  b.appendChild(d);
 }
-function scan(i){
+function scan(d,p,e){
   if(done||!timer)return;
-  const p=[...document.getElementById('belt').children][i]._p;
-  items.push(p);total+=p[1];draw();spawn();
+  items.push(p);total+=p[1];draw();
+  const g=document.createElement('div');g.className='gain';g.textContent='+'+fmt(p[1]);
+  g.style.left=(e.clientX-$('belt').getBoundingClientRect().left-20)+'px';g.style.top=(e.clientY-$('belt').getBoundingClientRect().top-10)+'px';
+  $('belt').appendChild(g);setTimeout(()=>g.remove(),800);
+  d.remove();
 }
 function draw(){
   $('h-v').textContent=fmt(total);
@@ -70,8 +83,10 @@ function draw(){
   if(total>=META)finish(true);
 }
 function start(){
-  t=60;items=[];total=0;done=false;$('end').style.display='none';$('btn-start').disabled=true;draw();spawn();
-  clearInterval(timer);
+  t=60;items=[];total=0;done=false;$('end').style.display='none';$('btn-start').disabled=true;$('belt').innerHTML='';draw();spawn();
+  clearInterval(timer);clearInterval(spawnT);
+  const loop=()=>{if(!done){spawn();spawnT=setTimeout(loop,Math.max(380,750-total/META*400))}};
+  loop();
   timer=setInterval(()=>{t--;$('h-t').textContent=t;if(t<=0)finish(total>=META)},1000);
 }
 function cobrar(){
@@ -81,10 +96,10 @@ function cobrar(){
   finish(true,paga-total);
 }
 function finish(win,vuelto){
-  done=true;clearInterval(timer);$('btn-start').disabled=false;
+  done=true;clearInterval(timer);clearInterval(spawnT);$('btn-start').disabled=false;
   const e=$('end');e.style.display='block';
   e.innerHTML=win
-    ?`<div class="t">🎉</div><h2>¡Contratado como cajero!</h2><p>Vendiste ${fmt(total)}${vuelto?` · Vuelto ${fmt(vuelto)}`:''}. Esto es una probadita: el sistema real hace esto y mucho más.</p><br><a href="demo-kiosco.html" style="color:#5eead4;font-weight:800">Probar la demo real del kiosco →</a>`
+    ?`<div class="t">🎉</div><h2>¡Contratado como cajero!</h2><p>Vendiste ${fmt(total)}${vuelto?` · Vuelto ${fmt(vuelto)}`:''}. El 01·10·2026 vas a poder probar el sistema real.</p><br><a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`
     :`<div class="t">⏰</div><h2>Se acabó el turno</h2><p>Vendiste ${fmt(total)} de ${fmt(META)}. <a href="#" onclick="J.start();return false" style="color:#5eead4;font-weight:800">Probar de nuevo</a></p>`;
 }
 return{start,cobrar};
