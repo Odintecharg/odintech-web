@@ -9,171 +9,155 @@
 body{background:#071526;color:#eef2f7;font-family:Inter,system-ui,sans-serif;min-height:100vh}
 .wrap{max-width:920px;margin:0 auto;padding:26px 5% 60px}
 a.back{color:#5eead4;text-decoration:none;font-size:14px;font-weight:700}
-h1{font-size:clamp(32px,6vw,54px);font-weight:900;letter-spacing:-2px;margin:10px 0 4px}
+h1{font-size:clamp(30px,6vw,52px);font-weight:900;letter-spacing:-2px;margin:10px 0 4px}
 .sub{color:#9fb3c8;margin-bottom:20px;line-height:1.6}
-.steps{display:flex;gap:8px;margin-bottom:20px}
-.step{flex:1;text-align:center;font-size:12px;font-weight:800;letter-spacing:1px;padding:10px 6px;border-radius:10px;background:#ffffff0d;border:1px solid #ffffff1c;color:#9fb3c8}
-.step.on{background:#18aaa5;border-color:#18aaa5;color:#fff}
-.step.done{background:#052e2b;border-color:#18aaa5;color:#5eead4}
-.panel{background:#ffffff0d;border:1px solid #ffffff22;border-radius:16px;padding:24px;margin-bottom:18px}
-.panel h3{margin-bottom:4px}.panel .d{color:#9fb3c8;font-size:14px;margin-bottom:16px}
+.hud{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.hud div{flex:1;min-width:110px;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px;text-align:center}
+.hud b{font-size:24px;display:block}.hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
+.hud .low b{color:#ff8a8a}
+.panel{background:#ffffff0d;border:1px solid #ffffff22;border-radius:16px;padding:22px;margin-bottom:18px}
+.panel h3{margin-bottom:4px}.panel .d{color:#9fb3c8;font-size:14px;margin-bottom:14px}
+.order{background:#052e2b;border:1px solid #18aaa5;border-radius:12px;padding:16px 18px;margin-bottom:4px}
+.order .cli{font-size:13px;color:#5eead4;font-weight:800;letter-spacing:1px;margin-bottom:8px}
+.order ul{list-style:none}
+.order li{font-size:17px;padding:4px 0}
+.order li.ok{color:#5eead4;text-decoration:line-through;opacity:.75}
 .shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.gond{background:#04070f;border:1px solid #ffffff1c;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .15s,border-color .2s}
-.gond:hover{border-color:#18aaa5}.gond:active{transform:scale(.95)}
-.gond .e{font-size:40px}
-.gond b{display:block;font-size:13px;margin-top:6px}
-.gond .pr{color:#5eead4;font-weight:800;font-size:14px}
-.bcode{margin:10px auto 4px;height:44px;width:150px;background:#fff;border-radius:6px;padding:5px 10px;position:relative;overflow:hidden}
-.bcode::before{content:'';position:absolute;inset:5px 10px;
-background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 7px,transparent 7px 9px,#111 9px 10px,transparent 10px 14px)}
-.bcode span{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:9px;color:#111;font-family:monospace;letter-spacing:1px;background:#fff}
-.scanrow{display:flex;gap:10px;margin-top:16px}
-.scanrow input{flex:1;padding:14px;border-radius:10px;border:2px solid #18aaa5;background:#04070f;color:#fff;font-size:17px;font-family:monospace;letter-spacing:1px}
-.scanrow input.err{border-color:#ff6b6b;animation:shake .3s}
-@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.beep{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#052e2b;border:1px solid #18aaa5;color:#5eead4;font-weight:800;padding:10px 22px;border-radius:100px;opacity:0;transition:opacity .2s;z-index:50}
-.beep.show{opacity:1}
-.ticket{background:#fff;color:#111;border-radius:14px;padding:20px 22px;font-family:'Courier New',monospace}
-.ticket h3{text-align:center;margin-bottom:8px}
+.gond{background:#04070f;border:1px solid #ffffff1c;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .12s,border-color .2s}
+.gond:hover{border-color:#18aaa5}.gond:active{transform:scale(.93)}
+.gond .e{font-size:38px}.gond b{display:block;font-size:13px;margin-top:6px}.gond .pr{color:#5eead4;font-weight:800;font-size:14px}
+.ticket{background:#fff;color:#111;border-radius:14px;padding:18px 20px;font-family:'Courier New',monospace}
 .ticket .row{display:flex;justify-content:space-between;font-size:15px;padding:3px 0;gap:8px}
 .ticket .row button{border:none;background:none;color:#c00;font-weight:900;cursor:pointer}
 .ticket .tot{border-top:2px dashed #111;margin-top:8px;padding-top:8px;font-size:20px;font-weight:bold;display:flex;justify-content:space-between}
 button.big{width:100%;padding:15px;border:none;border-radius:12px;background:#18aaa5;color:#fff;font-size:17px;font-weight:900;cursor:pointer;margin-top:14px}
 button.big:disabled{background:#475569;cursor:not-allowed}
 button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;border:1px solid #ffffff33;color:#dbe4ee;font-weight:700;cursor:pointer;margin-top:10px}
-.payopts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
-.pay{background:#04070f;border:2px solid #ffffff22;border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;transition:border-color .2s,transform .15s}
-.pay:hover{border-color:#18aaa5}.pay:active{transform:scale(.96)}
-.pay.sel{border-color:#5eead4;background:#052e2b}
-.pay .e{font-size:40px}.pay b{display:block;margin-top:8px}
-.qrbox{width:190px;height:190px;margin:16px auto;background:#fff;border-radius:12px;padding:12px;display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);gap:1px}
-.qrbox i{background:#fff}.qrbox i.b{background:#111}
+.payscreen{text-align:center}
+.payscreen .monto{font-size:52px;font-weight:900;letter-spacing:-2px;margin:6px 0}
+.payscreen .via{display:inline-block;font-weight:800;font-size:13px;letter-spacing:2px;padding:7px 18px;border-radius:100px;margin-bottom:6px}
+.via.ef{background:#3a2f10;color:#f5c86e}.via.tr{background:#1b2340;color:#8ea2ff}
 .cashrow{display:flex;gap:10px;margin-top:14px}
-.cashrow input{flex:1;padding:13px;border-radius:10px;border:1px solid #ffffff33;background:#04070f;color:#fff;font-size:16px}
-.end{text-align:center;padding:26px 10px}.end .t{font-size:64px}
+.cashrow input{flex:1;padding:13px;border-radius:10px;border:1px solid #ffffff33;background:#04070f;color:#fff;font-size:17px}
+.alias{background:#04070f;border:1px dashed #8ea2ff;border-radius:10px;padding:12px;margin:12px auto;max-width:340px;font-family:monospace;font-size:16px}
+.stars{font-size:40px;letter-spacing:6px}
 .startov{position:fixed;inset:0;background:#04070fee;display:flex;align-items:center;justify-content:center;z-index:60;padding:20px}
-.startov .card{text-align:center;max-width:460px}
+.startov .card{text-align:center;max-width:480px}
 .startov .big-e{font-size:84px;animation:bounce 1.2s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 .startov h2{font-size:34px;letter-spacing:-1px;margin:10px 0}
-.startov p{color:#9fb3c8;margin-bottom:20px;line-height:1.6}
-.racha{text-align:center;font-weight:900;color:#f5c86e;min-height:26px;margin-top:10px;letter-spacing:1px}
-.hud{display:flex;gap:12px;margin-bottom:18px}
-.hud div{flex:1;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px;text-align:center}
-.hud b{font-size:24px;display:block}.hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
-@media(max-width:640px){.shelf{grid-template-columns:repeat(2,1fr)}.payopts{grid-template-columns:1fr}}
+.startov p{color:#9fb3c8;margin-bottom:20px;line-height:1.65}
+.end{text-align:center;padding:26px 10px}.end .t{font-size:64px}
+.beep{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#052e2b;border:1px solid #18aaa5;color:#5eead4;font-weight:800;padding:10px 22px;border-radius:100px;opacity:0;transition:opacity .2s;z-index:70}
+.beep.show{opacity:1}
+@media(max-width:640px){.shelf{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <a class="back" href="index.html">← Volver</a>
 <h1>Cajero por un día 🧾</h1>
-<p class="sub">Pasá los productos por el lector como en un kiosco de verdad: escribí o tocá el código de barras, verificá el ticket y cobrá en efectivo o QR.</p>
-<div class="steps"><div class="step on" id="s1">1 · ESCANEAR</div><div class="step" id="s2">2 · VERIFICAR</div><div class="step" id="s3">3 · COBRAR</div></div>
-<div class="hud"><div><b id="h-t">90</b><small>SEGUNDOS</small></div><div><b id="h-v">$0</b><small>TICKET</small></div><div><b id="h-m">$15.000</b><small>META</small></div></div>
+<p class="sub">5 niveles: el cliente te pide productos, los cargás, le decís el total y cobrás. A veces en <b>efectivo</b> (calculá el vuelto) y a veces por <b>transferencia</b>.</p>
+<div class="hud"><div><b id="h-n">–</b><small>NIVEL</small></div><div id="h-tbox"><b id="h-t">–</b><small>SEGUNDOS</small></div><div><b id="h-s">0★</b><small>PUNTOS</small></div></div>
 
-<div class="panel" id="p-scan">
-<h3>Pasá por el lector 🔫</h3>
-<p class="d">Escribí el código con el lector (o tocalo en la góndola). Si el código no existe, la caja lo rechaza.</p>
-<div class="shelf" id="shelf"></div>
-<div class="scanrow"><input id="lector" placeholder="Código de barras + Enter" autocomplete="off"><button class="big" style="width:auto;margin:0;padding:14px 26px" onclick="J.leer()">Escanear</button></div>
-<div class="racha" id="racha"></div>
-</div>
+<div class="panel"><div class="order"><div class="cli" id="o-cli">EL CLIENTE PIDE…</div><ul id="o-list"></ul></div></div>
 
-<div class="panel" id="p-ticket">
-<h3>Ticket en verificación</h3>
-<p class="d">Revisá que pasó todo. Podés sacar lo que esté de más.</p>
+<div class="panel"><h3>Góndola — tocá para cargar</h3><p class="d">Cargá exactamente lo que pidió el cliente.</p><div class="shelf" id="shelf"></div></div>
+
+<div class="panel"><h3>Ticket</h3><p class="d">Revisá antes de cobrar.</p>
 <div class="ticket"><div id="t-items"></div><div class="tot"><span>TOTAL</span><span id="t-t">$0</span></div></div>
-<button class="big" id="btn-ok" onclick="J.verificar()" disabled>Todo verificado, a cobrar →</button>
-</div>
+<button class="big" id="btn-cob" onclick="J.cobrar()" disabled>Decir el total y cobrar →</button></div>
 
-<div class="panel" id="p-pay" style="display:none">
-<h3>¿Cómo paga el cliente?</h3>
-<p class="d">Elegí el medio como en el mostrador.</p>
-<div class="payopts">
-<div class="pay" id="pay-ef" onclick="J.setMedio('ef')"><div class="e">💵</div><b>Efectivo</b></div>
-<div class="pay" id="pay-qr" onclick="J.setMedio('qr')"><div class="e">📱</div><b>QR</b></div>
-</div>
-<div id="box-ef" style="display:none"><div class="cashrow"><input id="paga" type="number" placeholder="Paga con…"><button class="big" style="width:auto;margin:0;padding:13px 26px" onclick="J.cobrarEf()">Cobrar</button></div></div>
-<div id="box-qr" style="display:none;text-align:center"><p class="d">El cliente escanea y paga <b id="qr-t">$0</b></p><div class="qrbox" id="qr"></div><button class="big" onclick="J.cobrarQr()">Ya pagó, cerrar venta</button></div>
-</div>
-
-<button class="ghost" onclick="J.start()">↻ Reiniciar turno</button>
+<div class="panel" id="p-pay" style="display:none"></div>
 <div class="end" id="end" style="display:none"></div>
 </div>
-<div class="beep" id="beep">✓ BIP</div>
+<div class="beep" id="beep"></div>
 <div class="startov" id="startov"><div class="card">
 <div class="big-e">🛒</div>
 <h2>Cajero por un día</h2>
-<p>Escaneá códigos de barra, verificá el ticket y cobrá en efectivo o QR. Meta: <b>$15.000</b> en 90 segundos. Sin errores sumás racha 🔥</p>
-<button class="big" onclick="J.start()">▶ INICIAR TURNO</button>
+<p>5 niveles: cargá el pedido, cobrá en efectivo calculando el vuelto o confirmá la transferencia. Tranquilo, hay tiempo — pero el reloj corre.</p>
+<button class="big" onclick="J.start()">▶ EMPEZAR TURNO</button>
 </div></div>
 <script>
 const J=(()=>{
-const PRODS=[['🥤','7790895000115',1200,'Gaseosa 1.5L'],['🍫','7790589000111',400,'Alfajor'],['🧉','7790387000555',2100,'Yerba 500g'],['🍞','7790387001003',1800,'Pan'],['🧀','7790387001001',7500,'Queso kg'],['☕','7790387000666',2900,'Café 250g']];
-const META=15000;let t=90,timer=null,items=[],total=0,verif=false,medio=null,streak=0;
+const PRODS=[['🥤',1200,'Gaseosa 1.5L'],['🍫',400,'Alfajor'],['🧉',2100,'Yerba 500g'],['🍞',1800,'Pan'],['🧀',7500,'Queso kg'],['☕',2900,'Café 250g'],['🍬',300,'Chicle'],['🧴',1000,'Lavandina']];
+// nivel: items distintos, tiempo, pago
+const LEVELS=[{n:1,items:2,t:60,pay:['ef']},{n:2,items:3,t:70,pay:['ef']},{n:3,items:3,t:70,pay:['ef','tr']},{n:4,items:4,t:80,pay:['ef','tr']},{n:5,items:5,t:90,pay:['ef','tr','ef']}];
+let lv=0,order=[],bag=[],total=0,t=0,timer=null,stars=0,payMode=null,payAmt=0;
 const $=id=>document.getElementById(id);
 const fmt=n=>'$'+n.toLocaleString('es-AR');
 let AC=null;
 function tone(f,dur){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.value=.06;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);o.stop(AC.currentTime+dur)}catch{}}
-function racha(){$('racha').textContent=streak>=2?('🔥 RACHA x'+streak):''}
-function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[3]}</b><div class="pr">${fmt(p[2])}</div><div class="bcode"><span>${p[1]}</span></div></div>`).join('')}
-function beep(ok){const b=$('beep');b.textContent=ok?'✓ BIP · sumado':'✕ Código no existe';b.style.borderColor=ok?'#18aaa5':'#ff6b6b';b.style.color=ok?'#5eead4':'#ff6b6b';b.classList.add('show');clearTimeout(b._h);b._h=setTimeout(()=>b.classList.remove('show'),900)}
-function leer(){
-  const v=$('lector').value.trim();if(!v)return;
-  const p=PRODS.find(x=>x[1]===v);
-  if(p){add(p);beep(true);tone(880,.09);streak++;racha()}else{beep(false);tone(160,.22);streak=0;racha();$('lector').classList.add('err');setTimeout(()=>$('lector').classList.remove('err'),350)}
-  $('lector').value='';$('lector').focus();
+function beep(t){const b=$('beep');b.textContent=t;b.classList.add('show');clearTimeout(b._h);b._h=setTimeout(()=>b.classList.remove('show'),900)}
+function start(){lv=0;stars=0;$('startov').style.display='none';level()}
+function level(){
+  const L=LEVELS[lv];t=L.t;bag=[];total=0;payMode=null;
+  $('end').style.display='none';$('p-pay').style.display='none';$('p-pay').innerHTML='';
+  $('h-n').textContent=(lv+1)+' / 5';
+  // pedido aleatorio
+  const pool=[...PRODS].sort(()=>Math.random()-.5);
+  order=[];for(let i=0;i<L.items;i++){const p=pool[i%pool.length];const ex=order.find(o=>o[3]===p[3]);if(ex)ex.qty++;else order.push([p[0],p[1],p[2],p[3],1]);}
+  const names=['Doña Rosa','Don Carlos','Martina','El profe','Lucía'];
+  $('o-cli').textContent='🧑 '+names[Math.floor(Math.random()*names.length)].toUpperCase()+' PIDE…';
+  shelf();draw();tick();
+  clearInterval(timer);timer=setInterval(()=>{t--;$('h-t').textContent=t;$('h-tbox').classList.toggle('low',t<=10);if(t<=0){clearInterval(timer);fail('Se acabó el tiempo ⏰')}},1000);
 }
-function pick(i){add(PRODS[i]);beep(true);tone(880,.09);streak++;racha();$('lector').focus()}
-function add(p){items.push(p);total+=p[2];draw()}
+function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[3]}</b><div class="pr">${fmt(p[2])}</div></div>`).join('')}
+function need(p){const o=order.find(x=>x[3]===p[3]);const b=bag.filter(x=>x[3]===p[3]).length;return (o?o[4]:0)-b}
+function pick(i){
+  const p=PRODS[i];
+  if(need(p)<=0){beep('⛔ Eso no lo pidió');tone(160,.2);return}
+  bag.push(p);total+=p[2];tone(880,.09);beep('✓ BIP · '+p[3]);draw();
+}
 function draw(){
-  $('h-v').textContent=fmt(total);$('t-t').textContent=fmt(total);
-  $('t-items').innerHTML=items.map((p,i)=>`<div class="row"><span>${p[0]} ${p[3]} <small style="color:#666">${p[1]}</small></span><span>${fmt(p[2])} <button onclick="J.del(${i})">✕</button></span></div>`).join('')||'<div class="row"><span>Nada escaneado todavía…</span><span></span></div>';
-  $('btn-ok').disabled=!items.length;
+  $('h-t').textContent=t;
+  $('o-list').innerHTML=order.map(o=>{const b=bag.filter(x=>x[3]===o[3]).length;const ok=b>=o[4];
+    return `<li class="${ok?'ok':''}">${ok?'✓':(b?`(${b}/${o[4]}) `:'○ ')}${o[0]} ${o[3]} x${o[4]}</li>`}).join('');
+  $('t-t').textContent=fmt(total);
+  $('t-items').innerHTML=bag.map((p,i)=>`<div class="row"><span>${p[0]} ${p[3]}</span><span>${fmt(p[2])} <button onclick="J.del(${i})">✕</button></span></div>`).join('')||'<div class="row"><span>Nada cargado todavía…</span><span></span></div>';
+  const okBag=order.every(o=>bag.filter(x=>x[3]===o[3]).length===o[4])&&bag.length===order.reduce((a,o)=>a+o[4],0);
+  $('btn-cob').disabled=!okBag;
 }
-function del(i){items.splice(i,1);total=items.reduce((a,p)=>a+p[2],0);draw()}
-function step(n){[1,2,3].forEach(k=>{const e=$('s'+k);e.classList.toggle('on',k===n);e.classList.toggle('done',k<n)})}
-function verificar(){
-  if(!items.length)return;verif=true;step(3);$('p-pay').style.display='block';
-  $('qr-t').textContent=fmt(total);qr();
-  $('p-pay').scrollIntoView({behavior:'smooth'});
+function del(i){total-=bag[i][2];bag.splice(i,1);draw()}
+function tick(){$('h-t').textContent=t;$('h-tbox').classList.remove('low')}
+function cobrar(){
+  const L=LEVELS[lv];
+  payMode=L.pay[Math.floor(Math.random()*L.pay.length)];
+  const box=$('p-pay');box.style.display='block';
+  if(payMode==='ef'){
+    const opts=[total,Math.ceil(total/1000)*1000,Math.ceil(total/5000)*5000,total+2000].filter((v,i,a)=>v>=total&&a.indexOf(v)===i).slice(0,3);
+    payAmt=opts[Math.floor(Math.random()*opts.length)];
+    box.innerHTML=`<div class="payscreen"><span class="via ef">💵 EFECTIVO</span><p class="d">Decile el total y calculá el vuelto.</p>
+    <div class="monto">Total ${fmt(total)}</div><p>El cliente paga con <b>${fmt(payAmt)}</b></p>
+    <div class="cashrow"><input id="vuelto" type="number" placeholder="Tu vuelto es…"><button class="big" style="width:auto;margin:0;padding:13px 26px" onclick="J.vuelto()">Dar vuelto</button></div></div>`;
+  }else{
+    box.innerHTML=`<div class="payscreen"><span class="via tr">📱 TRANSFERENCIA</span><p class="d">Monto exacto, sin vuelto.</p>
+    <div class="monto">${fmt(total)}</div><div class="alias">odin.tech.mp · $${fmt(total)}</div>
+    <button class="big" onclick="J.transf()">Confirmar transferencia</button></div>`;
+  }
+  box.scrollIntoView({behavior:'smooth'});
 }
-function setMedio(m){
-  medio=m;$('pay-ef').classList.toggle('sel',m==='ef');$('pay-qr').classList.toggle('sel',m==='qr');
-  $('box-ef').style.display=m==='ef'?'block':'none';$('box-qr').style.display=m==='qr'?'block':'none';
+function vuelto(){
+  const v=parseInt(($('vuelto').value||'0'),10);
+  if(v===payAmt-total){win(v)}else{beep('✕ Ese vuelto no cierra, probá de nuevo');tone(160,.2)}
 }
-function qr(){
-  const q=$('qr');q.innerHTML='';let s=total||1;
-  for(let i=0;i<81;i++){s=(s*9301+49297)%233280;const b=document.createElement('i');if(s/233280>.48)b.className='b';q.appendChild(b)}
-}
-function cobrarEf(){
-  const paga=parseInt(($('paga').value||'0'),10);
-  if(paga<total){alert('Falta plata: el total es '+fmt(total));return}
-  finish(paga-total,'💵 Efectivo');
-}
-function cobrarQr(){finish(0,'📱 QR')}
-function finish(vuelto,como){
+function transf(){win(0)}
+function win(v){
   clearInterval(timer);
+  const pts=t>=40?3:t>=20?2:1;stars+=pts;
+  $('h-s').textContent=stars+'★';tone(660,.12);setTimeout(()=>tone(990,.18),140);
   const e=$('end');e.style.display='block';
-  e.innerHTML=`<div class="t">${total>=META?'🎉':'👏'}</div><h2>${total>=META?'¡Turno perfecto!':'Turno completo'}</h2>
-  <p>Vendiste ${fmt(total)} cobrado con ${como}${vuelto?` · Vuelto ${fmt(vuelto)}`:''}.</p>
-  <p style="margin-top:8px">Esto es un juego: el sistema real escanea, verifica y cobra así todos los días.</p><br>
-  <a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`;
+  if(lv<4){e.innerHTML=`<div class="t">${'★'.repeat(pts)}</div><h2>Nivel ${lv+1} listo</h2><p>${payMode==='ef'?'Vuelto perfecto: '+fmt(v)+'.':'Transferencia confirmada.'} Sumaste ${pts}★.</p><button class="big" onclick="J.next()">Siguiente nivel →</button>`}
+  else{e.innerHTML=`<div class="t">🏆</div><h2>¡5 de 5, cajero estrella!</h2><p>Cerraste ${stars}★ en 5 niveles. El sistema real hace esto todos los días, sin ponerse nervioso.</p><br><a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`}
   e.scrollIntoView({behavior:'smooth'});
 }
-function start(){
-  t=90;items=[];total=0;verif=false;medio=null;streak=0;racha();
-  $('startov').style.display='none';
-  $('end').style.display='none';$('p-pay').style.display='none';
-  $('pay-ef').classList.remove('sel');$('pay-qr').classList.remove('sel');$('box-ef').style.display='none';$('box-qr').style.display='none';
-  step(1);draw();clearInterval(timer);
-  timer=setInterval(()=>{t--;$('h-t').textContent=t;if(t<=0){clearInterval(timer);if(items.length&&!verif)verificar()}},1000);
-  setTimeout(()=>$('lector').focus(),100);
+function fail(msg){
+  const e=$('end');e.style.display='block';
+  e.innerHTML=`<div class="t">⏰</div><h2>${msg}</h2><p>Llegaste al nivel ${lv+1} con ${stars}★.</p><button class="big" onclick="J.retry()">Reintentar nivel</button>`;
 }
-shelf();draw();
-document.getElementById('lector').addEventListener('keydown',e=>{if(e.key==='Enter')leer()});
-return{start,leer,pick,del,verificar,setMedio,cobrarEf,cobrarQr};
+function next(){lv++;level();window.scrollTo({top:0,behavior:'smooth'})}
+function retry(){level();window.scrollTo({top:0,behavior:'smooth'})}
+return{start,pick,del,cobrar,vuelto,transf,next,retry};
 })();
 </script>
 </body>
