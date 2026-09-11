@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,6 +51,13 @@ button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;b
 .cashrow{display:flex;gap:10px;margin-top:14px}
 .cashrow input{flex:1;padding:13px;border-radius:10px;border:1px solid #ffffff33;background:#04070f;color:#fff;font-size:16px}
 .end{text-align:center;padding:26px 10px}.end .t{font-size:64px}
+.startov{position:fixed;inset:0;background:#04070fee;display:flex;align-items:center;justify-content:center;z-index:60;padding:20px}
+.startov .card{text-align:center;max-width:460px}
+.startov .big-e{font-size:84px;animation:bounce 1.2s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.startov h2{font-size:34px;letter-spacing:-1px;margin:10px 0}
+.startov p{color:#9fb3c8;margin-bottom:20px;line-height:1.6}
+.racha{text-align:center;font-weight:900;color:#f5c86e;min-height:26px;margin-top:10px;letter-spacing:1px}
 .hud{display:flex;gap:12px;margin-bottom:18px}
 .hud div{flex:1;background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:10px;text-align:center}
 .hud b{font-size:24px;display:block}.hud small{font-size:11px;letter-spacing:2px;color:#9fb3c8}
@@ -70,6 +77,7 @@ button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;b
 <p class="d">Escribí el código con el lector (o tocalo en la góndola). Si el código no existe, la caja lo rechaza.</p>
 <div class="shelf" id="shelf"></div>
 <div class="scanrow"><input id="lector" placeholder="Código de barras + Enter" autocomplete="off"><button class="big" style="width:auto;margin:0;padding:14px 26px" onclick="J.leer()">Escanear</button></div>
+<div class="racha" id="racha"></div>
 </div>
 
 <div class="panel" id="p-ticket">
@@ -83,8 +91,8 @@ button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;b
 <h3>¿Cómo paga el cliente?</h3>
 <p class="d">Elegí el medio como en el mostrador.</p>
 <div class="payopts">
-<div class="pay" id="pay-ef" onclick="J.medio('ef')"><div class="e">💵</div><b>Efectivo</b></div>
-<div class="pay" id="pay-qr" onclick="J.medio('qr')"><div class="e">📱</div><b>QR</b></div>
+<div class="pay" id="pay-ef" onclick="J.setMedio('ef')"><div class="e">💵</div><b>Efectivo</b></div>
+<div class="pay" id="pay-qr" onclick="J.setMedio('qr')"><div class="e">📱</div><b>QR</b></div>
 </div>
 <div id="box-ef" style="display:none"><div class="cashrow"><input id="paga" type="number" placeholder="Paga con…"><button class="big" style="width:auto;margin:0;padding:13px 26px" onclick="J.cobrarEf()">Cobrar</button></div></div>
 <div id="box-qr" style="display:none;text-align:center"><p class="d">El cliente escanea y paga <b id="qr-t">$0</b></p><div class="qrbox" id="qr"></div><button class="big" onclick="J.cobrarQr()">Ya pagó, cerrar venta</button></div>
@@ -94,21 +102,30 @@ button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;b
 <div class="end" id="end" style="display:none"></div>
 </div>
 <div class="beep" id="beep">✓ BIP</div>
+<div class="startov" id="startov"><div class="card">
+<div class="big-e">🛒</div>
+<h2>Cajero por un día</h2>
+<p>Escaneá códigos de barra, verificá el ticket y cobrá en efectivo o QR. Meta: <b>$15.000</b> en 90 segundos. Sin errores sumás racha 🔥</p>
+<button class="big" onclick="J.start()">▶ INICIAR TURNO</button>
+</div></div>
 <script>
 const J=(()=>{
 const PRODS=[['🥤','7790895000115',1200,'Gaseosa 1.5L'],['🍫','7790589000111',400,'Alfajor'],['🧉','7790387000555',2100,'Yerba 500g'],['🍞','7790387001003',1800,'Pan'],['🧀','7790387001001',7500,'Queso kg'],['☕','7790387000666',2900,'Café 250g']];
-const META=15000;let t=90,timer=null,items=[],total=0,verif=false,medio=null;
+const META=15000;let t=90,timer=null,items=[],total=0,verif=false,medio=null,streak=0;
 const $=id=>document.getElementById(id);
 const fmt=n=>'$'+n.toLocaleString('es-AR');
+let AC=null;
+function tone(f,dur){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.value=.06;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+dur);o.stop(AC.currentTime+dur)}catch{}}
+function racha(){$('racha').textContent=streak>=2?('🔥 RACHA x'+streak):''}
 function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[3]}</b><div class="pr">${fmt(p[2])}</div><div class="bcode"><span>${p[1]}</span></div></div>`).join('')}
 function beep(ok){const b=$('beep');b.textContent=ok?'✓ BIP · sumado':'✕ Código no existe';b.style.borderColor=ok?'#18aaa5':'#ff6b6b';b.style.color=ok?'#5eead4':'#ff6b6b';b.classList.add('show');clearTimeout(b._h);b._h=setTimeout(()=>b.classList.remove('show'),900)}
 function leer(){
   const v=$('lector').value.trim();if(!v)return;
   const p=PRODS.find(x=>x[1]===v);
-  if(p){add(p);beep(true)}else{beep(false);$('lector').classList.add('err');setTimeout(()=>$('lector').classList.remove('err'),350)}
+  if(p){add(p);beep(true);tone(880,.09);streak++;racha()}else{beep(false);tone(160,.22);streak=0;racha();$('lector').classList.add('err');setTimeout(()=>$('lector').classList.remove('err'),350)}
   $('lector').value='';$('lector').focus();
 }
-function pick(i){add(PRODS[i]);beep(true);$('lector').focus()}
+function pick(i){add(PRODS[i]);beep(true);tone(880,.09);streak++;racha();$('lector').focus()}
 function add(p){items.push(p);total+=p[2];draw()}
 function draw(){
   $('h-v').textContent=fmt(total);$('t-t').textContent=fmt(total);
@@ -122,7 +139,7 @@ function verificar(){
   $('qr-t').textContent=fmt(total);qr();
   $('p-pay').scrollIntoView({behavior:'smooth'});
 }
-function medio(m){
+function setMedio(m){
   medio=m;$('pay-ef').classList.toggle('sel',m==='ef');$('pay-qr').classList.toggle('sel',m==='qr');
   $('box-ef').style.display=m==='ef'?'block':'none';$('box-qr').style.display=m==='qr'?'block':'none';
 }
@@ -146,15 +163,17 @@ function finish(vuelto,como){
   e.scrollIntoView({behavior:'smooth'});
 }
 function start(){
-  t=90;items=[];total=0;verif=false;medio=null;$('end').style.display='none';$('p-pay').style.display='none';
+  t=90;items=[];total=0;verif=false;medio=null;streak=0;racha();
+  $('startov').style.display='none';
+  $('end').style.display='none';$('p-pay').style.display='none';
   $('pay-ef').classList.remove('sel');$('pay-qr').classList.remove('sel');$('box-ef').style.display='none';$('box-qr').style.display='none';
   step(1);draw();clearInterval(timer);
   timer=setInterval(()=>{t--;$('h-t').textContent=t;if(t<=0){clearInterval(timer);if(items.length&&!verif)verificar()}},1000);
   setTimeout(()=>$('lector').focus(),100);
 }
-shelf();draw();start();
+shelf();draw();
 document.getElementById('lector').addEventListener('keydown',e=>{if(e.key==='Enter')leer()});
-return{start,leer,pick,del,verificar,medio,cobrarEf,cobrarQr};
+return{start,leer,pick,del,verificar,setMedio,cobrarEf,cobrarQr};
 })();
 </script>
 </body>
