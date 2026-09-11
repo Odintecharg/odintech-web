@@ -69,6 +69,9 @@ background:linear-gradient(92deg,#5eead4,#f5c86e);-webkit-background-clip:text;b
 footer{border-top:1px solid #ffffff14;padding:34px 0 44px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#7d8ea3;font-size:13px}
 .rv{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,1,.3,1)}
 .rv.in{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-84px);transition:opacity 1s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+.rv-r{opacity:0;transform:translateX(84px);transition:opacity 1s ease,transform 1s cubic-bezier(.16,1,.3,1)}
+.rv-l.in,.rv-r.in{opacity:1;transform:none}
 @media(max-width:760px){.uni,.trio{grid-template-columns:1fr}h1{letter-spacing:-2px}}
 @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.orb{animation:none}}
 </style>
@@ -95,13 +98,13 @@ footer{border-top:1px solid #ffffff14;padding:34px 0 44px;display:flex;justify-c
     <h2 class="rv">Dos <em>opciones</em></h2>
     <p class="lead rv">Sistemas listos para instalar, o desarrollo a medida. Esto es lo que vas a encontrar desde el día uno.</p>
     <div class="uni">
-      <div class="card odingo rv">
+      <div class="card odingo rv-l">
         <div class="tag">OdinGO · SISTEMAS LISTOS</div>
         <h3>7 sistemas pre armados</h3>
         <p>Se instalan y empiezan a trabajar. Sin desarrollo, sin espera. Con carga masiva de datos, facturación ARCA y backup diario en tu PC. Funcionan sin internet.</p>
         <ul><li>Kiosco</li><li>Resto</li><li>Gimnasio</li><li>Turnero</li><li>Talleres</li><li>Hotel</li><li>Lavadero</li></ul>
       </div>
-      <div class="card emp rv">
+      <div class="card emp rv-r">
         <div class="tag">SOLUCIONES EMPRESARIALES</div>
         <h3>A tu medida</h3>
         <p>Software a medida, SaaS multiusuario y multisucursal, en tu servidor o en la nube. Con adopción acompañada.</p>
@@ -114,9 +117,9 @@ footer{border-top:1px solid #ffffff14;padding:34px 0 44px;display:flex;justify-c
     <h2 class="rv">Mientras tanto, <em>para vos</em></h2>
     <p class="lead rv">Jugá, contanos tu experiencia con los sistemas y anotate para las promos de lanzamiento.</p>
     <div class="trio">
-      <a class="opt juego rv" href="juego.html"><span class="n">01 · JUGAR</span><h3>Turno en el kiosco</h3><p>Escaneá productos y cobrá como un cajero de verdad. ¿Llegás a la meta?</p><span class="go">Jugar →</span></a>
-      <a class="opt enc rv" href="encuesta.html"><span class="n">02 · OPINAR</span><h3>¿Qué te frena?</h3><p>Contanos las barreras que ves al usar un sistema de gestión. Te leemos.</p><span class="go">Responder →</span></a>
-      <a class="opt reg rv" href="registro.html"><span class="n">03 · ANOTARME</span><h3>Promos de lanzamiento</h3><p>Dejá tus datos y enterate primero de precios y beneficios.</p><span class="go">Anotarme →</span></a>
+      <a class="opt juego rv-l" href="juego.html"><span class="n">01 · JUGAR</span><h3>Turno en el kiosco</h3><p>Escaneá productos y cobrá como un cajero de verdad. ¿Llegás a la meta?</p><span class="go">Jugar →</span></a>
+      <a class="opt enc rv" href="encuesta.html"><span class="n">02 · OPINAR</span><h3>Tu experiencia</h3><p>Contanos tu experiencia con los sistemas: qué sirvió y qué te trabó.</p><span class="go">Responder →</span></a>
+      <a class="opt reg rv-r" href="registro.html"><span class="n">03 · ANOTARME</span><h3>Promos de lanzamiento</h3><p>Dejá tus datos y enterate primero de precios y beneficios.</p><span class="go">Anotarme →</span></a>
     </div>
   </section>
 
@@ -136,7 +139,7 @@ footer{border-top:1px solid #ffffff14;padding:34px 0 44px;display:flex;justify-c
   }
   tick(); setInterval(tick, 1000);
   var io = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
-  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(function(el){io.observe(el)});
 })();
 </script>
 </body>
