@@ -100,26 +100,26 @@ function level(){
   $('h-n').textContent=(lv+1)+' / 5';
   // pedido aleatorio
   const pool=[...PRODS].sort(()=>Math.random()-.5);
-  order=[];for(let i=0;i<L.items;i++){const p=pool[i%pool.length];const ex=order.find(o=>o[3]===p[3]);if(ex)ex.qty++;else order.push([p[0],p[1],p[2],p[3],1]);}
+  order=[];for(let i=0;i<L.items;i++){const p=pool[i%pool.length];const ex=order.find(o=>o[2]===p[2]);if(ex)ex.qty++;else order.push([p[0],p[1],p[2],1]);}
   const names=['Doña Rosa','Don Carlos','Martina','El profe','Lucía'];
   $('o-cli').textContent='🧑 '+names[Math.floor(Math.random()*names.length)].toUpperCase()+' PIDE…';
   shelf();draw();tick();
   clearInterval(timer);timer=setInterval(()=>{t--;$('h-t').textContent=t;$('h-tbox').classList.toggle('low',t<=10);if(t<=0){clearInterval(timer);fail('Se acabó el tiempo ⏰')}},1000);
 }
-function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[3]}</b><div class="pr">${fmt(p[2])}</div></div>`).join('')}
-function need(p){const o=order.find(x=>x[3]===p[3]);const b=bag.filter(x=>x[3]===p[3]).length;return (o?o[4]:0)-b}
+function shelf(){$('shelf').innerHTML=PRODS.map((p,i)=>`<div class="gond" onclick="J.pick(${i})"><div class="e">${p[0]}</div><b>${p[2]}</b><div class="pr">${fmt(p[1])}</div></div>`).join('')}
+function need(p){const o=order.find(x=>x[2]===p[2]);const b=bag.filter(x=>x[2]===p[2]).length;return (o?o[3]:0)-b}
 function pick(i){
   const p=PRODS[i];
   if(need(p)<=0){beep('⛔ Eso no lo pidió');tone(160,.2);return}
-  bag.push(p);total+=p[2];tone(880,.09);beep('✓ BIP · '+p[3]);draw();
+  bag.push(p);total+=p[1];tone(880,.09);beep('✓ BIP · '+p[2]);draw();
 }
 function draw(){
   $('h-t').textContent=t;
-  $('o-list').innerHTML=order.map(o=>{const b=bag.filter(x=>x[3]===o[3]).length;const ok=b>=o[4];
-    return `<li class="${ok?'ok':''}">${ok?'✓':(b?`(${b}/${o[4]}) `:'○ ')}${o[0]} ${o[3]} x${o[4]}</li>`}).join('');
+  $('o-list').innerHTML=order.map(o=>{const b=bag.filter(x=>x[2]===o[2]).length;const ok=b>=o[3];
+    return `<li class="${ok?'ok':''}">${ok?'✓':(b?`(${b}/${o[3]}) `:'○ ')}${o[0]} ${o[2]} x${o[3]}</li>`}).join('');
   $('t-t').textContent=fmt(total);
-  $('t-items').innerHTML=bag.map((p,i)=>`<div class="row"><span>${p[0]} ${p[3]}</span><span>${fmt(p[2])} <button onclick="J.del(${i})">✕</button></span></div>`).join('')||'<div class="row"><span>Nada cargado todavía…</span><span></span></div>';
-  const okBag=order.every(o=>bag.filter(x=>x[3]===o[3]).length===o[4])&&bag.length===order.reduce((a,o)=>a+o[4],0);
+  $('t-items').innerHTML=bag.map((p,i)=>`<div class="row"><span>${p[0]} ${p[2]}</span><span>${fmt(p[1])} <button onclick="J.del(${i})">✕</button></span></div>`).join('')||'<div class="row"><span>Nada cargado todavía…</span><span></span></div>';
+  const okBag=order.every(o=>bag.filter(x=>x[2]===o[2]).length===o[3])&&bag.length===order.reduce((a,o)=>a+o[3],0);
   $('btn-cob').disabled=!okBag;
 }
 function del(i){total-=bag[i][2];bag.splice(i,1);draw()}
