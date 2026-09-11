@@ -23,11 +23,15 @@ h1{font-size:clamp(30px,6vw,52px);font-weight:900;letter-spacing:-2px;margin:10p
 .order li{font-size:17px;padding:4px 0}
 .order li.ok{color:#5eead4;text-decoration:line-through;opacity:.75}
 .shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.gond{background:#04070f;border:1px solid #ffffff1c;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:transform .12s,border-color .2s}
+.gond{background:#04070f;border:1px solid #ffffff1c;border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .12s,border-color .2s;min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px}
 .gond:hover{border-color:#18aaa5}.gond:active{transform:scale(.93)}
-.gond .e{font-size:38px}.gond b{display:block;font-size:13px;margin-top:6px}.gond .pr{color:#5eead4;font-weight:800;font-size:14px}
+.gond .e{font-size:38px;line-height:1}
+.gond b{display:block;font-size:13px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gond .pr{color:#5eead4;font-weight:800;font-size:14px;white-space:nowrap}
 .ticket{background:#fff;color:#111;border-radius:14px;padding:18px 20px;font-family:'Courier New',monospace}
-.ticket .row{display:flex;justify-content:space-between;font-size:15px;padding:3px 0;gap:8px}
+.ticket .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:15px;padding:4px 0}
+.ticket .row span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticket .row span:last-child{white-space:nowrap;flex-shrink:0}
 .ticket .row button{border:none;background:none;color:#c00;font-weight:900;cursor:pointer}
 .ticket .tot{border-top:2px dashed #111;margin-top:8px;padding-top:8px;font-size:20px;font-weight:bold;display:flex;justify-content:space-between}
 button.big{width:100%;padding:15px;border:none;border-radius:12px;background:#18aaa5;color:#fff;font-size:17px;font-weight:900;cursor:pointer;margin-top:14px}
