@@ -172,43 +172,70 @@ strong {
     height: 24px;
     border-radius: 50%;
     border: none;
-    background: radial-gradient(circle at 35% 35%, #FFECB3, #FFB300 72%);
-    box-shadow: 0 0 14px rgba(255, 179, 0, 0.8);
     position: relative;
+    /* Sol realista: núcleo claro + borde anaranjado */
+    background:
+        radial-gradient(circle at 32% 30%, #fffdf2 0%, #ffefae 22%, #ffd54f 48%, #ffab00 72%, #e65100 100%);
+    box-shadow:
+        0 0 8px 2px rgba(255, 200, 60, 0.9),
+        0 0 22px 6px rgba(255, 160, 0, 0.45),
+        0 0 44px 12px rgba(255, 140, 0, 0.18);
     transition: transform 0.5s ease, background 0.3s ease, box-shadow 0.3s ease;
+    overflow: visible;
 }
 
 .icon-switch::before {
     content: '';
     position: absolute;
     top: -7px; left: -7px; right: -7px; bottom: -7px;
-    width: auto; height: auto;
-    background: none;
-    border: 3px dashed rgba(255, 179, 0, 0.85);
     border-radius: 50%;
-    box-shadow: none;
-    transform: none;
+    /* Rayos del sol */
+    background: repeating-conic-gradient(from 0deg, rgba(255, 180, 0, 0.9) 0deg 5deg, transparent 5deg 15deg);
+    -webkit-mask: radial-gradient(circle, transparent 60%, black 61%);
+    mask: radial-gradient(circle, transparent 60%, black 61%);
     animation: sunspin 14s linear infinite;
+}
+
+.icon-switch::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    pointer-events: none;
+    /* Manchas solares suaves */
+    background:
+        radial-gradient(circle at 60% 55%, rgba(230, 110, 0, 0.35) 0 11%, transparent 12%),
+        radial-gradient(circle at 42% 62%, rgba(230, 110, 0, 0.28) 0 7%, transparent 8%),
+        radial-gradient(circle at 55% 36%, rgba(255, 255, 255, 0.75) 0 9%, transparent 10%);
 }
 
 @keyframes sunspin { to { transform: rotate(360deg); } }
 
 body.dark-theme .icon-switch {
     transform: rotate(360deg);
-    background: transparent;
-    border: 2px solid #ffffff;
-    box-shadow: none;
+    border: none;
+    /* Luna llena realista */
+    background:
+        radial-gradient(circle at 32% 30%, #ffffff 0%, #eef2f7 28%, #cfd8e3 55%, #9aa7b8 82%, #75849a 100%);
+    box-shadow:
+        0 0 10px 2px rgba(200, 220, 255, 0.6),
+        0 0 26px 8px rgba(160, 190, 255, 0.22);
 }
 
 body.dark-theme .icon-switch::before {
-    top: 2px; left: 3px; right: auto; bottom: auto;
-    width: 12px;
-    height: 12px;
-    background: #071526;
-    border: none;
-    border-radius: 50%;
-    box-shadow: 3px 2px 0 0 #ffffff;
-    transform: none;
+    display: none;
+}
+
+body.dark-theme .icon-switch::after {
+    inset: 0;
+    /* Cráteres de la luna */
+    background:
+        radial-gradient(circle at 58% 48%, rgba(110, 125, 145, 0.6) 0 13%, rgba(170, 185, 205, 0.45) 14%, transparent 15%),
+        radial-gradient(circle at 40% 60%, rgba(110, 125, 145, 0.55) 0 9%, transparent 10%),
+        radial-gradient(circle at 62% 68%, rgba(110, 125, 145, 0.5) 0 6%, transparent 7%),
+        radial-gradient(circle at 48% 36%, rgba(110, 125, 145, 0.45) 0 5%, transparent 6%),
+        radial-gradient(circle at 70% 36%, rgba(130, 145, 165, 0.4) 0 4%, transparent 5%),
+        radial-gradient(circle at 32% 44%, rgba(130, 145, 165, 0.35) 0 3%, transparent 4%);
     animation: none;
 }
 
