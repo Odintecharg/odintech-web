@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OdinWEB · Tu empresa conectada a internet: sitios institucionales, web conectadas a tu gestión y plataformas para vender online.">
+    <meta name="theme-color" content="#071d38">
+    <title>OdinWEB | Tu empresa, conectada a internet</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            <a href="home.html" class="logo-link">
+                <img src="logo.png" alt="OdinTech" class="header-logo">
+            </a>
+            <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav" id="mainnav">
+                <a href="home.html">Inicio</a>
+                <a href="odingo.html">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html" class="active">OdinWEB</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="contacto.html" class="header-button">Contacto</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
+                    <div class="icon-switch"></div>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero page-hero" id="inicio">
+            <div class="hero-grid-bg"></div>
+            <div class="container narrow">
+                <div class="pill-hero"><span class="dot"></span>ODINWEB · INTERNET PARA TU EMPRESA</div>
+                <h1>OdinWEB</h1>
+                <p style="font-size:20px;color:#e2e8f0;font-weight:600">Tu empresa también puede estar conectada a internet.</p>
+                <p style="margin-top:14px">
+                    No hacemos "páginas bonitas". Conectamos tu empresa con internet:
+                    presencia, información en vivo y ventas vinculadas a tu gestión.
+                </p>
+                <div class="hero-buttons" style="justify-content:center">
+                    <a href="#tipos" class="button primary">Ver tipos de web</a>
+                    <a href="contacto.html" class="button secondary">Consultar</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPOS -->
+        <section class="problem" id="tipos" style="padding:90px 0">
+            <div class="container">
+                <div class="section-label">TRES TIPOS</div>
+                <h2>De la presencia a la venta online.</h2>
+                <div class="sys-grid" style="grid-template-columns:1fr;max-width:820px">
+                    <div class="sys-card" style="border-left-color:#5B6CFF">
+                        <h3>1 · Web institucional</h3>
+                        <div class="for" style="color:#5B6CFF">PRESENCIA PROFESIONAL</div>
+                        <p>Para empresas que necesitan estar bien presentadas en internet: quiénes son, qué hacen, cómo contactarlas. Clara, rápida y profesional.</p>
+                    </div>
+                    <div class="sys-card" style="border-left-color:#5B6CFF">
+                        <h3>2 · Web conectada</h3>
+                        <div class="for" style="color:#5B6CFF">INFORMACIÓN EN VIVO</div>
+                        <p>Con información que sale directo de tu sistema de gestión: productos, precios, stock, servicios, clientes. Lo que cambia adentro, se ve afuera.</p>
+                    </div>
+                    <div class="sys-card" style="border-left-color:#5B6CFF">
+                        <h3>3 · Web comercial</h3>
+                        <div class="for" style="color:#5B6CFF">VENDER POR INTERNET</div>
+                        <p>Para vender online con el proceso conectado a tu gestión interna:</p>
+                        <div class="pipe" style="margin-top:18px">
+                            <div class="pipe-step"><strong>Cliente</strong></div>
+                            <span class="pipe-arrow">→</span>
+                            <div class="pipe-step"><strong>Web</strong></div>
+                            <span class="pipe-arrow">→</span>
+                            <div class="pipe-step"><strong>Pedido</strong></div>
+                            <span class="pipe-arrow">→</span>
+                            <div class="pipe-step"><strong>Sistema</strong></div>
+                            <span class="pipe-arrow">→</span>
+                            <div class="pipe-step"><strong>Stock</strong></div>
+                            <span class="pipe-arrow">→</span>
+                            <div class="pipe-step"><strong>Venta</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONEXIÓN -->
+        <section style="padding:80px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
+            <div class="container" style="text-align:center;max-width:720px">
+                <div class="section-label">ECOSISTEMA</div>
+                <h2>OdinWEB trabaja con todo el ecosistema.</h2>
+                <p style="color:var(--text-parrafos);margin:14px auto 26px;font-size:16px">Muestra los datos de <a href="odingo.html" style="color:#18aaa5">OdinGO</a>, se nutre de <a href="odincloud.html" style="color:#18aaa5">OdinCLOUD</a> y crece con <a href="odinpro.html" style="color:#C49A2C">OdinPRO</a>.</p>
+                <a href="contacto.html" class="button primary">Consultar OdinWEB →</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <img src="logo.png" alt="OdinTech" class="footer-logo">
+                <p>Simplificamos la gestión de tu empresa.</p>
+                <p>La Paz, Entre Ríos · Argentina</p>
+            </div>
+            <div>
+                <h4>SOLUCIONES</h4>
+                <a href="odingo.html">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html">OdinWEB</a>
+            </div>
+            <div>
+                <h4>EMPRESA</h4>
+                <a href="home.html">Inicio</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="home.html#casos">Casos</a>
+            </div>
+            <div>
+                <h4>CONTACTO</h4>
+                <a href="contacto.html">Contanos qué necesitás</a>
+                <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
+            </div>
+        </div>
+        <div class="container" style="margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <p>© 2026 OdinTech</p>
+            <p>OdinWEB · Tu empresa en internet</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'dark') body.classList.add('dark-theme');
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+        });
+        function toggleNav() {
+            var nav = document.getElementById('mainnav');
+            var btn = document.querySelector('.nav-toggle');
+            var open = nav.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        document.querySelectorAll('#mainnav a').forEach(function (a) {
+            a.addEventListener('click', function () {
+                document.getElementById('mainnav').classList.remove('open');
+                document.querySelector('.nav-toggle').classList.remove('open');
+            });
+        });
+    </script>
+    <script>
+        (function () {
+            var header = document.querySelector('.header');
+            addEventListener('scroll', function () { header.classList.toggle('scrolled', scrollY > 12); }, { passive: true });
+            header.classList.toggle('scrolled', scrollY > 12);
+        })();
+    </script>
+    <div class="mcta">
+        <a class="a" href="#tipos">Ver tipos</a>
+        <a class="b" href="contacto.html">Consultar</a>
+    </div>
+</body>
+</html>
