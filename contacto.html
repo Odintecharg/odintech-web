@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contacto OdinTech · Contanos qué necesitás mejorar en tu empresa. La Paz, Entre Ríos. Email y WhatsApp.">
+    <meta name="theme-color" content="#071d38">
+    <title>Contacto | OdinTech</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            <a href="home.html" class="logo-link">
+                <img src="logo.png" alt="OdinTech" class="header-logo">
+            </a>
+            <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav" id="mainnav">
+                <a href="home.html">Inicio</a>
+                <a href="odingo.html">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html">OdinWEB</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="contacto.html" class="header-button">Contacto</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
+                    <div class="icon-switch"></div>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero page-hero" id="inicio" style="min-height:420px">
+            <div class="hero-grid-bg"></div>
+            <div class="container narrow">
+                <div class="pill-hero"><span class="dot"></span>CONTACTO</div>
+                <h1>Contanos qué necesitás.</h1>
+                <p style="margin-top:14px">
+                    No hace falta que sepas qué sistema querés.
+                    Contanos cómo trabajás y vemos juntos la mejor forma de resolverlo.
+                </p>
+            </div>
+        </section>
+
+        <!-- FORM + CANALES -->
+        <section class="contact" style="padding:90px 0">
+            <div class="container contact-grid">
+                <div>
+                    <div class="section-label">ESCRIBINOS</div>
+                    <h2>Te respondemos a la brevedad.</h2>
+                    <p style="margin-top:14px">Completá lo básico y contanos qué querés mejorar. Cuanto más concreto, mejor te orientamos.</p>
+                    <div style="margin-top:26px;display:grid;gap:12px">
+                        <a href="mailto:odintecharg@hotmail.com" class="contact-link">odintecharg@hotmail.com</a>
+                        <div>
+                            <a id="wa-link" href="https://wa.me/5490000000000?text=Hola%2C%20quiero%20contarles%20mi%20caso." target="_blank" class="button primary">Hablar por WhatsApp →</a>
+                        </div>
+                        <p style="font-size:13px;color:var(--text-parrafos)">La Paz, Entre Ríos · Argentina · Presencial y remoto</p>
+                    </div>
+                </div>
+                <div class="contact-box" style="align-items:stretch">
+                    <form class="form" id="contact-form">
+                        <div class="form-row">
+                            <label>Nombre<input name="nombre" required placeholder="Tu nombre"></label>
+                            <label>Empresa<input name="empresa" placeholder="Tu empresa (opcional)"></label>
+                        </div>
+                        <div class="form-row">
+                            <label>Email<input name="email" type="email" required placeholder="tu@email.com"></label>
+                            <label>Teléfono / WhatsApp<input name="telefono" placeholder="Ej: 3437 12-3456"></label>
+                        </div>
+                        <label>¿Qué querés mejorar?
+                            <select name="tema">
+                                <option>Gestión de mi comercio (OdinGO)</option>
+                                <option>Ver mis números donde esté (OdinCLOUD)</option>
+                                <option>Una solución a medida (OdinPRO)</option>
+                                <option>Llevar mi empresa a internet (OdinWEB)</option>
+                                <option>Todavía no lo sé, quiero orientación</option>
+                            </select>
+                        </label>
+                        <label>Mensaje<textarea name="mensaje" placeholder="Contanos cómo trabajás hoy y qué te traba..."></textarea></label>
+                        <button type="submit" class="button primary" style="border:none;cursor:pointer;width:100%">Enviar consulta →</button>
+                        <small class="muted" style="color:var(--text-parrafos);font-size:12px">Se abre tu email con el mensaje armado. Sin registros ni spam.</small>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <img src="logo.png" alt="OdinTech" class="footer-logo">
+                <p>Simplificamos la gestión de tu empresa.</p>
+                <p>La Paz, Entre Ríos · Argentina</p>
+            </div>
+            <div>
+                <h4>SOLUCIONES</h4>
+                <a href="odingo.html">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html">OdinWEB</a>
+            </div>
+            <div>
+                <h4>EMPRESA</h4>
+                <a href="home.html">Inicio</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="home.html#casos">Casos</a>
+            </div>
+            <div>
+                <h4>CONTACTO</h4>
+                <a href="contacto.html">Contanos qué necesitás</a>
+                <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
+            </div>
+        </div>
+        <div class="container" style="margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <p>© 2026 OdinTech</p>
+            <p>La Paz, Entre Ríos · Argentina</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'dark') body.classList.add('dark-theme');
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+        });
+        function toggleNav() {
+            var nav = document.getElementById('mainnav');
+            var btn = document.querySelector('.nav-toggle');
+            var open = nav.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        document.querySelectorAll('#mainnav a').forEach(function (a) {
+            a.addEventListener('click', function () {
+                document.getElementById('mainnav').classList.remove('open');
+                document.querySelector('.nav-toggle').classList.remove('open');
+            });
+        });
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var f = e.target;
+            var txt = 'Nombre: ' + f.nombre.value + '\n'
+                + 'Empresa: ' + (f.empresa.value || '-') + '\n'
+                + 'Email: ' + f.email.value + '\n'
+                + 'Tel: ' + (f.telefono.value || '-') + '\n'
+                + 'Tema: ' + f.tema.value + '\n\n'
+                + (f.mensaje.value || '');
+            window.location.href = 'mailto:odintecharg@hotmail.com?subject=' + encodeURIComponent('Consulta desde la web — ' + f.nombre.value) + '&body=' + encodeURIComponent(txt);
+        });
+    </script>
+    <div class="mcta">
+        <a class="a" id="wa-link-m" href="https://wa.me/5490000000000?text=Hola%2C%20quiero%20contarles%20mi%20caso.">WhatsApp</a>
+        <a class="b" href="mailto:odintecharg@hotmail.com">Email</a>
+    </div>
+</body>
+</html>
