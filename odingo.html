@@ -3,529 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description" content="OdinGO - Sistemas de gestión listos para usar. Compre su licencia, instale y empiece a trabajar.">
+    <meta name="description" content="OdinGO · Sistemas de gestión listos para usar en comercios: ventas, socios, turnos, gastronomía, talleres y más. Elegí, instalá y empezá a trabajar.">
     <meta name="theme-color" content="#071d38">
-
-    <title>OdinGO | Software Listo para Usar</title>
-
+    <title>OdinGO | Sistemas de gestión listos para usar</title>
     <link rel="icon" type="image/png" href="favicon.png">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
+    <style>
+        .btn-buy{background:#18aaa5;color:#fff}
+        .btn-ghost{border:1px solid rgba(24,170,165,.5);color:#18aaa5;background:transparent}
+    </style>
 </head>
 
 <body>
 
     <header class="header">
-
         <div class="container header-content">
-
             <a href="home.html" class="logo-link">
                 <img src="logo.png" alt="OdinTech" class="header-logo">
             </a>
-
-            <nav class="nav">
-
-                <a href="home.html">
-                    Inicio
-                </a>
-
-                <a href="#licencias">
-                    Sistemas
-                </a>
-
-                <a href="#demo" style="color: #18aaa5; font-weight: 700;">
-                    Demo
-                </a>
-
-                <a href="informes.html">
-                    OdinCLOUD INFORMES
-                </a>
-
-                <a href="odinpro.html">
-                    OdinPRO
-                </a>
-
-                <button id="cart-btn" class="cart-btn" onclick="OdinGoStore.setDrawer(true)" aria-label="Ver pedido">
-                    🛒 <span id="cart-count">0</span>
-                </button>
-
-                <a href="home.html#contacto" class="header-button">
-                    Hablemos
-                </a>
-
-                <button
-                    id="theme-toggle"
-                    class="theme-btn"
-                    aria-label="Cambiar modo"
-                >
+            <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" onclick="toggleNav()">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav" id="mainnav">
+                <a href="home.html">Inicio</a>
+                <a href="odingo.html" class="active">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html">OdinWEB</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="contacto.html" class="header-button">Contacto</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
                     <div class="icon-switch"></div>
                 </button>
-
             </nav>
-
         </div>
-
     </header>
-
 
     <main>
 
-
         <!-- HERO -->
-
-        <section
-            class="hero"
-            id="inicio"
-            style="min-height:520px; padding-top:140px;"
-        >
-
-            <div
-                class="container"
-                style="
-                    text-align:center;
-                    max-width:850px;
-                "
-            >
-
-                <div class="pill-hero"><span class="dot"></span>7 SISTEMAS · PAGO ÚNICO · INSTALACIÓN INCLUIDA</div>
-
-                <h1
-                    style="
-                        margin:0 auto 25px;
-                        font-size:clamp(38px,4.5vw,60px);
-                    "
-                >
-                    Compre su licencia.<br>
-                    <span class="grad">Empiece a operar hoy.</span>
-                </h1>
-
-                <p
-                    style="
-                        margin:0 auto;
-                        color:#94a3b8;
-                        font-size:18px;
-                        line-height:1.7;
-                    "
-                >
-                    Sistemas de gestión estandarizados, listos para instalar
-                    y utilizar. Elija la solución para su negocio y empiece
-                    a trabajar sin esperar un desarrollo desde cero.
+        <section class="hero page-hero" id="inicio">
+            <div class="hero-grid-bg"></div>
+            <div class="container narrow">
+                <div class="pill-hero"><span class="dot"></span>ODINGO · SISTEMAS LISTOS</div>
+                <h1>OdinGO</h1>
+                <p style="font-size:20px;color:#e2e8f0;font-weight:600">Sistemas de gestión listos para usar.</p>
+                <p style="margin-top:14px">
+                    Elegí el sistema que necesitás, instalalo y empezá a trabajar.
+                    Sin desarrollo desde cero, sin meses de espera.
                 </p>
-
-                <div
-                    class="hero-buttons"
-                    style="
-                        justify-content:center;
-                        margin-top:35px;
-                    "
-                >
-
-                    <a
-                        href="#licencias"
-                        class="button primary"
-                    >
-                        Ver Sistemas OdinGO
-                    </a>
-
+                <div class="hero-buttons" style="justify-content:center">
+                    <a href="#catalogo" class="button primary">Ver sistemas</a>
+                    <a href="#demo" class="button secondary">Ver demo en vivo</a>
                 </div>
-
-                <div class="trust" style="justify-content:center">
-                    <span><b>✓</b> Carga masiva de datos</span>
-                    <span><b>✓</b> Backup diario en tu PC</span>
-                    <span><b>✓</b> Demo en vivo</span>
-                </div>
-
             </div>
-
         </section>
 
+        <!-- ODINGO VS ODINPRO -->
+        <section style="padding:70px 0;background:var(--bg-secundario);border-bottom:1px solid var(--border-color)">
+            <div class="container" style="max-width:780px;text-align:center">
+                <div class="section-label">ANTES DE SEGUIR</div>
+                <h2 style="font-size:clamp(26px,3.5vw,38px)">¿OdinGO u OdinPRO?</h2>
+                <p style="color:var(--text-parrafos);margin-top:14px;font-size:16px;line-height:1.7">
+                    <strong style="color:var(--text-titulos)">OdinGO</strong> es un sistema ya armado para un rubro: se instala y se usa.
+                    <strong style="color:var(--text-titulos)">OdinPRO</strong> es desarrollo a medida para empresas que necesitan algo más que un sistema estándar.
+                    Si tu caso no encaja en ningún OdinGO, <a href="odinpro.html" style="color:#18aaa5">conocé OdinPRO</a>.
+                </p>
+            </div>
+        </section>
 
-        <!-- SISTEMAS -->
-
-        <section
-            class="problem"
-            id="licencias"
-            style="padding:90px 0;"
-        >
-
+        <!-- CATÁLOGO -->
+        <section class="problem" id="catalogo" style="padding:90px 0">
             <div class="container">
+                <div class="section-label">CATÁLOGO ODINGO</div>
+                <h2>Sistemas por rubro.</h2>
+                <p style="color:var(--text-parrafos);margin-top:12px;max-width:680px">Cada uno resuelve los problemas típicos de su rubro. Probalos con datos de ejemplo antes de decidir.</p>
+                <div class="sys-grid">
 
-                <div
-                    class="narrow"
-                    style="margin-bottom:45px;"
-                >
-
-                    <div class="section-label">
-                        CATÁLOGO OdinGO
-                    </div>
-
-                    <h2>
-                        Sistemas OdinGO listos para su negocio.
-                    </h2>
-
-                    <p
-                        style="
-                            color:#94a3b8;
-                            font-size:16px;
-                            margin-top:15px;
-                        "
-                    >
-                        Soluciones desarrolladas para necesidades concretas.
-                        Usted compra la licencia y el sistema queda instalado
-                        para su uso. Todos incluyen <strong>carga masiva de datos</strong>,
-                        <strong>facturación electrónica ARCA</strong> y
-                        <strong>backup diario en su PC</strong>.
-                    </p>
-
-                </div>
-
-
-                <div class="problems-grid shop-grid" style="margin-top:0;">
-
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · POS EXPRESS</span>
-                        <h3 style="margin-top:10px;">Kiosco / Comercios</h3>
-                        <p>Escáner, granel por peso, precio mayorista, combos, cuenta corriente, caja con apertura/cierre y ticket.</p>
-                        <div class="shop-price" data-price-for="comercios">$490.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('comercios')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-kiosco.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <h3>Ventas</h3>
+                        <div class="for">Para kioscos y comercios</div>
+                        <p><strong>Problema:</strong> vender de memoria, fiados en cuaderno, caja que nunca cierra.</p>
+                        <ul><li>Venta con escáner y granel por peso</li><li>Precio mayorista, combos y cuenta corriente</li><li>Caja con apertura y cierre, ticket</li></ul>
+                        <div class="btns">
+                            <a class="btn-buy" href="demo-kiosco.html" target="_blank">Ver demo →</a>
+                            <a class="btn-ghost" href="contacto.html">Consultar</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · RESTO-ROTI</span>
-                        <h3 style="margin-top:10px;">Restaurant / Rotisería</h3>
-                        <p>Mesas por sector, mostrador, delivery, cocina KDS en tiempo real. Mixto restaurant + rotisería.</p>
-                        <div class="shop-price" data-price-for="gastronomia">$490.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('gastronomia')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-gastronomia.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <h3>Socios</h3>
+                        <div class="for">Para gimnasios y academias</div>
+                        <p><strong>Problema:</strong> cuotas en planilla, quién pagó y quién debe, ingresos sin registrar.</p>
+                        <ul><li>Socios, cuotas y clases con cupo</li><li>Ingresos diarios y congelamientos</li><li>Recordatorios con botón de WhatsApp</li></ul>
+                        <div class="btns">
+                            <a class="btn-buy" href="demo-gimnasio.html" target="_blank">Ver demo →</a>
+                            <a class="btn-ghost" href="contacto.html">Consultar</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · GIMNASIO</span>
-                        <h3 style="margin-top:10px;">Gimnasios y Academias</h3>
-                        <p>Socios, cuotas, clases con cupo, ingresos diarios, congelar y recordatorios con botón de WhatsApp.</p>
-                        <div class="shop-price" data-price-for="gimnasios">$250.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('gimnasios')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-gimnasio.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <h3>Turnos</h3>
+                        <div class="for">Para peluquerías y estética</div>
+                        <p><strong>Problema:</strong> agenda en papel o por WhatsApp, turnos pisados, comisiones a ojo.</p>
+                        <ul><li>Agenda por profesional</li><li>Cobranza mixta: turno + mostrador</li><li>Comisiones y caja diaria</li></ul>
+                        <div class="btns">
+                            <a class="btn-buy" href="demo-turnero.html" target="_blank">Ver demo →</a>
+                            <a class="btn-ghost" href="contacto.html">Consultar</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · TURNERO</span>
-                        <h3 style="margin-top:10px;">Peluquerías y Estética</h3>
-                        <p>Agenda por profesional, cobranza mixta (turno + mostrador), comisiones, caja diaria.</p>
-                        <div class="shop-price" data-price-for="peluqueria">$250.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('peluqueria')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-turnero.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <span class="sys-soon">EN PREPARACIÓN</span>
+                        <h3>Veterinaria</h3>
+                        <div class="for">Para veterinarias y pet shops</div>
+                        <p><strong>Problema:</strong> fichas de pacientes sueltas, vacunas sin seguimiento, venta y peluquería mezcladas.</p>
+                        <ul><li>Fichas por mascota con historia</li><li>Vacunas y recordatorios</li><li>Venta de mostrador integrada</li></ul>
+                        <div class="btns">
+                            <a class="btn-ghost" href="contacto.html" style="flex:1">Quiero que me avisen →</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · TALLERES</span>
-                        <h3 style="margin-top:10px;">Talleres Mecánicos</h3>
-                        <p>Órdenes por patente, control de ingreso imprimible, repuestos con stock, cobranza y caja.</p>
-                        <div class="shop-price" data-price-for="talleres">$250.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('talleres')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-talleres.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <h3>Gastronomía</h3>
+                        <div class="for">Para restaurants y rotiserías</div>
+                        <p><strong>Problema:</strong> comandas en papel, cocina descoordinada, delivery y salón mezclados.</p>
+                        <ul><li>Mesas por sector, mostrador y delivery</li><li>Cocina KDS en tiempo real</li><li>Mixto restaurant + rotisería</li></ul>
+                        <div class="btns">
+                            <a class="btn-buy" href="demo-gastronomia.html" target="_blank">Ver demo →</a>
+                            <a class="btn-ghost" href="contacto.html">Consultar</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · HOTEL</span>
-                        <h3 style="margin-top:10px;">Hotel / Hospedaje</h3>
-                        <p>Reservas sin solapar, recepción por colores, consumos a la habitación, checkout y POS.</p>
-                        <div class="shop-price" data-price-for="hotel">$490.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('hotel')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-hotel.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
+                    <div class="sys-card">
+                        <h3>Talleres / Servicios</h3>
+                        <div class="for">Para talleres mecánicos y servicios</div>
+                        <p><strong>Problema:</strong> trabajos anotados sueltos, repuestos sin stock, qué se cobró y qué no.</p>
+                        <ul><li>Órdenes por patente</li><li>Control de ingreso imprimible</li><li>Repuestos con stock, cobranza y caja</li></ul>
+                        <div class="btns">
+                            <a class="btn-buy" href="demo-talleres.html" target="_blank">Ver demo →</a>
+                            <a class="btn-ghost" href="contacto.html">Consultar</a>
                         </div>
                     </div>
 
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px;">OdinGO · LAVADEROS</span>
-                        <h3 style="margin-top:10px;">Lavaderos & Servicios</h3>
-                        <p>Agenda con patente, playa kanban en vivo, abonos, operarios con comisión, caja diaria.</p>
-                        <div class="shop-price" data-price-for="lavadero">$250.000</div><div class="shop-actions"><button class="button primary shop-btn" onclick="OdinGoStore.add('lavadero')">Comprar módulo</button>
-                            <a class="button secondary shop-btn" href="demo-lavadero.html" target="_blank" style="text-decoration:none">Probar demo en vivo →</a>
-                        </div>
-                    </div>
-
-                </div>
-
-                <p style="color:#94a3b8;font-size:13px;margin-top:20px;">Todos los sistemas traen carga masiva de datos y backup diario en tu PC. Elegí cómo pagarlo:</p>
-
-            </div>
-
-        </section>
-
-
-        <!-- PLANES -->
-
-        <section id="planes" style="padding:90px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color);">
-            <div class="container">
-                <div class="narrow" style="margin-bottom:45px">
-                    <div class="section-label">CONTRATACIÓN · SOLO OdinGO</div>
-                    <h2>Lo comprás y lo usás. Así de simple.</h2>
-                    <p style="color:#94a3b8;font-size:16px;margin-top:15px">
-                        Precios por sistema, para 1 PC / 1 caja. La puesta en marcha puede ser presencial o remota.
-                        Funcionan <strong>sin internet</strong>: solo se necesita conexión para el backup en la nube.
-                    </p>
-                </div>
-
-                <div class="problems-grid" style="margin-top:0;grid-template-columns:repeat(2,1fr)">
-
-                    <div class="problem-card shop-card">
-                        <span style="color:#18aaa5;font-weight:800;font-size:11px">1 · COMPRÁS EL MÓDULO</span>
-                        <h3 style="margin-top:10px">Pago único</h3>
-                        <p>El sistema es tuyo e incluye <strong>6 meses</strong> de mantenimiento, actualizaciones y soporte. Se elige desde la tarjeta de cada sistema.</p>
-                        <div class="shop-actions">
-                            <a class="button primary shop-btn" style="text-decoration:none" href="#licencias">Elegir sistema →</a>
-                        </div>
-                    </div>
-
-                    <div class="problem-card shop-card">
-                        <span style="color:#C49A2C;font-weight:800;font-size:11px">2 · DESPUÉS DE LOS 6 MESES, SI QUERÉS</span>
-                        <h3 style="margin-top:10px">$25.000<span style="font-size:15px;color:#94a3b8">/mes</span></h3>
-                        <p>Extendés el mantenimiento mensual: actualizaciones, mejoras y soporte personalizado. Mínimo 6 meses por vez, renovable el tiempo que quieras.</p>
-                        <div class="shop-actions">
-                            <button class="button primary shop-btn" onclick="OdinGoStore.add('mantenimiento')">Agregar 🛒</button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div style="background:var(--bg-card);border:1px solid var(--border-card);border-radius:12px;padding:24px 26px;margin-top:26px">
-                    <strong style="color:var(--text-titulos)">Cómo funciona el mantenimiento</strong>
-                    <ul style="font-size:14px;margin:12px 0 0;padding-left:20px;color:var(--text-parrafos)">
-                        <li style="margin-bottom:8px">El módulo incluye los primeros 6 meses. Después podés sumar el mantenimiento mensual ($25.000, mínimo 6 meses por vez).</li>
-                        <li style="margin-bottom:8px">Si dejás de pagarlo y volvés más adelante, arranca un nuevo bloque mínimo de 6 meses.</li>
-                        <li style="margin-bottom:8px">Sin mantenimiento, el sistema sigue funcionando. Si una falla es <strong>culpa del sistema</strong>, la resolvemos por ticket sin costo; si no lo es, corresponde contratar el bloque de 6 meses.</li>
-                        <li>PC / caja adicional: Consultar.</li>
-                    </ul>
                 </div>
             </div>
         </section>
 
-
-        <!-- DEMOS EN VIVO (página propia por sistema) -->
-        <section id="demo" style="padding:70px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color);">
+        <!-- DEMO -->
+        <section id="demo" style="padding:70px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
             <div class="container" style="text-align:center;max-width:800px">
-                <div class="section-label">OdinGO · DEMO EN VIVO</div>
-                <h2>Probálos antes de comprar.</h2>
-                <p style="color:#94a3b8;font-size:16px;margin:12px auto 0;">
-                    Cada tarjeta tiene su botón <strong>Probar demo en vivo</strong>: se abre el sistema con datos de ejemplo, sin instalar nada.
-                    Con la <strong>clave completa</strong> lo ves entero por 30 minutos.
-                </p>
-            </div>
-        </section>
-
-
-        <!-- OdinCLOUD INFORMES: detalle en su menú -->
-        <section style="padding:90px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color);border-bottom:1px solid var(--border-color)">
-            <div class="container" style="max-width:820px;margin:0 auto;text-align:center">
-                <div class="section-label">OdinCLOUD INFORMES · ANEXO OPCIONAL</div>
-                <h2 style="font-size:clamp(30px,4vw,46px)">¿Querés ver tus números donde estés?</h2>
-                <p style="color:var(--text-parrafos);font-size:17px;line-height:1.7;max-width:640px;margin:16px auto 26px">Anexo opcional de OdinGO o adaptado a tu sistema actual. Detalle, precio y contratación en su menú.</p>
-                <a href="informes.html" class="button primary">Ver OdinCLOUD INFORMES →</a>
-            </div>
-        </section>
-
-
-        <!-- OdinPRO -->
-
-        <section
-            class="contact"
-            style="padding:110px 0;"
-        >
-
-            <div
-                class="container"
-                style="
-                    text-align:center;
-                    max-width:850px;
-                "
-            >
-
-                <div class="section-label">
-                    ODINTECH · OdinPRO
+                <div class="section-label">DEMO EN VIVO</div>
+                <h2>Probálos con datos de ejemplo.</h2>
+                <p style="color:var(--text-parrafos);font-size:16px;margin:12px auto 24px">Sin instalar nada, desde el navegador. Cada demo muestra el sistema funcionando como lo usarías en tu negocio.</p>
+                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                    <a href="demo-kiosco.html" target="_blank" class="button primary">Demo Ventas →</a>
+                    <a href="demo-gastronomia.html" target="_blank" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Demo Gastronomía →</a>
+                    <a href="demo-gimnasio.html" target="_blank" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Demo Socios →</a>
+                    <a href="demo-turnero.html" target="_blank" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Demo Turnos →</a>
+                    <a href="demo-talleres.html" target="_blank" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Demo Talleres →</a>
                 </div>
-
-
-                <h2
-                    style="
-                        font-size:clamp(34px,4vw,52px);
-                    "
-                >
-                    ¿Necesitás algo a medida?
-                </h2>
-
-
-                <p
-                    style="
-                        color:#94a3b8;
-                        font-size:18px;
-                        line-height:1.7;
-                        margin:20px auto 30px;
-                    "
-                >
-                    Sistemas a medida, SaaS multiusuario y multisucursal, en tu servidor o en la nube.
-                </p>
-
-
-                <a
-                    href="odinpro.html"
-                    class="button primary"
-                >
-                    Conocer OdinPRO →
-                </a>
-
             </div>
+        </section>
 
+        <!-- QUÉ INCLUYE -->
+        <section class="services" style="padding:90px 0">
+            <div class="container">
+                <div class="section-label">QUÉ INCLUYE</div>
+                <h2>Cada sistema, listo para trabajar.</h2>
+                <div class="problems-grid" style="grid-template-columns:repeat(3,1fr)">
+                    <div class="problem-card"><h3>Sin internet</h3><p>Funcionan en tu PC aunque se caiga la conexión.</p></div>
+                    <div class="problem-card"><h3>Tus datos cargados</h3><p>Productos, clientes y precios importados al arrancar.</p></div>
+                    <div class="problem-card"><h3>Facturación ARCA</h3><p>Comprobantes electrónicos sin salir del sistema.</p></div>
+                    <div class="problem-card"><h3>Resguardo diario</h3><p>Copia de seguridad de tu información todos los días.</p></div>
+                    <div class="problem-card"><h3>Instalación incluida</h3><p>Lo dejamos andando, presencial o remoto.</p></div>
+                    <div class="problem-card"><h3>Capacitación</h3><p>Tu equipo aprende a usarlo en su trabajo real.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONEXIÓN CON EL ECOSISTEMA -->
+        <section style="padding:80px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
+            <div class="container" style="text-align:center;max-width:720px">
+                <div class="section-label">ECOSISTEMA</div>
+                <h2>OdinGO no trabaja solo.</h2>
+                <p style="color:var(--text-parrafos);margin:14px auto 26px;font-size:16px">Sumale <a href="odincloud.html" style="color:#18aaa5">OdinCLOUD</a> para ver tus números desde el celular, <a href="odinweb.html" style="color:#18aaa5">OdinWEB</a> para mostrar tu negocio en internet, u <a href="odinpro.html" style="color:#C49A2C">OdinPRO</a> cuando necesites algo a medida.</p>
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                    <a href="contacto.html" class="button primary">Consultar un sistema →</a>
+                    <a href="odincloud.html" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Ver OdinCLOUD</a>
+                </div>
+            </div>
         </section>
 
     </main>
 
-
-    <!-- FOOTER -->
-
     <footer>
-
-        <div class="container footer-content">
-
+        <div class="container footer-grid">
             <div>
-
-                <img
-                    src="logo.png"
-                    alt="OdinGO"
-                    class="footer-logo"
-                >
-
-                <p>
-                    Licencias inmediatas. Respaldado por OdinGO.
-                </p>
-
+                <img src="logo.png" alt="OdinTech" class="footer-logo">
+                <p>Simplificamos la gestión de tu empresa.</p>
+                <p>La Paz, Entre Ríos · Argentina</p>
             </div>
-
-
-            <div class="footer-right">
-
-                <p>
-                    La Paz, Entre Ríos · Argentina
-                </p>
-
-                <p>
-                    © 2026 OdinGO
-                </p>
-
+            <div>
+                <h4>SOLUCIONES</h4>
+                <a href="odingo.html">OdinGO</a>
+                <a href="odincloud.html">OdinCLOUD</a>
+                <a href="odinpro.html">OdinPRO</a>
+                <a href="odinweb.html">OdinWEB</a>
             </div>
-
+            <div>
+                <h4>EMPRESA</h4>
+                <a href="home.html">Inicio</a>
+                <a href="nosotros.html">Nosotros</a>
+                <a href="home.html#casos">Casos</a>
+            </div>
+            <div>
+                <h4>CONTACTO</h4>
+                <a href="contacto.html">Contanos qué necesitás</a>
+                <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
+            </div>
         </div>
-
+        <div class="container" style="margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <p>© 2026 OdinTech</p>
+            <p>OdinGO · Sistemas listos para usar</p>
+        </div>
     </footer>
 
-
-    <!-- CARRITO / CHECKOUT -->
-    <div id="cart-overlay" class="cart-overlay" onclick="OdinGoStore.setDrawer(false)"></div>
-    <aside id="cart-drawer" class="cart-drawer" aria-label="Pedido">
-        <div class="cart-head"><strong>🧾 Tu pedido OdinGO</strong><button onclick="OdinGoStore.setDrawer(false)">✕</button></div>
-        <div id="cart-items" class="cart-items"></div>
-        <div class="cart-form">
-            <input id="buyer-nombre" placeholder="Nombre y apellido">
-            <input id="buyer-email" placeholder="Email">
-            <input id="buyer-tel" placeholder="Teléfono / WhatsApp">
-            <textarea id="buyer-notas" rows="2" placeholder="Notas (ej: rubro de mi negocio, ciudad)"></textarea>
-        </div>
-        <div class="cart-foot">
-            <div class="cart-total-row"><span>Total</span><strong id="cart-total">$ 0</strong></div>
-            <button class="button primary" style="width:100%" onclick="OdinGoStore.checkoutWhatsApp()">Enviar pedido por WhatsApp →</button>
-            <button class="button secondary cart-mail" style="width:100%" onclick="OdinGoStore.checkoutEmail()">Enviar por Email</button>
-            <button class="link-btn" onclick="OdinGoStore.clear()">Vaciar pedido</button>
-            <small class="muted">Al enviar se abre WhatsApp/Email con el detalle. Coordinamos instalación y pago.</small>
-        </div>
-    </aside>
-
-    <script src="odingo-tienda.js"></script>
     <script>
-
-        const themeBtn =
-            document.getElementById('theme-toggle');
-
-        const body =
-            document.body;
-
-        const currentTheme =
-            localStorage.getItem('theme');
-
-
-        if (currentTheme === 'dark') {
-            body.classList.add('dark-theme');
-        }
-
-
+        const themeBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'dark') body.classList.add('dark-theme');
         themeBtn.addEventListener('click', () => {
-
             body.classList.toggle('dark-theme');
-
-            if (body.classList.contains('dark-theme')) {
-
-                localStorage.setItem('theme', 'dark');
-
-            } else {
-
-                localStorage.setItem('theme', 'light');
-
-            }
-
+            localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
         });
-
+        function toggleNav() {
+            var nav = document.getElementById('mainnav');
+            var btn = document.querySelector('.nav-toggle');
+            var open = nav.classList.toggle('open');
+            btn.classList.toggle('open', open);
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        document.querySelectorAll('#mainnav a').forEach(function (a) {
+            a.addEventListener('click', function () {
+                document.getElementById('mainnav').classList.remove('open');
+                document.querySelector('.nav-toggle').classList.remove('open');
+            });
+        });
     </script>
-
-    <!-- Detalles visuales: aparición suave + sombra del header -->
     <script>
         (function () {
             var header = document.querySelector('.header');
-            addEventListener('scroll', function () {
-                header.classList.toggle('scrolled', scrollY > 12);
-            }, { passive: true });
+            addEventListener('scroll', function () { header.classList.toggle('scrolled', scrollY > 12); }, { passive: true });
             header.classList.toggle('scrolled', scrollY > 12);
-
-            // Entradas con impacto: cada bloque aparece desde su lado
             function arm(el, cls, d) { el.classList.add(cls); el.dataset.d = d; wired.push(el); }
             var wired = [];
-            document.querySelectorAll('.section-header > *, .narrow > *').forEach(function (el, i) { arm(el, 'reveal', i % 3); });
-            document.querySelectorAll('.solution-grid > *:first-child, .difference-grid > *:first-child, .contact-grid > *:first-child').forEach(function (el) { arm(el, 'reveal-l', 0); });
-            document.querySelectorAll('.solution-grid > *:last-child, .difference-grid > *:last-child, .contact-grid > *:last-child').forEach(function (el) { arm(el, 'reveal-r', 1); });
-            document.querySelectorAll('.problems-grid > *, .services-grid > *, .worlds > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
-            document.querySelectorAll('.process-grid > *, .stat, .contact-box > *').forEach(function (el, i) { arm(el, 'reveal', i % 6); });
-            if (!('IntersectionObserver' in window)) {
-                wired.forEach(function (el) { el.classList.add('in'); });
-                return;
-            }
+            document.querySelectorAll('.sys-grid > *, .problems-grid > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
+            if (!('IntersectionObserver' in window)) { wired.forEach(function (el) { el.classList.add('in'); }); return; }
             var io = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-                });
+                entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
             }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
             wired.forEach(function (el) { io.observe(el); });
-
-            // Barra fina de progreso de lectura
-            var bar = document.createElement('div');
-            bar.id = 'readbar';
-            document.body.appendChild(bar);
-            addEventListener('scroll', function () {
-                var h = document.documentElement;
-                var p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
-                bar.style.width = (p * 100).toFixed(2) + '%';
-            }, { passive: true });
         })();
     </script>
-
-    <!-- CTA fijo móvil -->
     <div class="mcta">
-        <a class="a" href="#licencias">Ver sistemas</a>
-        <a class="b" href="mailto:odintecharg@hotmail.com">Hablemos</a>
+        <a class="a" href="#catalogo">Ver sistemas</a>
+        <a class="b" href="contacto.html">Consultar</a>
     </div>
-
 </body>
 </html>
