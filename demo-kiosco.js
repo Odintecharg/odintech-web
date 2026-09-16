@@ -3,7 +3,9 @@
    - Todo vive en memoria (+ sessionStorage solo para la clave de 1h).
    - Sin clave: POS + Caja + Productos + Combos con catálogo reducido.
    - Con clave de 1h (la genera el dueño): catálogo completo, descuento,
-     item manual, fiado y ventas del turno.
+     item manual, fiado (con límite), ventas del turno, remitos, aumento
+     masivo, vencimientos, etiquetas, devoluciones controladas, rotación,
+     auditoría y CSV.
    ===================================================================== */
 
 // Dueño: el secreto también está en gen_clave_demo.py (tu PC, NO se publica).
@@ -86,7 +88,13 @@ const DK = (() => {
   let proveedores = JSON.parse(JSON.stringify(SEED_PROV));
   let usuarios = JSON.parse(JSON.stringify(SEED_USERS));
   let devoluciones = [], devVenta = "", devItem = "", devCant = "", devMotivo = "";
-  let etiqSel = {};
+  let etiqSel = {}, etiqCant = {}, etiqModo = "precio";
+  let remitos = [], remitDraft = [{ pid: "", cant: "", costo: "" }];
+  let audit = [];
+  let cfg = { nombre: "Mi Kiosco Demo", print: true };
+  let aumPct = "", aumRed = "10", aumRows = null;
+  let ventFiltro = "hoy";
+  function log(op) { audit.unshift({ h: new Date().toLocaleString(), op }); }
   let unlockUntil = Number(sessionStorage.getItem("kiosco_unlock") || 0);
   let granelSel = null;
   let isMaster = localStorage.getItem("kiosco_master") === "1";
@@ -273,12 +281,19 @@ const DK = (() => {
 
   // ---------- POS ----------
   const precioU = (p, cant) => (p.may && cant >= p.may.min ? p.may.precio : p.venta);
+  function vendidos() {
+    const r = {};
+    ventasHist.forEach((v) => (v.items || []).forEach((i) => { r[i.nombre] = (r[i.nombre] || 0) + Number(i.cant || 0); }));
+    return r;
+  }
   function filtrados() {
     const q = busqueda.trim().toLowerCase();
     const base = !q ? [...productos] : productos.filter((p) => p.nombre.toLowerCase().includes(q) || (p.codigo || "").includes(q) || String(p.id) === q);
     const con = [], sin = [];
     base.forEach((p) => ((Number(p.stock || 0) <= 0 && !p.pes) ? sin : con).push(p));
-    return [...con, ...sin];
+    const rank = vendidos();
+    con.sort((a, b) => (rank[b.nombre] || 0) - (rank[a.nombre] || 0)); // más vendidos primero
+    return [...con, ...sin]; // sin stock al final
   }
   function pick(p) {
     if (!caja.abierta) return msg("Abrí la CAJA antes de cargar productos", "error");
@@ -337,38 +352,53 @@ const DK = (() => {
     caja.ingresos = red(caja.ingresos + t); caja.ventas += 1;
     caja.digital = red((caja.digital || 0) + red(pg - ef));
     const id = 1000 + caja.ventas;
-    ventasHist.unshift({ id, det, total: t, fecha: new Date().toLocaleString(), medios: pagos.map((p) => p.medio).join("+") || "Efectivo", items: carrito.map((c) => ({ nombre: c.nombre, cant: c.cant, sub: c.sub })) });
-    ultimoTicket = { id, fecha: new Date().toLocaleString(), det: [...carrito], total: t, pagado: pg, vuelto: vu > 0 ? vu : 0 };
+    const fh = new Date().toLocaleString(), dia = new Date().toLocaleDateString();
+    const items = carrito.map((c) => ({ nombre: c.nombre, cant: c.cant, sub: c.sub, dev: 0 }));
+    ventasHist.unshift({ id, det, total: t, fecha: fh, dia, medios: pagos.map((p) => p.medio).join("+") || "Efectivo", items, pagado: pg, vuelto: vu > 0 ? vu : 0, fiado: null });
+    ultimoTicket = { id, fecha: fh, det: [...carrito], total: t, pagado: pg, vuelto: vu > 0 ? vu : 0 };
+    carrito.forEach((c) => { const p = productos.find((x) => x.id === c.pid); if (p) p.ultV = fh; });
+    log(`Venta #${id} por ${fmt(t)} (${pagos.map((p) => p.medio).join("+") || "Efectivo"})`);
     carrito = []; pagos = []; desc = 0; pagoMonto = "";
-    render(); showTicket();
+    render(); if (cfg.print) showTicket(); else msg(`Venta #${id} registrada (impresión desactivada)`);
   }
   function cobrarFiado() {
     const cli = clientes.find((c) => String(c.id) === String(fiadoCli));
     if (!cli) return msg("Elegí el cliente", "error");
     const t = total();
+    if (Number(cli.limite) > 0 && red(Number(cli.deuda) + t) > Number(cli.limite))
+      return msg(`${cli.nombre}: supera su límite de ${fmt(cli.limite)} (debe ${fmt(cli.deuda)})`, "error");
     cli.deuda = red(Number(cli.deuda) + t);
+    if (!cli.desde) cli.desde = new Date().toLocaleDateString();
     const id = 1000 + (++caja.ventas);
-    ventasHist.unshift({ id, det: carrito.map((c) => `${c.nombre} x${c.cant}`).join(", ") + ` (fiado ${cli.nombre})`, total: t, fecha: new Date().toLocaleString(), medios: "Fiado", items: carrito.map((c) => ({ nombre: c.nombre, cant: c.cant, sub: c.sub })) });
-    ultimoTicket = { id, fecha: new Date().toLocaleString(), det: [...carrito], total: t, pagado: 0, vuelto: 0, fiado: cli.nombre };
+    const fh = new Date().toLocaleString(), dia = new Date().toLocaleDateString();
+    const items = carrito.map((c) => ({ nombre: c.nombre, cant: c.cant, sub: c.sub, dev: 0 }));
+    (cli.hist = cli.hist || []).unshift({ h: fh, txt: `Venta #${id} · ${fmt(t)}` });
+    ventasHist.unshift({ id, det: carrito.map((c) => `${c.nombre} x${c.cant}`).join(", ") + ` (fiado ${cli.nombre})`, total: t, fecha: fh, dia, medios: "Fiado", items, pagado: 0, vuelto: 0, fiado: cli.nombre });
+    ultimoTicket = { id, fecha: fh, det: [...carrito], total: t, pagado: 0, vuelto: 0, fiado: cli.nombre };
+    carrito.forEach((c) => { const p = productos.find((x) => x.id === c.pid); if (p) p.ultV = fh; });
+    log(`Fiado #${id} a ${cli.nombre} por ${fmt(t)}`);
     carrito = []; fiadoCli = ""; desc = 0;
-    render(); showTicket();
+    render(); if (cfg.print) showTicket(); else msg(`Fiado #${id} registrado (impresión desactivada)`);
   }
   function printTicket() {
     if (!ultimoTicket) return;
-    $("ticket-impresion").innerHTML = `<div style="text-align:center"><b>Mi Kiosco Demo</b><br>OdinGO POS Express<br>Ticket #${ultimoTicket.id} · ${ultimoTicket.fecha}<hr>${ultimoTicket.det.map((d) => `${d.cant} x ${esc(d.nombre)} .... ${fmt(d.sub)}`).join("<br>")}<hr><b>TOTAL: ${fmt(ultimoTicket.total)}</b><br>Pagado: ${fmt(ultimoTicket.pagado)} · Vuelto: ${fmt(ultimoTicket.vuelto)}${ultimoTicket.fiado ? `<br>Fiado a: ${esc(ultimoTicket.fiado)}` : ""}<br><br>¡Gracias por su compra!</div>`;
+    $("ticket-impresion").innerHTML = `<div style="text-align:center"><b>${esc(cfg.nombre)}</b><br>OdinGO POS Express<br>Ticket #${ultimoTicket.id} · ${ultimoTicket.fecha}<hr>${ultimoTicket.det.map((d) => `${d.cant} x ${esc(d.nombre)} .... ${fmt(d.sub)}`).join("<br>")}<hr><b>TOTAL: ${fmt(ultimoTicket.total)}</b><br>Pagado: ${fmt(ultimoTicket.pagado)} · Vuelto: ${fmt(ultimoTicket.vuelto)}${ultimoTicket.fiado ? `<br>Fiado a: ${esc(ultimoTicket.fiado)}` : ""}<br><br>¡Gracias por su compra!</div>`;
   }
-  function showTicket() {
-    if (!ultimoTicket) return;
-    printTicket();
-    const t = ultimoTicket;
-    $("modal").innerHTML = `<div class="modal"><div class="box" style="text-align:left;font-family:'Courier New',monospace">
-      <div style="text-align:center"><b style="font-size:1.1rem">Mi Kiosco Demo</b><br><span style="font-size:.8rem">OdinGO POS Express</span><br><span style="font-size:.8rem">Ticket #${t.id} · ${t.fecha}</span></div>
+  function ticketBody(t) {
+    return `<div style="text-align:center"><b style="font-size:1.1rem">${esc(cfg.nombre)}</b><br><span style="font-size:.8rem">OdinGO POS Express</span><br><span style="font-size:.8rem">Ticket #${t.id} · ${t.fecha}</span></div>
       <hr><div style="font-size:.9rem">${t.det.map((d) => `<div style="display:flex;justify-content:space-between"><span>${d.cant} x ${esc(d.nombre)}</span><b>${fmt(d.sub)}</b></div>`).join("")}</div><hr>
       <div style="display:flex;justify-content:space-between;font-size:1.2rem"><span><b>TOTAL</b></span><b>${fmt(t.total)}</b></div>
       <div style="font-size:.85rem">Pagado: ${fmt(t.pagado)} · Vuelto: <b style="color:#16a34a">${fmt(t.vuelto)}</b>${t.fiado ? `<br>Fiado a: <b>${esc(t.fiado)}</b>` : ""}</div>
       <p style="text-align:center;font-size:.85rem">¡Gracias por su compra!</p>
-      <div style="display:flex;gap:8px;font-family:system-ui"><button class="bigbtn" style="flex:1" onclick="DK.doPrint()">🖨 Imprimir</button>
-      <button class="minibtn" onclick="DK.closeModal()">Cerrar</button></div></div></div>`;
+      <div style="display:flex;gap:8px;font-family:system-ui;flex-wrap:wrap"><button class="bigbtn" style="flex:1" onclick="DK.doPrint()">🖨 Imprimir</button>
+      <button class="minibtn" onclick="DK.arca()">🧾 ARCA</button>
+      <button class="minibtn" onclick="DK.closeModal()">Cerrar</button></div>
+      <p style="font-size:.75rem;color:var(--muted);text-align:center">🧾 ARCA: en el sistema real aquí se pide el CAE (Factura C).</p>`;
+  }
+  function showTicket() {
+    if (!ultimoTicket) return;
+    printTicket();
+    $("modal").innerHTML = `<div class="modal"><div class="box" style="text-align:left;font-family:'Courier New',monospace">${ticketBody(ultimoTicket)}</div></div>`;
   }
   function doPrint() { printTicket(); document.body.dataset.print = ""; window.print(); }
   function addCombo(id) {
@@ -445,7 +475,7 @@ const DK = (() => {
           <div>Desc. ($): <input class="inp" type="number" min="0" value="${desc}" ${unlocked() ? `onchange="DK.desc(this.value)"` : "disabled title='🔒 Disponible con clave completa'"} style="width:70px;margin-left:5px;padding:4px"></div></div>
           <h2 style="margin:5px 0">TOTAL: ${fmt(tt)}</h2>
           ${unlocked() ? `<div style="display:flex;gap:6px;align-items:center;margin-top:6px"><label style="font-size:.8rem;font-weight:bold">🧾 Fiado a:</label>
-            <select class="inp" onchange="DK.fiado(this.value)" style="flex:1"><option value="">Contado (normal)...</option>${clientes.map((c) => `<option value="${c.id}" ${String(fiadoCli) === String(c.id) ? "selected" : ""}>${esc(c.nombre)} (debe ${fmt(c.deuda)})</option>`).join("")}</select></div>` : ""}
+            <select class="inp" onchange="DK.fiado(this.value)" style="flex:1"><option value="">Contado (normal)...</option>${clientes.map((c) => `<option value="${c.id}" ${String(fiadoCli) === String(c.id) ? "selected" : ""}>${esc(c.nombre)} (debe ${fmt(c.deuda)}${c.limite ? ` / lím ${fmt(c.limite)}` : ""})</option>`).join("")}</select></div>` : ""}
           ${!fiadoCli ? `<div style="background:var(--surface2);border:1px solid var(--border-soft);border-radius:6px;padding:8px;margin-top:8px">
             <b style="font-size:.8rem">Pagos:</b><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">
             <select class="inp" id="dk-pm" style="flex:1;min-width:140px"><option value="">Medio...</option>${MEDIOS.map((m) => `<option value="${m.id}">${m.nombre}</option>`).join("")}</select>
@@ -464,12 +494,15 @@ const DK = (() => {
     const tabs = [["turno", "Turno actual"], ["movs", "Sesiones y movimientos"], ["ventas", "Ventas del turno"]];
     let inner = `<div style="display:flex;gap:6px;margin-bottom:15px">${tabs.map(([t, l]) => `<button class="minibtn" style="${cajaTab === t ? "background:#0f172a;color:#fff;font-weight:bold" : ""}" onclick="DK.ctab('${t}')">${l}${t !== "turno" && !unlocked() ? " 🔒" : ""}</button>`).join("")}</div>`;
     if (cajaTab === "ventas") {
-      inner += unlocked() ? `<div class="card"><b>Ventas del turno (${ventasHist.length})</b>
-        ${ventasHist.map((v) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0;display:flex;justify-content:space-between"><span>#${v.id} · ${esc(v.det)} <span style="color:var(--muted)">· ${esc(v.medios)}</span></span><b>${fmt(v.total)}</b></div>`).join("") || "<p style='color:var(--muted)'>Sin ventas todavía. Andá al POS 👆</p>"}</div>`
+      const hoy = new Date().toLocaleDateString();
+      const lv = ventasHist.filter((v) => ventFiltro === "todas" || (v.dia || hoy) === hoy);
+      inner += unlocked() ? `<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><b>Ventas (${lv.length})</b>
+        <div><button class="minibtn" style="${ventFiltro === "hoy" ? "background:#0f172a;color:#fff" : ""}" onclick="DK.ventF('hoy')">Hoy</button> <button class="minibtn" style="${ventFiltro === "todas" ? "background:#0f172a;color:#fff" : ""}" onclick="DK.ventF('todas')">Todas</button></div></div>
+        ${lv.map((v) => { const dev = (v.items || []).some((i) => Number(i.dev) > 0); return `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span>#${v.id} · ${esc(v.det)} <span style="color:var(--muted)">· ${esc(v.medios)}</span>${dev ? ` <span class="bdg" style="background:#fee2e2;color:#991b1b">DEVUELTO</span>` : ""}</span><span><b>${fmt(v.total)}</b> <button class="minibtn" onclick="DK.reimpId(${v.id})" title="Reimprimir">🖨</button> <button class="minibtn" onclick="DK.arca()" title="Facturación ARCA">🧾</button></span></div>`; }).join("") || "<p style='color:var(--muted)'>Sin ventas todavía. Andá al POS 👆</p>"}</div>`
         : lockBox("Ventas del turno 🔒", "El historial de ventas con detalle solo se muestra con la demo completa.");
     } else if (cajaTab === "movs") {
       inner += unlocked() ? `<div class="card"><b>Movimientos del turno (${movimientos.length})</b>
-        ${movimientos.map((m) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0;display:flex;justify-content:space-between"><span>${m.tipo === "egreso" ? "🔴" : "🟢"} ${esc(m.desc)}</span><b style="color:${m.tipo === "egreso" ? "#dc2626" : "#16a34a"}">${m.tipo === "egreso" ? "−" : "+"}${fmt(m.monto)}</b></div>`).join("") || "<p style='color:var(--muted)'>Sin movimientos.</p>"}</div>`
+        ${movimientos.map((m, i) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0;display:flex;justify-content:space-between;gap:8px"><span>${m.tipo === "egreso" ? "🔴" : "🟢"} ${esc(m.desc)}${m.prov ? ` <span style="color:var(--muted)">· Prov: ${esc(m.prov)}</span>` : ""}</span><span><b style="color:${m.tipo === "egreso" ? "#dc2626" : "#16a34a"}">${m.tipo === "egreso" ? "−" : "+"}${fmt(m.monto)}</b> <button onclick="DK.delMov(${i})" style="border:none;background:none;cursor:pointer;color:#94a3b8" title="Borrar (en el sistema real solo admin)">✕</button></span></div>`).join("") || "<p style='color:var(--muted)'>Sin movimientos.</p>"}</div>`
         : lockBox("Movimientos 🔒", "Los movimientos e ingresos/egresos se muestran con la demo completa.");
     } else {
       const esp = red(caja.inicial + caja.ingresos - caja.egresos);
@@ -493,12 +526,28 @@ const DK = (() => {
         <div style="display:flex;gap:10px;background:var(--surface);padding:15px;border-radius:8px;flex-wrap:wrap">
         <select id="dk-mv-t" class="inp"><option value="ingreso">Ingreso Manual</option><option value="egreso">Egreso</option></select>
         <input id="dk-mv-m" class="inp" type="number" placeholder="Monto"><input id="dk-mv-d" class="inp" placeholder="Motivo *" style="flex:1;min-width:180px">
+        <input id="dk-mv-p" class="inp" placeholder="Proveedor (egreso opcional)" style="flex:1;min-width:180px">
         <button onclick="DK.mov()" ${caja.abierta ? "" : "disabled"} style="padding:10px 20px;background:${caja.abierta ? "#2563eb" : "var(--placeholder)"};color:#fff;border:none;border-radius:4px;font-weight:bold">Registrar</button></div>`
         : `<p class="muted" style="margin-top:12px">🔒 Los ingresos/egresos manuales se habilitan con la demo completa.</p>`;
     }
     return `<div class="view"><h3>CAJA Diaria — ${caja.abierta ? "ABIERTA 🟢" : "CERRADA 🔴"}</h3>${inner}</div>`;
   }
 
+  function vtoInfo(vto) {
+    if (!vto) return { txt: "—", col: "var(--muted)" };
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const f = new Date(vto + "T00:00:00");
+    const dias = Math.round((f - hoy) / 864e5);
+    if (dias < 0) return { txt: `⚠ ${vto}`, col: "#dc2626" };
+    if (dias <= 30) return { txt: vto, col: "#d97706" };
+    return { txt: vto, col: "#16a34a" };
+  }
+  function stockCol(s) {
+    s = Number(s || 0);
+    if (s <= 0) return "#dc2626";
+    if (s <= 10) return "#d97706";
+    return "#166534";
+  }
   function vStock() {
     const q = filtroProd.toLowerCase();
     const list = productos.filter((p) => !q || p.nombre.toLowerCase().includes(q) || (p.codigo || "").includes(q));
@@ -507,15 +556,28 @@ const DK = (() => {
         <input id="dk-p-n" class="inp" placeholder="Nombre *"><input id="dk-p-c" class="inp" placeholder="Código barras">
         <input id="dk-p-cc" class="inp" type="number" placeholder="Precio costo"><input id="dk-p-pv" class="inp" type="number" placeholder="Precio venta *">
         <input id="dk-p-st" class="inp" type="number" placeholder="Stock"><select id="dk-p-um" class="inp"><option value="un">Unidad (un)</option><option value="kg">Kilos (kg)</option><option value="lt">Litros (lt)</option></select>
-        <label style="grid-column:span 2;font-size:.85rem"><input type="checkbox" id="dk-p-pes"> Es pesable / granel (pide peso en POS)</label>
+        <input id="dk-p-my" class="inp" type="number" placeholder="Mayorista desde (cant)"><input id="dk-p-mp" class="inp" type="number" placeholder="Precio mayorista">
+        <label style="font-size:.85rem">Vencimiento<input id="dk-p-vt" class="inp" type="date" style="margin-left:6px"></label>
+        <label style="font-size:.85rem"><input type="checkbox" id="dk-p-pes"> Es pesable / granel (pide peso en POS)</label>
         <div style="grid-column:span 2"><button onclick="DK.saveProd()" style="width:100%;padding:10px;background:#2563eb;color:#fff;border:none;border-radius:4px;font-weight:bold">Guardar</button></div>
       </div>
+      ${unlocked() ? `<div class="card" style="margin-bottom:15px;max-width:700px"><b>📈 Aumento masivo de precios</b>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
+          <input id="dk-a-p" class="inp" type="number" placeholder="% aumento" value="${esc(aumPct)}" style="width:110px">
+          <select id="dk-a-r" class="inp"><option value="1">Redondeo $1</option><option value="10">Redondeo $10</option><option value="50">Redondeo $50</option><option value="100">Redondeo $100</option></select>
+          <button class="minibtn" onclick="DK.aumPrev()">Ver previo</button>
+          ${aumRows ? `<button onclick="DK.aumApply()" style="padding:8px 16px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-weight:bold">Aplicar a ${aumRows.length} productos</button>` : ""}
+        </div>
+        ${aumRows ? `<table class="list" style="margin-top:10px"><thead><tr><th>Producto</th><th>Actual</th><th>Nuevo</th></tr></thead><tbody>
+          ${aumRows.map((r) => `<tr><td>${esc(r.nombre)}</td><td>${fmt(r.antes)}</td><td style="color:#16a34a;font-weight:bold">${fmt(r.nuevo)}</td></tr>`).join("")}</tbody></table>
+          <p style="font-size:.8rem;color:var(--muted)">Aplicar pide doble confirmación, como en el sistema real.</p>` : ""}</div>` : ""}
       <input class="inp" placeholder="Filtrar productos..." value="${esc(filtroProd)}" oninput="DK.filtro(this.value)" style="width:300px;margin-bottom:10px">
-      <table class="list"><thead><tr><th>ID</th><th>Nombre</th><th>Código</th><th>Venta</th><th>Stock</th><th></th></tr></thead><tbody>
-      ${list.map((p) => `<tr><td>${p.id}</td><td><b>${esc(p.nombre)}</b> <span style="font-size:.7rem;color:var(--muted)">${p.um}</span></td><td>${esc(p.codigo || "—")}</td>
+      <table class="list"><thead><tr><th>ID</th><th>Nombre</th><th>Código</th><th>Venta</th><th>Stock</th><th>Vto</th><th></th></tr></thead><tbody>
+      ${list.map((p) => { const vto = vtoInfo(p.vto); return `<tr><td>${p.id}</td><td><b>${esc(p.nombre)}</b> <span style="font-size:.7rem;color:var(--muted)">${p.um}</span>${p.may ? ` <span class="bdg" style="background:#fef9c3;color:#854d0e">May</span>` : ""}</td><td>${esc(p.codigo || "—")}</td>
         <td style="color:#16a34a;font-weight:bold">${fmt(p.venta)}</td>
-        <td style="font-weight:bold;color:${Number(p.stock) <= 0 ? "#dc2626" : "#166534"}">${p.stock}</td>
-        <td><button class="minibtn" onclick="DK.reponer(${p.id})" title="Sumar stock">📥 +10</button> <button class="delbtn" onclick="DK.delProd(${p.id})">Borrar</button></td></tr>`).join("")}
+        <td style="font-weight:bold;color:${stockCol(p.stock)}">${p.stock}</td>
+        <td style="font-weight:bold;color:${vto.col};font-size:.8rem">${vto.txt}</td>
+        <td><button class="minibtn" onclick="DK.reponer(${p.id})" title="Sumar stock">📥 +10</button> <button class="delbtn" onclick="DK.delProd(${p.id})">Borrar</button></td></tr>`; }).join("")}
       </tbody></table>
       ${unlocked() ? "" : `<p style="font-size:.8rem;color:var(--muted);margin-top:8px">🔒 Con la clave completa ves los 30 productos del kiosco real + vencimientos, mayorista e importación Excel.</p>`}</div>`;
   }
@@ -558,14 +620,33 @@ const DK = (() => {
 
   // ---------- Vistas FULL (con clave) ----------
   function vReponer() {
-    return `<div class="view" style="max-width:800px"><h3>📥 Reponer Stock</h3>
-      <div class="card" style="margin-bottom:15px"><b>Ingreso de mercadería</b>
+    return `<div class="view" style="max-width:800px"><h3>📥 Reponer Stock (remito)</h3>
+      <div class="card" style="margin-bottom:15px"><b>Remito de mercadería</b>
       <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-        <select id="dk-r-p" class="inp" style="flex:2;min-width:160px">${productos.map((p) => `<option value="${p.id}">${esc(p.nombre)} (S:${p.stock})</option>`).join("")}</select>
-        <input id="dk-r-c" class="inp" type="number" placeholder="Cantidad" style="width:110px">
-        <input id="dk-r-o" class="inp" type="number" placeholder="Costo unit." style="width:110px"></div>
-      <div style="margin-top:8px"><button onclick="DK.reponerFull()" style="padding:10px 20px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-weight:bold">Ingresar stock</button></div>
-      <p style="font-size:.8rem;color:var(--muted)">En el sistema real: remito por proveedor, costo promedio y actualización de precio de venta.</p></div></div>`;
+        <select id="dk-r-prov" class="inp" style="flex:1;min-width:160px"><option value="">Proveedor...</option>${proveedores.map((p) => `<option value="${esc(p.nombre)}">${esc(p.nombre)}</option>`).join("")}</select></div>
+      <div id="dk-r-lines" style="margin-top:8px">${remitDraft.map((it, idx) => `
+        <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+          <select class="inp" data-rp="${idx}" style="flex:2;min-width:150px">
+            <option value="">Producto...</option>${productos.map((p) => `<option value="${p.id}" ${String(it.pid) === String(p.id) ? "selected" : ""}>${esc(p.nombre)} (S:${p.stock})</option>`).join("")}
+          </select>
+          <input class="inp" data-rc="${idx}" type="number" min="0" step="0.001" value="${esc(it.cant)}" placeholder="Cant" style="width:90px">
+          <input class="inp" data-rk="${idx}" type="number" min="0" value="${esc(it.costo)}" placeholder="Costo u." style="width:100px">
+          <button class="minibtn" onclick="DK.remitDelRow(${idx})">✕</button>
+        </div>`).join("")}</div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="minibtn" onclick="DK.remitAddRow()">+ Línea</button>
+        <button onclick="DK.saveRemito()" style="flex:1;padding:10px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-weight:bold;min-width:160px">Guardar remito</button>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted)">El remito actualiza stock y costo. En el sistema real sale primero lo que vence antes (FEFO).</p></div>
+      <div class="card"><b>Remitos cargados (${remitos.length})</b>
+      ${remitos.map((r) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0"><b>${esc(r.fecha)}</b> · ${esc(r.prov)}<br><span style="color:var(--muted)">${r.lines.map((l) => `${l.cant}x ${esc(l.nombre)}`).join(" · ")}</span></div>`).join("") || "<p style='color:var(--muted)'>Sin remitos todavía.</p>"}</div></div>`;
+  }
+  function remitSync() {
+    document.querySelectorAll("#dk-r-lines select").forEach((s) => { remitDraft[Number(s.dataset.rp)].pid = s.value; });
+    document.querySelectorAll("#dk-r-lines input").forEach((i) => {
+      if (i.dataset.rc !== undefined) remitDraft[Number(i.dataset.rc)].cant = i.value;
+      if (i.dataset.rk !== undefined) remitDraft[Number(i.dataset.rk)].costo = i.value;
+    });
   }
   function vProveedores() {
     return `<div class="view" style="max-width:800px"><h3>🚛 Proveedores</h3>
@@ -576,14 +657,16 @@ const DK = (() => {
   }
   function vDevol() {
     const v = ventasHist.find((x) => String(x.id) === String(devVenta));
+    const disp = (it) => red(Number(it.cant) - Number(it.dev || 0));
     return `<div class="view" style="max-width:800px"><h3>🔄 Devoluciones</h3>
       <div class="card" style="margin-bottom:15px">
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <select class="inp" onchange="DK.devSelV(this.value)" style="flex:1;min-width:160px"><option value="">Venta...</option>${ventasHist.map((x) => `<option value="${x.id}" ${String(devVenta) === String(x.id) ? "selected" : ""}>#${x.id} · ${fmt(x.total)}</option>`).join("")}</select>
-        <select class="inp" onchange="DK.devSelI(this.value)" style="flex:1;min-width:160px"><option value="">Item...</option>${(v?.items || []).map((i) => `<option ${devItem === i.nombre ? "selected" : ""}>${esc(i.nombre)}</option>`).join("")}</select>
+        <select class="inp" onchange="DK.devSelI(this.value)" style="flex:1;min-width:160px"><option value="">Item...</option>${(v?.items || []).map((i) => `<option ${devItem === i.nombre ? "selected" : ""}>${esc(i.nombre)} (disp. ${disp(i)})</option>`).join("")}</select>
         <input class="inp" type="number" placeholder="Cant" value="${esc(devCant)}" onchange="DK.devC(this.value)" style="width:90px">
         <input class="inp" placeholder="Motivo" value="${esc(devMotivo)}" onchange="DK.devM(this.value)" style="flex:1;min-width:140px"></div>
-      <div style="margin-top:8px"><button onclick="DK.devOk()" style="padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:4px;font-weight:bold">Procesar devolución</button></div></div>
+      <div style="margin-top:8px"><button onclick="DK.devOk()" style="padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:4px;font-weight:bold">Procesar devolución</button></div>
+      <p style="font-size:.8rem;color:var(--muted)">No se puede devolver más de lo vendido ni repetir lo ya devuelto.</p></div>
       <div class="card"><b>Procesadas (${devoluciones.length})</b>${devoluciones.map((d) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:6px 0"><b>#${d.venta}</b> ${esc(d.item)} x${d.cant} · ${fmt(d.monto)} · ${esc(d.motivo)}</div>`).join("") || "<p style='color:var(--muted)'>Sin devoluciones.</p>"}</div></div>`;
   }
   function vCtaCte() {
@@ -592,42 +675,71 @@ const DK = (() => {
         <input id="dk-cc-n" class="inp" placeholder="Nombre cliente *" style="flex:2;min-width:160px"><input id="dk-cc-l" class="inp" type="number" placeholder="Límite $" style="width:120px">
         <button class="minibtn" onclick="DK.addCli()">Crear cuenta</button></div></div>
       ${clientes.map((c) => `<div class="card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <div><b>${esc(c.nombre)}</b><div style="font-size:.8rem;color:var(--muted)">Debe: <b style="color:${Number(c.deuda) > 0 ? "#dc2626" : "#16a34a"}">${fmt(c.deuda)}</b>${c.limite ? ` / Lím ${fmt(c.limite)}` : ""}</div></div>
-        <div style="display:flex;gap:6px"><input id="dk-cob-${c.id}" class="inp" type="number" placeholder="$ cobra" style="width:110px"><button class="minibtn" onclick="DK.cobrarCli(${c.id})">Cobrar</button></div></div></div>`).join("") || "<p style='color:var(--muted)'>Sin cuentas.</p>"}</div>`;
+        <div><b>${esc(c.nombre)}</b><div style="font-size:.8rem;color:var(--muted)">Debe: <b style="color:${Number(c.deuda) > 0 ? "#dc2626" : "#16a34a"}">${fmt(c.deuda)}</b>${c.limite ? ` / Lím ${fmt(c.limite)}` : " (sin límite)"}${c.desde ? ` · Cliente desde ${esc(c.desde)}` : ""}</div></div>
+        <div style="display:flex;gap:6px"><input id="dk-cob-${c.id}" class="inp" type="number" placeholder="$ cobra" style="width:110px"><button class="minibtn" onclick="DK.cobrarCli(${c.id})">Cobrar</button></div></div>
+        ${(c.hist || []).length ? `<div style="margin-top:8px;font-size:.8rem;color:var(--muted)">${c.hist.slice(0, 5).map((hh) => `<div style="border-top:1px solid var(--bg);padding:4px 0">${esc(hh.h)} — ${esc(hh.txt)}</div>`).join("")}</div>` : ""}</div>`).join("") || "<p style='color:var(--muted)'>Sin cuentas.</p>"}</div>`;
   }
   function vEtiq() {
     const sel = productos.filter((p) => etiqSel[p.id]);
+    const tag = (p, cant) => etiqModo === "barras"
+      ? `<div style="border:1px dashed #999;padding:10px;text-align:center;background:#fff;color:#000;border-radius:6px"><div style="font-size:11px">${esc(p.nombre)} x${cant}</div><div style="height:34px;margin:4px 0;background:repeating-linear-gradient(90deg,#000 0 2px,transparent 2px 4px,#000 4px 7px,transparent 7px 9px)"></div><div style="font-size:11px;letter-spacing:2px">${esc(p.codigo || ("000" + p.id))}</div></div>`
+      : `<div style="border:1px dashed #999;padding:10px;text-align:center;background:#fff;color:#000;border-radius:6px"><div style="font-size:11px">${esc(p.nombre)} x${cant}</div><div style="font-size:26px;font-weight:bold">${fmt(p.venta)}</div><div style="font-size:11px">Cód: ${esc(p.codigo || p.id)}</div></div>`;
     return `<div class="view"><h3>🏷️ Etiquetas de precio</h3>
-      <p style="font-size:.85rem;color:var(--muted)">Tildá productos y previsualizá las etiquetas para la góndola.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${productos.slice(0, 30).map((p) => `<label style="font-size:.8rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer"><input type="checkbox" ${etiqSel[p.id] ? "checked" : ""} onchange="DK.etiq(${p.id},this.checked)"> ${esc(p.nombre)}</label>`).join("")}</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:700px">${sel.map((p) => `<div style="border:1px dashed #999;padding:10px;text-align:center;background:#fff;color:#000;border-radius:6px"><div style="font-size:11px">${esc(p.nombre)}</div><div style="font-size:26px;font-weight:bold">${fmt(p.venta)}</div><div style="font-size:11px">Cód: ${esc(p.codigo || p.id)}</div></div>`).join("") || "<p style='color:var(--muted)'>Nada tildado.</p>"}</div>
+      <p style="font-size:.85rem;color:var(--muted)">Tildá productos, indicá cuántas de cada una y elegí el modo. Vista previa lista para recortar en 3 columnas.</p>
+      <div style="margin:10px 0"><label style="font-size:.85rem;font-weight:bold">Modo: </label>
+        <select class="inp" onchange="DK.etiqModo(this.value)"><option value="precio" ${etiqModo === "precio" ? "selected" : ""}>Precio grande</option><option value="barras" ${etiqModo === "barras" ? "selected" : ""}>Código de barras</option></select></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${productos.slice(0, 30).map((p) => `<label style="font-size:.8rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;display:flex;gap:6px;align-items:center"><input type="checkbox" ${etiqSel[p.id] ? "checked" : ""} onchange="DK.etiq(${p.id},this.checked)"> ${esc(p.nombre)} <input type="number" min="1" value="${etiqCant[p.id] || 1}" onclick="event.stopPropagation()" onchange="DK.etiqCant(${p.id},this.value)" style="width:52px;padding:2px 4px" title="Cantidad"></label>`).join("")}</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:700px">${sel.map((p) => { const n = Math.max(1, parseInt(etiqCant[p.id] || "1", 10)); let out = ""; for (let k = 0; k < Math.min(n, 12); k++) out += tag(p, n); return out; }).join("") || "<p style='color:var(--muted)'>Nada tildado.</p>"}</div>
       ${sel.length ? `<div style="margin-top:10px"><button class="minibtn" onclick="window.print()">🖨 Imprimir etiquetas</button></div>` : ""}</div>`;
   }
   function vUsuarios() {
     return `<div class="view" style="max-width:700px"><h3>👤 Usuarios y roles</h3>
       <div class="card" style="margin-bottom:15px"><div style="display:flex;gap:8px;flex-wrap:wrap">
         <input id="dk-u-n" class="inp" placeholder="Usuario *" style="flex:1;min-width:140px">
-        <select id="dk-u-r" class="inp"><option value="cajero">cajero</option><option value="admin">admin</option></select>
+        <select id="dk-u-r" class="inp"><option value="admin">admin</option><option value="encargado">encargado</option><option value="cajero">cajero</option></select>
         <button class="minibtn" onclick="DK.addUser()">Crear</button></div>
       <p style="font-size:.8rem;color:var(--muted)">En el sistema real cada rol tiene permisos (vender, descuento, caja, config...) y clave propia.</p></div>
-      <div class="card">${usuarios.map((u) => `<div style="font-size:.9rem;border-bottom:1px solid var(--bg);padding:6px 0"><b>${esc(u.username)}</b> <span class="bdg" style="background:#e0e7ff;color:#3730a3">${esc(u.rol)}</span></div>`).join("")}</div></div>`;
+      <div class="card" style="margin-bottom:15px">${usuarios.map((u) => `<div style="font-size:.9rem;border-bottom:1px solid var(--bg);padding:6px 0"><b>${esc(u.username)}</b> <span class="bdg" style="background:#e0e7ff;color:#3730a3">${esc(u.rol)}</span></div>`).join("")}</div>
+      <div class="card"><b>⚙️ Mi kiosco (ticket)</b>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
+        <input id="dk-cfg-n" class="inp" value="${esc(cfg.nombre)}" style="flex:2;min-width:160px" placeholder="Nombre del local">
+        <label style="font-size:.85rem"><input type="checkbox" id="dk-cfg-p" ${cfg.print ? "checked" : ""}> Imprimir ticket al cobrar</label>
+        <button class="minibtn" onclick="DK.saveCfg()">Guardar</button></div>
+      <p style="font-size:.8rem;color:var(--muted)">En el sistema real también se sube el logo y se elige papel 58/80mm.</p></div></div>`;
   }
   function vInformes() {
     const tot = red(ventasHist.reduce((a, v) => a + Number(v.total || 0), 0));
-    const rank = {};
-    ventasHist.forEach((v) => (v.items || []).forEach((i) => { rank[i.nombre] = (rank[i.nombre] || 0) + Number(i.cant || 0); }));
+    const rank = vendidos();
     const top = Object.entries(rank).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const rota = [...productos].sort((a, b) => (rank[b.nombre] || 0) - (rank[a.nombre] || 0));
     return `<div class="view"><h3>📊 Informes del turno</h3>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px;max-width:800px">
         <div class="card"><small>Recaudado</small><div style="font-size:1.4rem;font-weight:bold;color:#16a34a">${fmt(tot)}</div></div>
         <div class="card"><small>Tickets</small><div style="font-size:1.4rem;font-weight:bold">${ventasHist.length}</div></div>
         <div class="card"><small>Ticket promedio</small><div style="font-size:1.4rem;font-weight:bold">${ventasHist.length ? fmt(red(tot / ventasHist.length)) : "—"}</div></div></div>
-      <div class="card" style="max-width:800px"><b>🏆 Más vendidos</b>${top.map(([n, c]) => `<div style="font-size:.85rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--bg);padding:4px 0"><span>${esc(n)}</span><b>x${c}</b></div>`).join("") || "<p style='color:var(--muted)'>Todavía sin ventas en esta demo.</p>"}
-      <p style="font-size:.8rem;color:var(--muted);margin-top:8px">En el sistema real: por medio de pago, por día, rotación, Excel y backup de la base.</p></div></div>`;
+      <div class="card" style="max-width:800px;margin-bottom:15px"><b>🏆 Más vendidos</b>${top.map(([n, c]) => `<div style="font-size:.85rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--bg);padding:4px 0"><span>${esc(n)}</span><b>x${c}</b></div>`).join("") || "<p style='color:var(--muted)'>Todavía sin ventas en esta demo.</p>"}
+      <div style="margin-top:10px"><button class="minibtn" onclick="DK.csvVentas()">⬇ Descargar ventas (CSV)</button></div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:8px">En el sistema real: consolidado por fecha y por medio de pago, Excel y backup de la base.</p></div>
+      <div class="card" style="max-width:800px;margin-bottom:15px"><b>🔄 Rotación de productos</b>
+      ${rota.map((p) => { const v = rank[p.nombre] || 0; return `<div style="font-size:.85rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--bg);padding:4px 0"><span>${esc(p.nombre)} <span style="color:var(--muted)">· últ: ${esc(p.ultV || "—")}</span>${v === 0 ? ` <span class="bdg" style="background:#fef9c3;color:#854d0e">Sin movimiento</span>` : ""}</span><b>x${v}</b></div>`; }).join("")}</div>
+      <div class="card" style="max-width:800px"><b>🕵️ Auditoría (quién hizo qué)</b>
+      ${audit.map((a) => `<div style="font-size:.85rem;border-bottom:1px solid var(--bg);padding:4px 0"><span style="color:var(--muted)">${esc(a.h)}</span> — ${esc(a.op)}</div>`).join("") || "<p style='color:var(--muted)'>Sin acciones registradas en esta sesión.</p>"}</div></div>`;
+  }
+  function csvVentas() {
+    const rows = [["Ticket", "Fecha", "Detalle", "Total", "Medios"]];
+    ventasHist.forEach((v) => rows.push([v.id, v.fecha, (v.det || "").replace(/;/g, ","), v.total, v.medios]));
+    const csv = rows.map((r) => r.join(";")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "ventas_demo.csv";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
 
   function render() {
     renderNav();
+    const kn = $("kiosco-nombre");
+    if (kn) kn.textContent = cfg.nombre;
     const app = $("app");
     app.innerHTML = vista === "pos" ? vPOS() : vista === "caja" ? vCaja() : vista === "stock" ? vStock() : vista === "combos" ? vCombos() : vista === "reponer" ? vReponer() : vista === "proveedores" ? vProveedores() : vista === "devoluciones" ? vDevol() : vista === "ctacte" ? vCtaCte() : vista === "etiquetas" ? vEtiq() : vista === "usuarios" ? vUsuarios() : vInformes();
     tickLock();
@@ -639,6 +751,60 @@ const DK = (() => {
     if (e.key === "F2") { e.preventDefault(); $("dk-bus")?.focus(); }
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); cobrar(); }
   });
+
+  function aumPrev() {
+    aumPct = $("dk-a-p")?.value || ""; aumRed = $("dk-a-r")?.value || "10";
+    const pct = parseFloat(aumPct), base = parseFloat(aumRed) || 10;
+    if (!(pct > 0)) return msg("Indicá el % de aumento", "error");
+    aumRows = productos.map((p) => ({ id: p.id, nombre: p.nombre, antes: p.venta, nuevo: Math.round(Number(p.venta) * (1 + pct / 100) / base) * base }));
+    render();
+  }
+  function aumApply() {
+    if (!aumRows?.length) return;
+    if (!confirm(`¿Aplicar aumento a ${aumRows.length} productos? (1/2)`)) return;
+    if (!confirm("Confirmá de nuevo para aplicar. No se puede deshacer. (2/2)")) return;
+    aumRows.forEach((r) => { const p = productos.find((x) => x.id === r.id); if (p) p.venta = r.nuevo; });
+    log(`Aumento masivo ${aumPct}% aplicado a ${aumRows.length} productos`);
+    aumRows = null;
+    render(); msg("Precios actualizados 📈");
+  }
+  function remitAddRow() { remitSync(); remitDraft.push({ pid: "", cant: "", costo: "" }); render(); }
+  function remitDelRow(idx) { remitSync(); remitDraft = remitDraft.filter((_, i) => i !== idx); if (!remitDraft.length) remitDraft = [{ pid: "", cant: "", costo: "" }]; render(); }
+  function saveRemito() {
+    remitSync();
+    const prov = ($("dk-r-prov")?.value || "").trim();
+    const lines = remitDraft.filter((r) => r.pid && parseFloat(r.cant) > 0).map((r) => {
+      const p = productos.find((x) => String(x.id) === String(r.pid));
+      return { pid: r.pid, nombre: p ? p.nombre : "", cant: parseFloat(r.cant), costo: parseFloat(r.costo) || 0 };
+    }).filter((l) => l.nombre);
+    if (!prov) return msg("Elegí el proveedor del remito", "error");
+    if (!lines.length) return msg("Agregá al menos una línea al remito", "error");
+    lines.forEach((l) => {
+      const p = productos.find((x) => String(x.id) === String(l.pid));
+      if (p) { p.stock = red(Number(p.stock) + l.cant); if (l.costo > 0) p.costo = l.costo; }
+    });
+    remitos.unshift({ fecha: new Date().toLocaleString(), prov, lines });
+    log(`Remito de ${prov}: ${lines.map((l) => `${l.cant}x ${l.nombre}`).join(", ")}`);
+    remitDraft = [{ pid: "", cant: "", costo: "" }];
+    render(); msg(`Remito guardado: ${lines.length} líneas de ${prov} 📥`);
+  }
+  function delMov(i) {
+    const m = movimientos[i];
+    if (!m) return;
+    if (!confirm(`¿Borrar movimiento "${m.desc}" de ${fmt(m.monto)}? (En el sistema real solo el admin puede)`)) return;
+    if (m.tipo === "egreso") caja.egresos = red(caja.egresos - m.monto); else caja.ingresos = red(caja.ingresos - m.monto);
+    movimientos.splice(i, 1);
+    log(`Movimiento borrado: ${m.desc} (${fmt(m.monto)})`);
+    render(); msg("Movimiento borrado");
+  }
+  function ventF(v) { ventFiltro = v; render(); }
+  function reimpId(id) {
+    const v = ventasHist.find((x) => String(x.id) === String(id));
+    if (!v) return;
+    ultimoTicket = { id: v.id, fecha: v.fecha, det: (v.items || []).map((it) => ({ cant: it.cant, nombre: it.nombre, sub: it.sub })), total: v.total, pagado: v.pagado ?? v.total, vuelto: v.vuelto ?? 0, fiado: v.fiado || null };
+    showTicket();
+  }
+  function arca() { msg("🧾 En el sistema real, este botón pide el CAE a ARCA (Factura C). La demo vende con ticket común."); }
 
   return {
     go, theme, openKey, closeModal, useKey, reqPais, reqProv, reqCiu, reqSend,
@@ -667,11 +833,12 @@ const DK = (() => {
     addPago, delPago: (i) => { pagos = pagos.filter((_, x) => x !== i); render(); },
     exacto: () => { pagoMedio = "1"; pagoMonto = String(Math.max(0, total() - totPagos())); const m = $("dk-pm"), o = $("dk-pmo"); if (m) m.value = "1"; if (o) o.value = pagoMonto; },
     limpiarPagos: () => { pagos = []; render(); },
-    cobrar, reimp: () => showTicket(), doPrint, comboAddRow, comboDelRow,
+    cobrar, reimp: () => showTicket(), doPrint, reimpId, arca, csvVentas, ventF, delMov,
+    remitAddRow, remitDelRow, saveRemito, aumPrev, aumApply, comboAddRow, comboDelRow,
     abrir: () => {
       const n = ($("dk-ap-n")?.value || "").trim(), m = parseFloat($("dk-ap-m")?.value);
       if (!n || !(m >= 0)) return msg("Poné quién abre y la plata inicial", "error");
-      caja = { ...caja, abierta: true, responsable: n, inicial: m }; go("pos"); msg(`CAJA abierta por ${n}. Ya podés vender.`);
+      caja = { ...caja, abierta: true, responsable: n, inicial: m }; log(`Apertura de caja por ${n} con ${fmt(m)}`); go("pos"); msg(`CAJA abierta por ${n}. Ya podés vender.`);
     },
     cerrar: (esp) => {
       const n = ($("dk-ci-n")?.value || "").trim(), m = parseFloat($("dk-ci-m")?.value);
@@ -679,14 +846,16 @@ const DK = (() => {
       if (!confirm(`¿Cerrar CAJA contando ${fmt(m)} (${n})?`)) return;
       const dif = red(m - esp);
       caja.abierta = false;
+      log(`Cierre de caja por ${n}: esperado ${fmt(esp)}, contado ${fmt(m)}, dif ${fmt(dif)}`);
       msg(`CAJA cerrada. Esperado ${fmt(esp)} / Contado ${fmt(m)} / Dif ${fmt(dif)}`, dif === 0 ? "ok" : "error");
       render();
     },
     mov: () => {
-      const t = $("dk-mv-t")?.value, m = parseFloat($("dk-mv-m")?.value), d = ($("dk-mv-d")?.value || "").trim();
+      const t = $("dk-mv-t")?.value, m = parseFloat($("dk-mv-m")?.value), d = ($("dk-mv-d")?.value || "").trim(), pv = ($("dk-mv-p")?.value || "").trim();
       if (!m || m <= 0 || !d) return msg("Monto y motivo obligatorios", "error");
-      movimientos.unshift({ tipo: t, monto: m, desc: d });
+      movimientos.unshift({ tipo: t, monto: m, desc: d, prov: t === "egreso" ? pv : "" });
       if (t === "egreso") caja.egresos = red(caja.egresos + m); else caja.ingresos = red(caja.ingresos + m);
+      log(`${t === "egreso" ? "Egreso" : "Ingreso"} ${fmt(m)}: ${d}${pv ? ` (prov. ${pv})` : ""}`);
       render(); msg("Movimiento registrado");
     },
     ctab: (t) => { cajaTab = t; render(); },
@@ -695,17 +864,12 @@ const DK = (() => {
       const n = ($("dk-p-n")?.value || "").trim(), pv = parseFloat($("dk-p-pv")?.value);
       if (!n || !(pv > 0)) return msg("Nombre y precio de venta obligatorios", "error");
       const um = $("dk-p-um")?.value || "un";
-      productos.push({ id: Math.max(...productos.map((p) => p.id)) + 1, nombre: n, codigo: ($("dk-p-c")?.value || "").trim() || null, costo: parseFloat($("dk-p-cc")?.value) || 0, venta: pv, stock: parseFloat($("dk-p-st")?.value) || 0, um, pes: $("dk-p-pes")?.checked || um !== "un" });
+      const myMin = parseFloat($("dk-p-my")?.value), myPr = parseFloat($("dk-p-mp")?.value);
+      productos.push({ id: Math.max(...productos.map((p) => p.id)) + 1, nombre: n, codigo: ($("dk-p-c")?.value || "").trim() || null, costo: parseFloat($("dk-p-cc")?.value) || 0, venta: pv, stock: parseFloat($("dk-p-st")?.value) || 0, um, pes: $("dk-p-pes")?.checked || um !== "un", vto: ($("dk-p-vt")?.value || "").trim() || null, may: (myMin > 0 && myPr > 0) ? { min: myMin, precio: myPr } : undefined });
+      log(`Producto creado: ${n}`);
       render(); msg("Producto creado");
     },
-    reponer: (id) => { const p = productos.find((x) => x.id === id); if (p) p.stock = red(Number(p.stock) + 10); render(); },
-    reponerFull: () => {
-      const p = productos.find((x) => String(x.id) === String($("dk-r-p")?.value));
-      const c = parseFloat($("dk-r-c")?.value);
-      if (!p || !(c > 0)) return msg("Elegí producto y cantidad", "error");
-      p.stock = red(Number(p.stock) + c);
-      render(); msg(`Stock actualizado: ${p.nombre} = ${p.stock}`);
-    },
+    reponer: (id) => { const p = productos.find((x) => x.id === id); if (p) { p.stock = red(Number(p.stock) + 10); log(`Reposición rápida: ${p.nombre} +10`); } render(); },
     addProv: () => {
       const n = ($("dk-pr-n")?.value || "").trim();
       if (!n) return msg("Nombre obligatorio", "error");
@@ -720,18 +884,24 @@ const DK = (() => {
       const vv = ventasHist.find((x) => String(x.id) === String(devVenta));
       const c = parseFloat(devCant);
       if (!vv || !devItem || !(c > 0)) return msg("Elegí venta, item y cantidad", "error");
+      const it = (vv.items || []).find((x) => x.nombre === devItem);
+      const dispo = it ? red(Number(it.cant) - Number(it.dev || 0)) : 0;
+      if (c > dispo) return msg(`Disponible para devolver: ${dispo} (ya se devolvió ${it.dev || 0})`, "error");
       const p = productos.find((x) => x.nombre === devItem);
       const monto = red(c * (p ? p.venta : 0));
+      if (it) it.dev = red(Number(it.dev || 0) + c);
       if (p) p.stock = red(Number(p.stock) + c);
       caja.egresos = red(caja.egresos + monto);
       devoluciones.unshift({ venta: vv.id, item: devItem, cant: c, monto, motivo: devMotivo || "—" });
+      log(`Devolución #${vv.id}: ${devItem} x${c} (${fmt(monto)})`);
       devVenta = ""; devItem = ""; devCant = ""; devMotivo = "";
       render(); msg("Devolución procesada ↩️");
     },
     addCli: () => {
       const n = ($("dk-cc-n")?.value || "").trim();
       if (!n) return msg("Nombre obligatorio", "error");
-      clientes.push({ id: Math.max(0, ...clientes.map((c) => c.id)) + 1, nombre: n, deuda: 0, limite: parseFloat($("dk-cc-l")?.value) || 0 });
+      clientes.push({ id: Math.max(0, ...clientes.map((c) => c.id)) + 1, nombre: n, deuda: 0, limite: parseFloat($("dk-cc-l")?.value) || 0, desde: null, hist: [] });
+      log(`Cuenta corriente creada: ${n}`);
       render(); msg("Cuenta creada");
     },
     cobrarCli: (id) => {
@@ -740,17 +910,35 @@ const DK = (() => {
       if (!c || !(m > 0)) return msg("Monto inválido", "error");
       c.deuda = red(Math.max(0, Number(c.deuda) - m));
       caja.ingresos = red(caja.ingresos + m);
+      (c.hist = c.hist || []).unshift({ h: new Date().toLocaleString(), txt: `Cobro ${fmt(m)} (efectivo a caja)` });
       movimientos.unshift({ tipo: "ingreso", monto: m, desc: "Cobro cta cte " + c.nombre });
+      log(`Cobro cta cte ${c.nombre}: ${fmt(m)}`);
       render(); msg(`Cobrado ${fmt(m)} a ${c.nombre}`);
     },
-    etiq: (id, on) => { if (on) etiqSel[id] = 1; else delete etiqSel[id]; render(); },
+    etiq: (id, on) => { if (on) { etiqSel[id] = 1; if (!etiqCant[id]) etiqCant[id] = 1; } else { delete etiqSel[id]; delete etiqCant[id]; } render(); },
+    etiqCant: (id, v) => { const n = parseInt(v, 10); etiqCant[id] = (n > 0 ? n : 1); render(); },
+    etiqModo: (v) => { etiqModo = v; render(); },
+    saveCfg: () => {
+      cfg.nombre = ($("dk-cfg-n")?.value || "").trim() || "Mi Kiosco Demo";
+      cfg.print = !!$("dk-cfg-p")?.checked;
+      log(`Config: nombre "${cfg.nombre}", impresión ${cfg.print ? "activada" : "desactivada"}`);
+      render(); msg("Mi kiosco guardado ⚙️");
+    },
     addUser: () => {
       const n = ($("dk-u-n")?.value || "").trim();
       if (!n) return msg("Usuario obligatorio", "error");
       usuarios.push({ username: n, rol: $("dk-u-r")?.value || "cajero" });
       render(); msg("Usuario creado");
     },
-    delProd: (id) => { if (confirm("¿Borrar producto?")) { productos = productos.filter((x) => x.id !== id); render(); } },
+    delProd: (id) => {
+      const p = productos.find((x) => x.id === id);
+      if (!p) return;
+      if (!confirm(`¿Borrar "${p.nombre}"? (1/2)`)) return;
+      if (!confirm(`Confirmá de nuevo: se borra "${p.nombre}". (2/2)`)) return;
+      productos = productos.filter((x) => x.id !== id);
+      log(`Producto borrado: ${p.nombre}`);
+      render(); msg("Producto borrado");
+    },
     saveCombo: () => {
       const n = ($("dk-c-n")?.value || "").trim(), pr = parseFloat($("dk-c-p")?.value);
       document.querySelectorAll("#dk-c-items select").forEach((s) => { comboDraft[Number(s.dataset.ci)].pid = s.value; });
