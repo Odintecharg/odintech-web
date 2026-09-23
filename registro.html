@@ -44,13 +44,15 @@ button{width:100%;margin-top:24px;padding:15px;border:none;border-radius:12px;ba
 <label>Provincia / Región <span>*</span></label><input id="r-reg">
 <label>Ciudad <span>*</span></label><input id="r-cix">
 </div>
-<label>Email <span>*</span></label><input id="r-mail" type="email" placeholder="vos@tumail.com">
-<label>Teléfono / WhatsApp <span>*</span></label><input id="r-tel" placeholder="Ej: 3454 12-3456">
+<label>Email <span>*</span></label><input id="r-mail" type="email" placeholder="vos@tumail.com" maxlength="120" autocomplete="email">
+<label>Teléfono / WhatsApp <span>*</span></label><input id="r-tel" placeholder="Ej: 3454 12-3456" maxlength="30" autocomplete="tel">
 <button onclick="RG.send()">Anotarme →</button>
 <div class="ok" id="ok">¡Listo! Se abrió tu mail con tus datos. Solo falta que aprietes enviar. ✉️</div>
+<p class="hint" style="margin-top:14px;line-height:1.6">Tus datos solo se usan para avisarte del lanzamiento. No pedimos contraseñas ni datos bancarios. Ley 25.326 de Protección de Datos Personales (AR).</p>
 </div>
 <script>
 const RG=(()=>{
+const RG_MAIL = ["odintecharg", "hotmail.com"].join("@");
 const PROVS=[["02","CABA"],["06","Buenos Aires"],["10","Catamarca"],["22","Chaco"],["26","Chubut"],["14","Córdoba"],["18","Corrientes"],["30","Entre Ríos"],["34","Formosa"],["38","Jujuy"],["42","La Pampa"],["46","La Rioja"],["50","Mendoza"],["54","Misiones"],["58","Neuquén"],["62","Río Negro"],["66","Salta"],["70","San Juan"],["74","San Luis"],["78","Santa Cruz"],["82","Santa Fe"],["86","Santiago del Estero"],["90","Tucumán"],["94","Tierra del Fuego"]];
 const BASE={"02":["CABA"],"06":["La Plata","Mar del Plata","Bahía Blanca","Quilmes","Tandil","Junín","Pinamar"],"10":["San Fernando del Valle de Catamarca","Belén"],"22":["Resistencia","Sáenz Peña"],"26":["Trelew","Puerto Madryn","Comodoro Rivadavia"],"14":["Córdoba","Villa María","Río Cuarto","Carlos Paz"],"18":["Corrientes","Goya"],"30":["Paraná","Concordia","Gualeguaychú","La Paz","Victoria"],"34":["Formosa","Clorinda"],"38":["San Salvador de Jujuy","Palpalá"],"42":["Santa Rosa","General Pico"],"46":["La Rioja","Chilecito"],"50":["Mendoza","San Rafael","Godoy Cruz"],"54":["Posadas","Oberá","Puerto Iguazú"],"58":["Neuquén","San Martín de los Andes"],"62":["Viedma","Bariloche","General Roca"],"66":["Salta","Orán"],"70":["San Juan"],"74":["San Luis","Villa Mercedes","Merlo"],"78":["Río Gallegos","El Calafate"],"82":["Santa Fe","Rosario","Rafaela","Venado Tuerto"],"86":["Santiago del Estero","La Banda"],"90":["San Miguel de Tucumán","Yerba Buena"],"94":["Ushuaia","Río Grande"]};
 const $=id=>document.getElementById(id);
@@ -76,15 +78,15 @@ function ciu(v){
   },400);
 }
 function send(){
-  const g=id=>($(id)?.value||'').trim();
+  const g=id=>($(id)?.value||'').trim().slice(0,120);
   const ar=$('r-pais').value==='Argentina';
-  const d={nom:g('r-nom'),ape:g('r-ape'),com:g('r-com'),tipo:$('r-tipo').value,pais:$('r-pais').value,
+  const d={nom:g('r-nom'),ape:g('r-ape'),com:g('r-com'),tipo:($('r-tipo').value||'').slice(0,60),pais:$('r-pais').value,
     prov:ar?(PROVS.find(([id])=>id===$('r-prov').value)||[])[1]||'':g('r-reg'),ciu:ar?g('r-ciu'):g('r-cix'),
-    mail:g('r-mail'),tel:g('r-tel')};
+    mail:g('r-mail'),tel:g('r-tel').slice(0,30)};
   if(!d.nom||!d.ape||!d.com||!d.tipo||!d.prov||!d.ciu||!d.tel)return alert('Completá todos los campos obligatorios 🙂');
   if(!/.+@.+\..+/.test(d.mail))return alert('Revisá el email 🙂');
   const body=`ALTA PROMOS LANZAMIENTO\n\nNombre: ${d.nom}\nApellido: ${d.ape}\nComercio: ${d.com}\nTipo: ${d.tipo}\nPaís: ${d.pais}\nProvincia: ${d.prov}\nCiudad: ${d.ciu}\nEmail: ${d.mail}\nTel: ${d.tel}`;
-  window.location.href='mailto:odintecharg@hotmail.com?subject='+encodeURIComponent('Alta promos · '+d.com)+'&body='+encodeURIComponent(body);
+  window.location.href='mailto:'+RG_MAIL+'?subject='+encodeURIComponent('Alta promos · '+d.com)+'&body='+encodeURIComponent(body);
   $('ok').style.display='block';
 }
 return{pais,prov,ciu,send};
