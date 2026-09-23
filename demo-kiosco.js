@@ -1,18 +1,16 @@
 /* =====================================================================
    OdinGO POS Express · DEMO pública (réplica visual del sistema real)
-   - Todo vive en memoria (+ sessionStorage solo para la clave de 1h).
-   - Sin clave: POS + Caja + Productos + Combos con catálogo reducido.
-   - Con clave de 1h (la genera el dueño): catálogo completo, descuento,
-     item manual, fiado (con límite), ventas del turno, remitos, aumento
-     masivo, vencimientos, etiquetas, devoluciones controladas, rotación,
-     auditoría y CSV.
+   - Todo vive en memoria (+ sessionStorage solo para la clave de 30 min).
+   - Sin clave: POS + Caja con catálogo reducido.
+   - Con clave de 30 min: catálogo completo y funciones extra.
+   NOTA: el bloqueo es solo barrera de demo/lead-gen, no es seguridad.
+   Todo lo que está en este archivo es legible en el navegador.
    ===================================================================== */
 
-// Dueño: el secreto también está en gen_clave_demo.py (tu PC, NO se publica).
-// La clave dura 30 minutos y los datos completos viajan codificados:
-// sin clave válida, el código fuente no muestra el catálogo completo.
+// Secreto de demo (ofuscado mínimo para no regalarlo en claro).
+// La clave dura 30 minutos y los datos extra viajan en base64.
 const DK_S = atob("b2Rpbmdv" + "LWtpb3Nj" + "by1kZW1vLTlmMms=");
-const DK_MAIL = "odintecharg@hotmail.com";
+const DK_MAIL = ["odintecharg", "hotmail.com"].join("@"); // armado en partes para frenar scrapers
 const UNLOCK_MS = 30 * 60 * 1000; // 30 minutos
 
 // ---------- Catálogo BASE (lo que ve todo el mundo) ----------
@@ -73,7 +71,7 @@ const DK = (() => {
   const $ = (id) => document.getElementById(id);
   const red = (n) => Math.round(Number(n || 0) * 100) / 100;
   const fmt = (n) => "$" + Number(n || 0).toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const esc = (s) => String(s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/`/g, "&#96;");
 
   // ---------- Estado en memoria ----------
   let vista = "pos", cajaTab = "turno";
@@ -106,7 +104,7 @@ const DK = (() => {
       clientes = JSON.parse(JSON.stringify(f0.clientes));
     } catch {}
   }
-  const MASTER_HASH = 2213855217; // hash de tu contraseña maestra (no figura en texto plano)
+  const MASTER_HASH = 2213855217; // hash interno, no es secreto real
 
   const unlocked = () => isMaster || Date.now() < unlockUntil;
 
@@ -119,7 +117,7 @@ const DK = (() => {
   function codeFor(d) { return String(djb2(DK_S + bucket(d)) % 1000000).padStart(6, "0"); }
   function checkKey(code) {
     code = String(code || "").trim();
-    if (djb2(code) === MASTER_HASH) return "master"; // tu contraseña permanente
+    if (djb2(code) === MASTER_HASH) return "master";
     const now = new Date();
     if (code === codeFor(now)) return "ok";
     if (code === codeFor(new Date(now.getTime() - 1800e3))) return "ok"; // gracia 30 min por desfase
