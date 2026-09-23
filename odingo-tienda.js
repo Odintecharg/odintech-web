@@ -8,9 +8,8 @@
    ===================================================== */
 
 const ODINGO_CONFIG = {
-  // TODO: reemplazar por tu número real, formato internacional sin "+" ni espacios.
-  // Ej Argentina: "5493454123456"
-  WHATSAPP_NUMBER: "5490000000000",
+  // WhatsApp de ventas (Argentina, formato internacional sin "+" ni espacios).
+  WHATSAPP_NUMBER: "5493437407273",
   EMAIL_VENTAS: "odintecharg@hotmail.com",
   MONEDA: "$ ARS",
 };
