@@ -1,12 +1,13 @@
 /* =====================================================================
    Demos OdinGO por sistema (página propia cada uno).
-   - Datos base visibles + extras codificados (solo con clave válida).
-   - Clave de 30 min (la genera el dueño) o maestra permanente del dueño.
+   - Datos base visibles + extras en base64 (se muestran con clave).
+   - Clave de 30 min o maestra del dueño.
    - Todo en memoria: al recargar vuelve a los datos de ejemplo.
+   NOTA: el bloqueo es solo barrera de demo/lead-gen, no es seguridad.
    La página define window.DEMO_SYS antes de cargar este archivo.
    ===================================================================== */
 const DS_S = atob("b2Rpbmdv" + "LWtpb3Nj" + "by1kZW1vLTlmMms=");
-const DS_MAIL = "odintecharg@hotmail.com";
+const DS_MAIL = ["odintecharg", "hotmail.com"].join("@"); // armado en partes para frenar scrapers
 const DS_WA = "5493437407273"; // WhatsApp OdinTech (mismo que odingo-tienda.js)
 const DS_UNLOCK_MS = 30 * 60 * 1000;
 const DS_MASTER_HASH = 2213855217;
@@ -106,7 +107,7 @@ const DS = (() => {
   const sys = window.DEMO_SYS;
   const $ = (id) => document.getElementById(id);
   const money = (n) => "$ " + Number(n).toLocaleString("es-AR");
-  const esc = (s) => String(s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;").replace(/`/g, "&#96;");
   const val = (id) => ($(id)?.value || "").trim();
 
   let DB = JSON.parse(JSON.stringify(SEED[sys]));
