@@ -7,7 +7,7 @@
    ===================================================================== */
 const DS_S = atob("b2Rpbmdv" + "LWtpb3Nj" + "by1kZW1vLTlmMms=");
 const DS_MAIL = "odintecharg@hotmail.com";
-const DS_WA = "5490000000000"; // TODO: mismo número que odingo-tienda.js
+const DS_WA = "5493437407273"; // WhatsApp OdinTech (mismo que odingo-tienda.js)
 const DS_UNLOCK_MS = 30 * 60 * 1000;
 const DS_MASTER_HASH = 2213855217;
 
