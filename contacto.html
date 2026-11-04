@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Contacto OdinTech · Contanos qué necesitás mejorar en tu empresa. La Paz, Entre Ríos. Email y WhatsApp.">
+    <meta name="description" content="Contacto OdinTech · Contame qué querés mejorar en tu negocio o empresa. La Paz, Entre Ríos. Email y WhatsApp.">
     <meta name="theme-color" content="#071d38">
     <title>Contacto | OdinTech</title>
     <link rel="icon" type="image/png" href="favicon.png">
@@ -45,10 +45,10 @@
             <div class="hero-grid-bg"></div>
             <div class="container narrow">
                 <div class="pill-hero"><span class="dot"></span>CONTACTO</div>
-                <h1>Contanos qué necesitás.</h1>
+                <h1>Contame qué necesitás.</h1>
                 <p style="margin-top:14px">
                     No hace falta que sepas qué sistema querés.
-                    Contanos cómo trabajás y vemos juntos la mejor forma de resolverlo.
+                    Contame cómo trabajás y vemos juntos por dónde empezar.
                 </p>
             </div>
         </section>
@@ -58,8 +58,8 @@
             <div class="container contact-grid">
                 <div>
                     <div class="section-label">ESCRIBINOS</div>
-                    <h2>Te respondemos a la brevedad.</h2>
-                    <p style="margin-top:14px">Completá lo básico y contanos qué querés mejorar. Cuanto más concreto, mejor te orientamos.</p>
+                    <h2>Escribime sin compromiso.</h2>
+                    <p style="margin-top:14px">Completá lo básico y contame qué te gustaría mejorar. Cuanto más concreto, mejor te podemos orientar.</p>
                     <div style="margin-top:26px;display:grid;gap:12px">
                         <a href="mailto:odintecharg@hotmail.com" class="contact-link">odintecharg@hotmail.com</a>
                         <div>
@@ -72,7 +72,7 @@
                     <form class="form" id="contact-form">
                         <div class="form-row">
                             <label>Nombre<input name="nombre" required placeholder="Tu nombre"></label>
-                            <label>Empresa<input name="empresa" placeholder="Tu empresa (opcional)"></label>
+                            <label>Negocio o empresa<input name="negocio" placeholder="Tu negocio o empresa (opcional)"></label>
                         </div>
                         <div class="form-row">
                             <label>Email<input name="email" type="email" required placeholder="tu@email.com"></label>
@@ -83,11 +83,11 @@
                                 <option>Gestión de mi comercio (OdinGO)</option>
                                 <option>Ver mis números donde esté (OdinCLOUD INFORMES)</option>
                                 <option>Una solución a medida (OdinPRO)</option>
-                                <option>Llevar mi empresa a internet (OdinWEB)</option>
+                                <option>Llevar mi negocio a internet (OdinWEB)</option>
                                 <option>Todavía no lo sé, quiero orientación</option>
                             </select>
                         </label>
-                        <label>Mensaje<textarea name="mensaje" placeholder="Contanos cómo trabajás hoy y qué te traba..."></textarea></label>
+                        <label>Mensaje<textarea name="mensaje" placeholder="Contame cómo trabajás hoy y qué te traba..."></textarea></label>
                         <button type="submit" class="button primary" style="border:none;cursor:pointer;width:100%">Enviar consulta →</button>
                         <small class="muted" style="color:var(--text-parrafos);font-size:12px">Se abre tu email con el mensaje armado. Sin registros ni spam.</small>
                     </form>
@@ -101,25 +101,25 @@
         <div class="container footer-grid">
             <div>
                 <img src="logo.png" alt="OdinTech" class="footer-logo">
-                <p>Simplificamos la gestión de tu empresa.</p>
+                <p>Sistemas para negocios de cualquier tamaño.</p>
                 <p>La Paz, Entre Ríos · Argentina</p>
             </div>
             <div>
-                <h4>SOLUCIONES</h4>
+                <h4>PRODUCTOS</h4>
                 <a href="odingo.html">OdinGO</a>
                 <a href="odincloud.html">OdinCLOUD INFORMES</a>
                 <a href="odinpro.html">OdinPRO</a>
                 <a href="odinweb.html">OdinWEB</a>
             </div>
             <div>
-                <h4>EMPRESA</h4>
+                <h4>ODINTECH</h4>
                 <a href="home.html">Inicio</a>
                 <a href="nosotros.html">Nosotros</a>
                 <a href="home.html#casos">Casos</a>
             </div>
             <div>
                 <h4>CONTACTO</h4>
-                <a href="contacto.html">Contanos qué necesitás</a>
+                <a href="contacto.html">Contame qué necesitás</a>
                 <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
             </div>
         </div>
@@ -154,7 +154,7 @@
             e.preventDefault();
             var f = e.target;
             var txt = 'Nombre: ' + f.nombre.value + '\n'
-                + 'Empresa: ' + (f.empresa.value || '-') + '\n'
+                + 'Negocio: ' + (f.negocio.value || '-') + '\n'
                 + 'Email: ' + f.email.value + '\n'
                 + 'Tel: ' + (f.telefono.value || '-') + '\n'
                 + 'Tema: ' + f.tema.value + '\n\n'
