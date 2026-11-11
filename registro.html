@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anotarme · Promos OdinTech</title>
+<title>Contacto · OdinTech</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -24,9 +24,9 @@ button{width:100%;margin-top:24px;padding:15px;border:none;border-radius:12px;ba
 </head>
 <body>
 <div class="wrap">
-<a class="back" href="index.html">← Volver</a>
-<h1>Anotame en las promos</h1>
-<p class="sub">Lanzamiento 02·11·2026. Dejá tus datos y te avisamos primero con precios y beneficios.</p>
+<a class="back" href="home.html">← Volver</a>
+<h1>Dejame tus datos</h1>
+<p class="sub">Ya estamos online. Dejá tus datos y te escribo con precios y beneficios.</p>
 <div class="row"><div><label>Nombre <span>*</span></label><input id="r-nom"></div><div><label>Apellido <span>*</span></label><input id="r-ape"></div></div>
 <label>Comercio <span>*</span></label><input id="r-com" placeholder="Nombre de tu negocio">
 <label>Tipo de comercio <span>*</span></label>
@@ -46,9 +46,9 @@ button{width:100%;margin-top:24px;padding:15px;border:none;border-radius:12px;ba
 </div>
 <label>Email <span>*</span></label><input id="r-mail" type="email" placeholder="vos@tumail.com" maxlength="120" autocomplete="email">
 <label>Teléfono / WhatsApp <span>*</span></label><input id="r-tel" placeholder="Ej: 3454 12-3456" maxlength="30" autocomplete="tel">
-<button onclick="RG.send()">Anotarme →</button>
+<button onclick="RG.send()">Enviar consulta →</button>
 <div class="ok" id="ok">¡Listo! Se abrió tu mail con tus datos. Solo falta que aprietes enviar. ✉️</div>
-<p class="hint" style="margin-top:14px;line-height:1.6">Tus datos solo se usan para avisarte del lanzamiento. No pedimos contraseñas ni datos bancarios. Ley 25.326 de Protección de Datos Personales (AR).</p>
+<p class="hint" style="margin-top:14px;line-height:1.6">Tus datos solo se usan para contactarte. No pedimos contraseñas ni datos bancarios. Ley 25.326 de Protección de Datos Personales (AR).</p>
 </div>
 <script>
 const RG=(()=>{
@@ -85,8 +85,8 @@ function send(){
     mail:g('r-mail'),tel:g('r-tel').slice(0,30)};
   if(!d.nom||!d.ape||!d.com||!d.tipo||!d.prov||!d.ciu||!d.tel)return alert('Completá todos los campos obligatorios 🙂');
   if(!/.+@.+\..+/.test(d.mail))return alert('Revisá el email 🙂');
-  const body=`ALTA PROMOS LANZAMIENTO\n\nNombre: ${d.nom}\nApellido: ${d.ape}\nComercio: ${d.com}\nTipo: ${d.tipo}\nPaís: ${d.pais}\nProvincia: ${d.prov}\nCiudad: ${d.ciu}\nEmail: ${d.mail}\nTel: ${d.tel}`;
-  window.location.href='mailto:'+RG_MAIL+'?subject='+encodeURIComponent('Alta promos · '+d.com)+'&body='+encodeURIComponent(body);
+  const body=`CONSULTA ODINTECH\n\nNombre: ${d.nom}\nApellido: ${d.ape}\nComercio: ${d.com}\nTipo: ${d.tipo}\nPaís: ${d.pais}\nProvincia: ${d.prov}\nCiudad: ${d.ciu}\nEmail: ${d.mail}\nTel: ${d.tel}`;
+  window.location.href='mailto:'+RG_MAIL+'?subject='+encodeURIComponent('Consulta · '+d.com)+'&body='+encodeURIComponent(body);
   $('ok').style.display='block';
 }
 return{pais,prov,ciu,send};
