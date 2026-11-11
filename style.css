@@ -1431,7 +1431,6 @@ section h2 { text-wrap: balance; }
     }
     .mcta .a { background: #18aaa5; color: #fff; }
     .mcta .b { border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; }
-    body { padding-bottom: 64px; }
 
     /* Carrusel horizontal con snap: la experiencia móvil */
     .problems-grid, .services-grid {
