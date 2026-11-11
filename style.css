@@ -1534,6 +1534,8 @@ section h2 { text-wrap: balance; }
 .eco-card .eco-tag { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; color: var(--accent); }
 .eco-card h3 { margin: 12px 0 10px; font-size: 22px; }
 .eco-card p { font-size: 14px; flex: 1; }
+.eco-card ul { list-style: none; margin: 14px 0 0; display: grid; gap: 6px; font-size: 13.5px; }
+.eco-card li::before { content: '✓ '; color: var(--accent); font-weight: 800; }
 .eco-card .btns { margin-top: 20px; }
 .eco-card .btns a {
     display: block; text-align: center; text-decoration: none;
@@ -1544,6 +1546,43 @@ section h2 { text-wrap: balance; }
 .eco-cloud { --accent: #2E86C1; }
 .eco-pro { --accent: #C49A2C; }
 .eco-web { --accent: #5B6CFF; }
+
+/* Menú de servicios del home: una fila por producto */
+.menu-list { display: grid; gap: 16px; margin-top: 40px; }
+.menu-row {
+    --accent: #18aaa5;
+    --accent-ink: #0b7a75;
+    --accent-btn: #0b7a75;
+    display: grid; grid-template-columns: 320px 1fr; gap: 38px;
+    background: var(--bg-card); border: 1px solid var(--border-card);
+    border-left: 4px solid var(--accent); border-radius: 14px;
+    padding: 30px 34px;
+}
+.menu-row.eco-go { --accent-ink: #0b7a75; --accent-btn: #0b7a75; }
+.menu-row.eco-web { --accent-ink: #3a4bd6; --accent-btn: #3a4bd6; }
+.menu-row.eco-cloud { --accent-ink: #1f6d9c; --accent-btn: #1f6d9c; }
+.menu-row.eco-pro { --accent-ink: #8a6a13; --accent-btn: #e5b84a; }
+.menu-row .eco-tag { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; color: var(--accent-ink); }
+.menu-row h3 { margin: 10px 0 10px; font-size: 23px; line-height: 1.2; }
+.menu-row p { font-size: 14.5px; }
+.menu-row .menu-items {
+    list-style: none; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 9px 26px; align-content: start; margin: 0; font-size: 14px;
+}
+.menu-row .menu-items li::before { content: '✓ '; color: var(--accent); font-weight: 800; }
+.menu-row .menu-cta a {
+    display: inline-block; margin-top: 18px; padding: 11px 18px;
+    border-radius: 8px; background: var(--accent-btn); color: #fff;
+    font-size: 12.5px; font-weight: 800; text-decoration: none;
+}
+.menu-row.eco-pro .menu-cta a { color: #071d38; }
+
+@media (max-width: 900px) {
+    .menu-row { grid-template-columns: 1fr; gap: 24px; padding: 26px 24px; }
+}
+@media (max-width: 600px) {
+    .menu-row .menu-items { grid-template-columns: 1fr; }
+}
 
 /* Flujo simple Entender → Mejorar */
 .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 44px; }
