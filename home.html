@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OdinTech · Sistemas, información y páginas web para negocios de cualquier tamaño: emprendimientos, locales, pymes y empresas. La Paz, Entre Ríos.">
+    <meta name="description" content="OdinTech · Sistemas listos, software a medida, webs e informes para negocios de cualquier tamaño: emprendimientos, locales, pymes y empresas. La Paz, Entre Ríos.">
     <meta name="theme-color" content="#071d38">
-    <title>OdinTech | Sistemas para tu negocio, del tamaño que sea</title>
+    <title>OdinTech | Sistemas, software a medida, webs e informes</title>
+    <link rel="canonical" href="https://www.odintech.com.ar/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="OdinTech">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:title" content="OdinTech | Sistemas, software a medida, webs e informes">
+    <meta property="og:description" content="OdinTech · Sistemas listos, software a medida, webs e informes para negocios de cualquier tamaño: emprendimientos, locales, pymes y empresas. La Paz, Entre Ríos.">
+    <meta property="og:url" content="https://www.odintech.com.ar/">
+    <meta property="og:image" content="https://www.odintech.com.ar/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,8 +37,8 @@
                 <a href="odingo.html">OdinGO</a>
                 <a href="odinpro.html">OdinPRO</a>
                 <a href="odinweb.html">OdinWEB</a>
-                <a href="odincloud.html">OdinCLOUD INFORMES</a>
-                <a href="nosotros.html">Nosotros</a>
+                <a href="informes.html">OdinTECH INFORMES</a>
+                <a href="nosotros.html">Quién soy</a>
                 <a href="contacto.html" class="header-button">Contacto</a>
                 <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
                     <div class="icon-switch"></div>
@@ -50,11 +59,11 @@
                         La gestión de tu negocio, <span class="grad">sin vueltas.</span>
                     </h1>
                     <p>
-                        Sistemas, información y páginas web para cualquier negocio.
+                        Sistemas listos, desarrollo a medida, webs e informes para cualquier negocio.
                         Te ayudo a ordenar el día a día, sin sumar complicaciones.
                     </p>
                     <div class="hero-buttons">
-                        <a href="#que-hacemos" class="button primary">Ver herramientas</a>
+                        <a href="#productos" class="button primary">Ver las cuatro líneas</a>
                         <a href="contacto.html" class="button secondary">Contame qué necesitás</a>
                     </div>
                     <div class="trust">
@@ -83,7 +92,42 @@
                     </div>
                     <div class="floating-card card-two">
                         <div class="icon">◉</div>
-                        <div><strong>Reporte semanal</strong><small>Listo en OdinCLOUD INFORMES</small></div>
+                        <div><strong>Reporte semanal</strong><small>Listo en OdinTECH INFORMES</small></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CUATRO LÍNEAS -->
+        <section class="services" id="productos" style="padding:70px 0;border-top:1px solid var(--border-color)">
+            <div class="container">
+                <div class="section-label">CUATRO LÍNEAS</div>
+                <h2>Elegís por dónde empezar.</h2>
+                <p style="color:var(--text-parrafos);margin-top:12px;max-width:700px">No hace falta contratar todo. Cada línea resuelve una parte distinta del negocio y se conectan entre sí cuando tiene sentido.</p>
+                <div class="eco-grid">
+                    <div class="eco-card eco-go">
+                        <div class="eco-tag">ODINGO</div>
+                        <h3>Sistemas listos</h3>
+                        <p>Sistemas de gestión armados y listos para operar, con soporte y mejoras continuas.</p>
+                        <div class="btns"><a href="odingo.html">Ver OdinGO</a></div>
+                    </div>
+                    <div class="eco-card eco-pro">
+                        <div class="eco-tag">ODINPRO</div>
+                        <h3>Software a medida</h3>
+                        <p>Desarrollo a medida y reingeniería de procesos para escalar tu operación.</p>
+                        <div class="btns"><a href="odinpro.html">Ver OdinPRO</a></div>
+                    </div>
+                    <div class="eco-card eco-web">
+                        <div class="eco-tag">ODINWEB</div>
+                        <h3>Webs que trabajan</h3>
+                        <p>Institucionales, catálogos y tiendas online, conectadas o no a tu gestión.</p>
+                        <div class="btns"><a href="odinweb.html">Ver OdinWEB</a></div>
+                    </div>
+                    <div class="eco-card eco-cloud">
+                        <div class="eco-tag">ODINTECH INFORMES</div>
+                        <h3>Informes y dashboards</h3>
+                        <p>Reportes integrados a tu sistema actual, sea SQL Server, base propia u otro.</p>
+                        <div class="btns"><a href="informes.html">Ver informes</a></div>
                     </div>
                 </div>
             </div>
@@ -172,7 +216,7 @@
                 <p style="margin:18px auto 30px;max-width:620px">No hace falta que sepas qué sistema necesitás. Contame cómo trabajás y qué querés mejorar, y vemos por dónde empezar.</p>
                 <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
                     <a href="contacto.html" class="button primary">Hablar con OdinTech</a>
-                    <a href="odingo.html" class="button secondary" style="color:#18aaa5;border-color:#18aaa5">Ver OdinGO</a>
+                    <a href="odingo.html" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Ver OdinGO</a>
                 </div>
             </div>
         </section>
@@ -183,24 +227,24 @@
         <div class="container footer-grid">
             <div>
                 <img src="logo.png" alt="OdinTech" class="footer-logo">
-                <p>Sistemas para negocios de cualquier tamaño.</p>
+                <p>Sistemas listos, software a medida, webs e informes.</p>
                 <p>La Paz, Entre Ríos · Argentina</p>
             </div>
             <div>
-                <h4>PRODUCTOS</h4>
+                <h3>PRODUCTOS</h3>
                 <a href="odingo.html">OdinGO</a>
-                <a href="odincloud.html">OdinCLOUD INFORMES</a>
                 <a href="odinpro.html">OdinPRO</a>
                 <a href="odinweb.html">OdinWEB</a>
+                <a href="informes.html">OdinTECH INFORMES</a>
             </div>
             <div>
-                <h4>ODINTECH</h4>
+                <h3>ODINTECH</h3>
                 <a href="home.html">Inicio</a>
-                <a href="nosotros.html">Nosotros</a>
-                <a href="home.html#casos">Casos</a>
+                <a href="nosotros.html">Quién soy</a>
+                <a href="odingo.html#demo">Demos</a>
             </div>
             <div>
-                <h4>CONTACTO</h4>
+                <h3>CONTACTO</h3>
                 <a href="contacto.html">Contame qué necesitás</a>
                 <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
             </div>
@@ -240,7 +284,7 @@
             header.classList.toggle('scrolled', scrollY > 12);
             function arm(el, cls, d) { el.classList.add(cls); el.dataset.d = d; wired.push(el); }
             var wired = [];
-            document.querySelectorAll('.problems-grid > *, .kv > *, .process-grid > *, .why-grid > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
+            document.querySelectorAll('.problems-grid > *, .eco-grid > *, .kv > *, .process-grid > *, .why-grid > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
             if (!('IntersectionObserver' in window)) { wired.forEach(function (el) { el.classList.add('in'); }); return; }
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
@@ -256,7 +300,7 @@
         })();
     </script>
     <div class="mcta">
-        <a class="a" href="#que-hacemos">Ver herramientas</a>
+        <a class="a" href="#productos">Ver las cuatro líneas</a>
         <a class="b" href="contacto.html">Hablemos</a>
     </div>
 </body>
