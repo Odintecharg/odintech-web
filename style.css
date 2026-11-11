@@ -13,7 +13,10 @@
     --nav-bg: rgba(255, 255, 255, 0.96);
     --nav-text: #10233e;
     --logo-filter: none;
-    --section-label: #18aaa5;
+    --section-label: #0b7a75;
+    --accent-strong: #0b7a75;
+    --gold-strong: #8a6a13;
+    --blue-strong: #3a4bd6;
 }
 
 body.dark-theme {
@@ -28,6 +31,9 @@ body.dark-theme {
     --nav-text: #ffffff;
     --logo-filter: brightness(0) invert(1);
     --section-label: #ffffff;
+    --accent-strong: #5eead4;
+    --gold-strong: #e5b84a;
+    --blue-strong: #8f9bff;
 }
 
 /* =====================================================
@@ -135,7 +141,7 @@ strong {
 .header-button {
     padding: 10px 18px;
     border-radius: 7px;
-    background: #18aaa5;
+    background: #0e7d78;
     color: white !important;
     font-size: 12px !important;
     font-weight: 700;
@@ -145,7 +151,7 @@ strong {
 }
 
 .header-button:hover {
-    background: #14938f;
+    background: #0b6a66;
     transform: translateY(-2px);
 }
 
@@ -550,7 +556,7 @@ section h2 {
 
 .problem-card span,
 .service-number {
-    color: #18aaa5;
+    color: var(--accent-strong);
     font-size: 13px;
     font-weight: 800;
     letter-spacing: 1px;
@@ -701,7 +707,7 @@ section h2 {
 }
 
 .process-step > span {
-    color: #18aaa5;
+    color: var(--accent-strong);
     font-size: 13px;
     font-weight: 800;
 }
@@ -1251,7 +1257,7 @@ body.dark-theme .btn-cobrar.mp { background: #0ea5e9; }
 /* Pasos de proceso con acento animado */
 .process-step { transition: transform 0.35s ease; }
 .process-step:hover { transform: translateX(4px); }
-.process-step:hover > span { color: #14938f; }
+.process-step:hover > span { color: #09645f; }
 
 /* Aparición con impacto al hacer scroll (la activa el snippet) */
 .reveal, .reveal-l, .reveal-r, .reveal-s {
@@ -1446,8 +1452,8 @@ section h2 { text-wrap: balance; }
 }
 
 /* =====================================================
-   REDISEÑO OFICIAL ODINTECH — navegación, ecosistema,
-   countdown, casos, formularios (etapa pre-lanzamiento)
+   REDISEÑO OFICIAL ODINTECH — navegación, cuatro líneas,
+   casos, formularios
    ===================================================== */
 
 /* Link activo del menú */
@@ -1513,27 +1519,7 @@ section h2 { text-wrap: balance; }
     .nav .theme-btn { align-self: flex-end; margin-top: 10px; }
 }
 
-/* Cuenta regresiva integrada al hero */
-.countdown {
-    display: flex; gap: 12px; flex-wrap: wrap;
-    margin-top: 30px;
-}
-.countdown .cd-cell {
-    min-width: 88px; text-align: center;
-    border: 1px solid rgba(255,255,255,.14);
-    border-radius: 12px; padding: 14px 8px;
-    background: rgba(255,255,255,.05);
-    backdrop-filter: blur(6px);
-}
-.countdown .cd-cell b { display: block; font-size: clamp(26px,4vw,38px); font-weight: 800; color: #fff; letter-spacing: -1px; }
-.countdown .cd-cell small { font-size: 10px; letter-spacing: 2.5px; color: #9fb3c8; }
-.launch-note {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 18px; font-size: 13px; color: #cbd5e1;
-}
-.launch-note .dot { width: 7px; height: 7px; border-radius: 50%; background: #5eead4; animation: blink 2s ease-in-out infinite; }
-
-/* Ecosistema: 4 tarjetas diferenciadas por color */
+/* Cuatro líneas: 4 tarjetas diferenciadas por color */
 .eco-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 44px; }
 .eco-card {
     --accent: #18aaa5;
@@ -1605,13 +1591,13 @@ section h2 { text-wrap: balance; }
     border-left: 4px solid #18aaa5;
 }
 .sys-card h3 { font-size: 22px; margin-bottom: 6px; }
-.sys-card .for { font-size: 13px; font-weight: 700; color: #18aaa5; margin-bottom: 12px; }
+.sys-card .for { font-size: 13px; font-weight: 700; color: var(--accent-strong); margin-bottom: 12px; }
 .sys-card p { font-size: 14.5px; }
 .sys-card ul { list-style: none; margin: 14px 0 20px; display: grid; gap: 7px; font-size: 14px; }
-.sys-card li::before { content: '✓ '; color: #18aaa5; font-weight: 800; }
+.sys-card li::before { content: '✓ '; color: var(--accent-strong); font-weight: 800; }
 .sys-card .btns { display: flex; gap: 10px; flex-wrap: wrap; }
 .sys-card .btns a { flex: 1; text-align: center; padding: 11px 10px; font-size: 12.5px; border-radius: 8px; font-weight: 800; text-decoration: none; white-space: nowrap; }
-.sys-soon { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: #C49A2C; border: 1px solid #C49A2C; border-radius: 100px; padding: 5px 14px; margin-bottom: 10px; }
+.sys-soon { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: var(--gold-strong); border: 1px solid var(--gold-strong); border-radius: 100px; padding: 5px 14px; margin-bottom: 10px; }
 
 /* Diagrama simple Sistema → Cloud → Celular */
 .pipe { display: flex; align-items: stretch; gap: 0; margin-top: 40px; flex-wrap: wrap; }
@@ -1636,7 +1622,7 @@ section h2 { text-wrap: balance; }
 
 /* Footer con columnas */
 .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; }
-.footer-grid h4 { color: #fff; font-size: 12px; letter-spacing: 2px; margin-bottom: 14px; }
+.footer-grid h3 { color: #fff; font-size: 12px; letter-spacing: 2px; margin-bottom: 14px; }
 .footer-grid a { display: block; color: #cbd5e1; text-decoration: none; font-size: 13.5px; margin-bottom: 9px; }
 .footer-grid a:hover { color: #5eead4; }
 
@@ -1656,6 +1642,5 @@ section h2 { text-wrap: balance; }
     .eco-grid, .kv-row, .form-row { grid-template-columns: 1fr; }
     .kv-row { gap: 8px; }
     .footer-grid { grid-template-columns: 1fr; }
-    .countdown .cd-cell { min-width: 70px; flex: 1; }
     .flow { grid-template-columns: 1fr; }
 }
