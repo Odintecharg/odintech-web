@@ -59,7 +59,7 @@ button.ghost{width:100%;padding:12px;border-radius:12px;background:transparent;b
 </head>
 <body>
 <div class="wrap">
-<a class="back" href="index.html">← Volver</a>
+<a class="back" href="home.html">← Volver</a>
 <h1>Cajero por un día 🧾</h1>
 <p class="sub">5 niveles: el cliente te pide productos, los cargás, le decís el total y cobrás. A veces en <b>efectivo</b> (calculá el vuelto) y a veces por <b>transferencia</b>.</p>
 <div class="hud"><div><b id="h-n">–</b><small>NIVEL</small></div><div id="h-tbox"><b id="h-t">–</b><small>SEGUNDOS</small></div><div><b id="h-s">0★</b><small>PUNTOS</small></div></div>
@@ -152,7 +152,7 @@ function win(v){
   $('h-s').textContent=stars+'★';tone(660,.12);setTimeout(()=>tone(990,.18),140);
   const e=$('end');e.style.display='block';
   if(lv<4){e.innerHTML=`<div class="t">${'★'.repeat(pts)}</div><h2>Nivel ${lv+1} listo</h2><p>${payMode==='ef'?'Vuelto perfecto: '+fmt(v)+'.':'Transferencia confirmada.'} Sumaste ${pts}★.</p><button class="big" onclick="J.next()">Siguiente nivel →</button>`}
-  else{e.innerHTML=`<div class="t">🏆</div><h2>¡5 de 5, cajero estrella!</h2><p>Cerraste ${stars}★ en 5 niveles. El sistema real hace esto todos los días, sin ponerse nervioso.</p><br><a href="registro.html" style="color:#5eead4;font-weight:800">Anotame en las promos →</a>`}
+  else{e.innerHTML=`<div class="t">🏆</div><h2>¡5 de 5, cajero estrella!</h2><p>Cerraste ${stars}★ en 5 niveles. El sistema real hace esto todos los días, sin ponerse nervioso.</p><br><a href="registro.html" style="color:#5eead4;font-weight:800">Dejame tus datos →</a>`}
   e.scrollIntoView({behavior:'smooth'});
 }
 function fail(msg){
