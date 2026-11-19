@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OdinGO · Sistemas de gestión armados y listos para operar, con soporte y mejoras continuas. Ventas, socios, turnos, gastronomía y talleres, para negocios de cualquier tamaño.">
+    <meta name="description" content="OdinGO · Sistemas de gestión listos para tu negocio: comercio, gastronomía, gimnasio, turnos, talleres, hotel y lavadero. Precio final, pago en efectivo o transferencia, instalación y ayuda con la carga de datos.">
     <meta name="theme-color" content="#071d38">
-    <title>OdinGO | Sistemas de gestión listos para operar</title>
+    <title>OdinGO | Sistemas listos para tu negocio, con precio y demo</title>
     <link rel="canonical" href="https://www.odintech.com.ar/odingo.html">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="OdinTech">
     <meta property="og:locale" content="es_AR">
-    <meta property="og:title" content="OdinGO | Sistemas de gestión listos para operar">
-    <meta property="og:description" content="OdinGO · Sistemas de gestión armados y listos para operar, con soporte y mejoras continuas. Ventas, socios, turnos, gastronomía y talleres, para negocios de cualquier tamaño.">
+    <meta property="og:title" content="OdinGO | Sistemas listos para tu negocio, con precio y demo">
+    <meta property="og:description" content="OdinGO · Sistemas de gestión listos para tu negocio: comercio, gastronomía, gimnasio, turnos, talleres, hotel y lavadero. Precio final, pago en efectivo o transferencia, instalación y ayuda con la carga de datos.">
     <meta property="og:url" content="https://www.odintech.com.ar/odingo.html">
     <meta property="og:image" content="https://www.odintech.com.ar/logo.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -19,11 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .btn-buy{background:#0e7d78;color:#fff}
-        .btn-ghost{border:1px solid rgba(24,170,165,.5);color:var(--accent-strong);background:transparent}
-    </style>
+    <link rel="stylesheet" href="style.css?v=20261112d">
 </head>
 
 <body>
@@ -43,7 +39,9 @@
                 <a href="odinweb.html">OdinWEB</a>
                 <a href="informes.html">OdinTECH INFORMES</a>
                 <a href="nosotros.html">Sobre OdinTech</a>
-                <a href="contacto.html" class="header-button">Contacto</a>
+                <button class="cart-btn" onclick="OdinGoStore.setDrawer(true)">
+                    Pedido <span id="cart-count">0</span>
+                </button>
                 <button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo">
                     <div class="icon-switch"></div>
                 </button>
@@ -58,139 +56,410 @@
             <div class="hero-grid-bg"></div>
             <div class="container narrow">
                 <div class="pill-hero"><span class="dot"></span>OdinGO · SISTEMAS LISTOS</div>
-                <h1>OdinGO</h1>
-                <p style="font-size:20px;color:#e2e8f0;font-weight:600">Sistemas de gestión armados y listos para operar, con soporte y mejoras continuas.</p>
+                <h1>Elegís el sistema. Se instala y se usa.</h1>
+                <p style="font-size:20px;color:#e2e8f0;font-weight:600">Sistemas ya armados, cada uno pensado para un rubro. Sin desarrollo desde cero ni meses de espera.</p>
                 <p style="margin-top:14px">
-                    Elegí el sistema que necesitás, instalalo y empezá a trabajar.
-                    Sin desarrollo desde cero, sin meses de espera y sin depender de un técnico para cada cosa.
+                    Licencia perpetua, precio final y ayuda para dejarlo andando.
+                    Los ves funcionando con datos de ejemplo antes de decidir.
                 </p>
-                <div class="hero-buttons" style="justify-content:center">
-                    <a href="#catalogo" class="button primary">Ver sistemas</a>
-                    <a href="#demo" class="button secondary">Ver demo en vivo</a>
+                <div class="trust" style="justify-content:center">
+                    <span><b>✓</b> Licencia perpetua</span>
+                    <span><b>✓</b> Efectivo o transferencia</span>
+                    <span><b>✓</b> Instalación y ayuda</span>
                 </div>
             </div>
         </section>
 
-        <!-- ODINGO VS ODINPRO -->
-        <section style="padding:70px 0;background:var(--bg-secundario);border-bottom:1px solid var(--border-color)">
-            <div class="container" style="max-width:780px;text-align:center">
-                <div class="section-label">ANTES DE SEGUIR</div>
-                <h2 style="font-size:clamp(26px,3.5vw,38px)">¿OdinGO u OdinPRO?</h2>
-                <p style="color:var(--text-parrafos);margin-top:14px;font-size:16px;line-height:1.7">
-                    <strong style="color:var(--text-titulos)">OdinGO</strong> es un sistema ya armado para un rubro: se instala y se usa.
-                    <strong style="color:var(--text-titulos)">OdinPRO</strong> es desarrollo a medida para negocios que necesitan algo más que un sistema estándar.
-                    Si tu caso no encaja en ningún OdinGO, <a href="odinpro.html" style="color:var(--accent-strong)">conocé OdinPRO</a>.
+        <!-- CÓMO SE COMPRA -->
+        <section class="difference" style="padding:80px 0 0">
+            <div class="container">
+                <div class="section-label">CÓMO SE COMPRA</div>
+                <h2>Cuatro pasos, sin vueltas.</h2>
+                <div class="buy-steps">
+                    <div class="buy-step">
+                        <span>01</span>
+                        <h3>Elegís el sistema</h3>
+                        <p>Lo probás en la demo y, si querés, me escribís para ver cuál encaja con tu negocio.</p>
+                    </div>
+                    <div class="buy-step">
+                        <span>02</span>
+                        <h3>Pagás</h3>
+                        <p>En efectivo o por transferencia bancaria. El precio es el que ves, sin recargos.</p>
+                    </div>
+                    <div class="buy-step">
+                        <span>03</span>
+                        <h3>Te envío todo</h3>
+                        <p>Por email recibís el instalador, tu clave de licencia y la guía de instalación.</p>
+                    </div>
+                    <div class="buy-step">
+                        <span>04</span>
+                        <h3>Queda andando</h3>
+                        <p>Lo instalás con mi guía, lo instalo remoto o, si hay disponibilidad, lo dejo andando en tu local.</p>
+                    </div>
+                </div>
+                <p class="prod-footnote" style="margin-top:22px">
+                    Después de instalarlo tenés unas horas de ayuda para cargar tus productos, clientes o precios.
                 </p>
             </div>
         </section>
 
-        <!-- CATÁLOGO -->
-        <section class="problem" id="catalogo" style="padding:90px 0">
+        <!-- CATÁLOGO / FICHAS -->
+        <section class="problem" id="catalogo" style="padding:80px 0 90px">
             <div class="container">
-                <div class="section-label">CATÁLOGO</div>
-                <h2>Sistemas por rubro.</h2>
-                <p style="color:var(--text-parrafos);margin-top:12px;max-width:680px">Cada uno resuelve los problemas típicos de su rubro, sea un local chico o una empresa con varias sucursales. Probalos con datos de ejemplo antes de decidir.</p>
-                <div class="sys-grid">
+                <div class="section-label">LOS SISTEMAS</div>
+                <h2>Uno por rubro.</h2>
+                <p style="color:var(--text-parrafos);margin-top:14px;max-width:720px">
+                    Todos comparten la misma base: ventas, caja, stock y comprobantes. Cambia lo propio de cada rubro.
+                    Si ninguno encaja con tu caso, <a href="odinpro.html" style="color:var(--accent-strong)">está OdinPRO</a>.
+                </p>
 
-                    <div class="sys-card">
-                        <h3>Ventas</h3>
-                        <div class="for">Para kioscos y comercios</div>
-                        <p><strong>Problema:</strong> vender de memoria, fiados en cuaderno, caja que nunca cierra.</p>
-                        <ul><li>Venta con escáner y granel por peso</li><li>Precio mayorista, combos y cuenta corriente</li><li>Caja con apertura y cierre, ticket</li></ul>
-                        <div class="btns">
-                            <a class="btn-buy" href="demo-kiosco.html" target="_blank">Ver demo →</a>
-                            <a class="btn-ghost" href="contacto.html">Consultar</a>
-                        </div>
-                    </div>
+                <div class="demo-strip" id="demo">
+                    <strong>Probalas antes de comprar:</strong>
+                    <a href="demo-kiosco.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-KIOSKO">POS Express</a>
+                    <a href="demo-gastronomia.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-RESTO">Resto-Roti</a>
+                    <a href="demo-gimnasio.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-GYM">Gimnasio</a>
+                    <a href="demo-turnero.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-TURNERO">Turnero</a>
+                    <a href="demo-talleres.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-TALLER">Talleres</a>
+                    <a href="demo-hotel.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-HOTEL">Hotel</a>
+                    <a href="demo-lavadero.html" target="_blank" rel="noopener" data-demo-sistema="ODINGO-LAVADERO">Lavadero</a>
+                </div>
 
-                    <div class="sys-card">
-                        <h3>Socios</h3>
-                        <div class="for">Para gimnasios y academias</div>
-                        <p><strong>Problema:</strong> cuotas en planilla, quién pagó y quién debe, ingresos sin registrar.</p>
-                        <ul><li>Socios, cuotas y clases con cupo</li><li>Ingresos diarios y congelamientos</li><li>Recordatorios con botón de WhatsApp</li></ul>
-                        <div class="btns">
-                            <a class="btn-buy" href="demo-gimnasio.html" target="_blank">Ver demo →</a>
-                            <a class="btn-ghost" href="contacto.html">Consultar</a>
-                        </div>
-                    </div>
+                <div class="prod-list">
 
-                    <div class="sys-card">
-                        <h3>Turnos</h3>
-                        <div class="for">Para peluquerías y estética</div>
-                        <p><strong>Problema:</strong> agenda en papel o por WhatsApp, turnos pisados, comisiones a ojo.</p>
-                        <ul><li>Agenda por profesional</li><li>Cobranza mixta: turno + mostrador</li><li>Comisiones y caja diaria</li></ul>
-                        <div class="btns">
-                            <a class="btn-buy" href="demo-turnero.html" target="_blank">Ver demo →</a>
-                            <a class="btn-ghost" href="contacto.html">Consultar</a>
+                    <!-- POS EXPRESS -->
+                    <article class="prod" id="pos-express" data-sistema="ODINGO-KIOSKO">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · POS EXPRESS</div>
+                            <h2>POS Express</h2>
+                            <p class="prod-for">Para kioscos, almacenes y comercios de barrio</p>
+                            <p class="prod-desc">
+                                Escaneás, cobrás y el stock y la caja quedan al día solos. El punto de venta completo,
+                                en tu PC y sin depender de internet.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Venta con lector de códigos y granel por peso</li>
+                                <li>Listas de precio minorista y mayorista</li>
+                                <li>Combos y promociones</li>
+                                <li>Caja con apertura, cierre y arqueo</li>
+                                <li>Cuenta corriente de clientes</li>
+                                <li>Stock con pedido sugerido</li>
+                                <li>Compras a proveedores</li>
+                                <li>Ticket y facturación ARCA</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · lector e impresora opcionales · funciona sin internet.</p>
                         </div>
-                    </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-KIOSKO">$ 250.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-KIOSKO')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-kiosco.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-KIOSKO">$ 25.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
 
-                    <div class="sys-card">
-                        <span class="sys-soon">EN PREPARACIÓN</span>
-                        <h3>Veterinaria</h3>
-                        <div class="for">Para veterinarias y pet shops</div>
-                        <p><strong>Problema:</strong> fichas de pacientes sueltas, vacunas sin seguimiento, venta y peluquería mezcladas.</p>
-                        <ul><li>Fichas por mascota con historia</li><li>Vacunas y recordatorios</li><li>Venta de mostrador integrada</li></ul>
-                        <div class="btns">
-                            <a class="btn-ghost" href="contacto.html" style="flex:1">Quiero que me avisen →</a>
+                    <!-- RESTO-ROTI -->
+                    <article class="prod" id="resto-roti" data-sistema="ODINGO-RESTO">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · RESTO-ROTI</div>
+                            <h2>Resto-Roti</h2>
+                            <p class="prod-for">Para restaurantes, rotiserías, bares y casas de comida</p>
+                            <p class="prod-desc">
+                                Mesas, mostrador, delivery y cocina en la misma pantalla. El mozo carga el pedido
+                                y la cocina lo ve al instante, sin comandas en papel.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Mesas por sector y por mozo</li>
+                                <li>Mostrador y delivery</li>
+                                <li>Comandas a cocina en tiempo real</li>
+                                <li>División de cuentas y propinas</li>
+                                <li>Mixto restaurant + rotisería</li>
+                                <li>Stock de insumos y recetas</li>
+                                <li>Cierre de caja por turno</li>
+                                <li>Ticket y facturación ARCA</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · una PC por puesto · funciona sin internet.</p>
                         </div>
-                    </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-RESTO">$ 350.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-RESTO')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-gastronomia.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-RESTO">$ 30.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
 
-                    <div class="sys-card">
-                        <h3>Gastronomía</h3>
-                        <div class="for">Para restaurantes y rotiserías</div>
-                        <p><strong>Problema:</strong> comandas en papel, cocina descoordinada, delivery y salón mezclados.</p>
-                        <ul><li>Mesas por sector, mostrador y delivery</li><li>Cocina KDS en tiempo real</li><li>Mixto restaurant + rotisería</li></ul>
-                        <div class="btns">
-                            <a class="btn-buy" href="demo-gastronomia.html" target="_blank">Ver demo →</a>
-                            <a class="btn-ghost" href="contacto.html">Consultar</a>
+                    <!-- GIMNASIO -->
+                    <article class="prod" id="gimnasio" data-sistema="ODINGO-GYM">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · GIMNASIO</div>
+                            <h2>Gimnasio</h2>
+                            <p class="prod-for">Para gimnasios, academias y escuelitas</p>
+                            <p class="prod-desc">
+                                Socios, cuotas y clases en un solo lugar. Sabés quién pagó, quién debe y quién entró hoy,
+                                sin abrir una planilla.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Ficha de socios y planes</li>
+                                <li>Cuotas, vencimientos y mora</li>
+                                <li>Clases con cupo y lista de anotados</li>
+                                <li>Control de ingresos diarios</li>
+                                <li>Congelamientos y reactivaciones</li>
+                                <li>Recordatorios con botón de WhatsApp</li>
+                                <li>Caja y medios de pago</li>
+                                <li>Historial por socio</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · funciona sin internet.</p>
                         </div>
-                    </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-GYM">$ 150.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-GYM')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-gimnasio.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-GYM">$ 25.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
 
-                    <div class="sys-card">
-                        <h3>Talleres / Servicios</h3>
-                        <div class="for">Para talleres mecánicos y servicios</div>
-                        <p><strong>Problema:</strong> trabajos anotados sueltos, repuestos sin stock, qué se cobró y qué no.</p>
-                        <ul><li>Órdenes por patente</li><li>Control de ingreso imprimible</li><li>Repuestos con stock, cobranza y caja</li></ul>
-                        <div class="btns">
-                            <a class="btn-buy" href="demo-talleres.html" target="_blank">Ver demo →</a>
-                            <a class="btn-ghost" href="contacto.html">Consultar</a>
+                    <!-- GIMNASIO + RUTINAS -->
+                    <article class="prod" id="gimnasio-rutinas" data-sistema="ODINGO-RUTINAS">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · GIMNASIO + RUTINAS</div>
+                            <h2>Gimnasio + Rutinas</h2>
+                            <p class="prod-for">Para gimnasios que además arman entrenamientos</p>
+                            <p class="prod-desc">
+                                Todo lo del sistema de gimnasio, más las rutinas de cada socio: ejercicios, series
+                                y seguimiento. El profe arma la rutina y el socio se la lleva impresa o en PDF.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Todo lo del sistema Gimnasio</li>
+                                <li>Rutinas por socio y por objetivo</li>
+                                <li>Ejercicios con series y repeticiones</li>
+                                <li>Plantillas de entrenamiento</li>
+                                <li>Seguimiento de progreso</li>
+                                <li>Rutina para imprimir o en PDF</li>
+                                <li>Historial de rutinas por socio</li>
+                                <li>Profesores y horarios</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · funciona sin internet.</p>
                         </div>
-                    </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-RUTINAS">$ 350.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-RUTINAS')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-gimnasio.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-RUTINAS">$ 50.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
+
+                    <!-- TURNERO -->
+                    <article class="prod" id="turnero" data-sistema="ODINGO-TURNERO">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · TURNERO</div>
+                            <h2>Turnero</h2>
+                            <p class="prod-for">Para peluquerías, estética y consultorios</p>
+                            <p class="prod-desc">
+                                Agenda por profesional, cobro en el turno o en el mostrador, y comisiones que se calculan solas.
+                                Se termina el cuaderno con horarios tachados.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Agenda por profesional</li>
+                                <li>Turnos con duración y solapas</li>
+                                <li>Cobro de turno y de mostrador</li>
+                                <li>Comisiones por profesional</li>
+                                <li>Caja diaria y medios de pago</li>
+                                <li>Historial y preferencias del cliente</li>
+                                <li>Servicios y precios por lista</li>
+                                <li>Recordatorios por WhatsApp</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · funciona sin internet.</p>
+                        </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-TURNERO">$ 100.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-TURNERO')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-turnero.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-TURNERO">$ 10.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
+
+                    <!-- TALLERES -->
+                    <article class="prod" id="talleres" data-sistema="ODINGO-TALLER">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · TALLERES</div>
+                            <h2>Talleres</h2>
+                            <p class="prod-for">Para talleres mecánicos, services y lubricentros</p>
+                            <p class="prod-desc">
+                                Cada vehículo con su orden, su presupuesto y su historial. El cliente se lleva
+                                un control de ingreso impreso y vos sabés qué se cobró y qué no.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Órdenes de trabajo por patente</li>
+                                <li>Control de ingreso imprimible</li>
+                                <li>Presupuestos y aprobación del cliente</li>
+                                <li>Repuestos con stock</li>
+                                <li>Mano de obra y servicios</li>
+                                <li>Estado del trabajo</li>
+                                <li>Cobranza y caja</li>
+                                <li>Historial por vehículo</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · impresora opcional · funciona sin internet.</p>
+                        </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-TALLER">$ 280.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-TALLER')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-talleres.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-TALLER">$ 20.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
+
+                    <!-- HOTEL -->
+                    <article class="prod" id="hotel" data-sistema="ODINGO-HOTEL">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · HOTEL</div>
+                            <h2>Hotel</h2>
+                            <p class="prod-for">Para hoteles, cabañas y hospedajes</p>
+                            <p class="prod-desc">
+                                El mapa de habitaciones en vivo: ocupada, libre, reservada o por cobrar.
+                                Reservas, anticipos y consumos, sin planillas paralelas.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Mapa de habitaciones por estado</li>
+                                <li>Reservas y anticipos</li>
+                                <li>Check-in y check-out</li>
+                                <li>Consumos a la habitación</li>
+                                <li>Tarifas por temporada</li>
+                                <li>Cuenta final y cobro</li>
+                                <li>Punto de venta de mostrador</li>
+                                <li>Caja y reportes</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · funciona sin internet.</p>
+                        </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-HOTEL">$ 400.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-HOTEL')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-hotel.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-HOTEL">$ 35.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
+
+                    <!-- LAVADERO -->
+                    <article class="prod" id="lavadero" data-sistema="ODINGO-LAVADERO">
+                        <div class="prod-main">
+                            <div class="prod-tag">OdinGO · LAVADERO</div>
+                            <h2>Lavadero</h2>
+                            <p class="prod-for">Para lavaderos, estaciones de servicio y servicios rápidos</p>
+                            <p class="prod-desc">
+                                La playa en vivo: qué auto entró, quién lo está lavando y en qué estado está.
+                                Abonos con saldo y comisiones por operario, sin anotar en el pizarrón.
+                            </p>
+                            <ul class="prod-feats">
+                                <li>Cola y tablero de trabajos en vivo</li>
+                                <li>Asignación de operarios</li>
+                                <li>Servicios por tipo de vehículo</li>
+                                <li>Abonos con saldo</li>
+                                <li>Comisiones por operario</li>
+                                <li>Caja y medios de pago</li>
+                                <li>Historial por patente</li>
+                                <li>Turnos y agenda</li>
+                            </ul>
+                            <p class="prod-req"><strong>Requisitos:</strong> Windows 10 u 11 · 4 GB de RAM · funciona sin internet.</p>
+                        </div>
+                        <div class="prod-buy">
+                            <div class="prod-badges"><span>1 PC</span><span>Licencia perpetua</span><span>Windows</span></div>
+                            <div class="prod-price">
+                                <span data-price-for="ODINGO-LAVADERO">$ 50.000</span>
+                                <small>Pago único · 6 meses de soporte incluidos</small>
+                            </div>
+                            <p class="prod-pay">Efectivo o transferencia. Mismo precio.</p>
+                            <div class="prod-actions">
+                                <button class="btn-add" onclick="OdinGoStore.add('ODINGO-LAVADERO')">Agregar al pedido</button>
+                                <a class="btn-demo" href="demo-lavadero.html" target="_blank" rel="noopener">Probar la demo</a>
+                            </div>
+                            <dl class="prod-facts">
+                                <div><dt>Después de 6 meses</dt><dd><span data-soporte-for="ODINGO-LAVADERO">$ 5.000</span>/mes</dd></div>
+                                <div><dt>Instalación</dt><dd>Remota o presencial</dd></div>
+                                <div><dt>Datos</dt><dd>Quedan en tu PC</dd></div>
+                            </dl>
+                        </div>
+                    </article>
 
                 </div>
-            </div>
-        </section>
 
-        <!-- DEMO -->
-        <section id="demo" style="padding:70px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
-            <div class="container" style="text-align:center;max-width:800px">
-                <div class="section-label">DEMO EN VIVO</div>
-                <h2>Probálos con datos de ejemplo.</h2>
-                <p style="color:var(--text-parrafos);font-size:16px;margin:12px auto 24px">Sin instalar nada, desde el navegador. Cada demo muestra el sistema funcionando como lo usarías en tu negocio.</p>
-                <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-                    <a href="demo-kiosco.html" target="_blank" class="button primary">Demo Ventas →</a>
-                    <a href="demo-gastronomia.html" target="_blank" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Demo Gastronomía →</a>
-                    <a href="demo-gimnasio.html" target="_blank" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Demo Socios →</a>
-                    <a href="demo-turnero.html" target="_blank" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Demo Turnos →</a>
-                    <a href="demo-talleres.html" target="_blank" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Demo Talleres →</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- QUÉ INCLUYE -->
-        <section class="services" style="padding:90px 0">
-            <div class="container">
-                <div class="section-label">QUÉ INCLUYE</div>
-                <h2>Cada sistema, listo para trabajar.</h2>
-                <div class="problems-grid">
-                    <div class="problem-card"><h3>Sin internet</h3><p>Funcionan en tu PC aunque se caiga la conexión.</p></div>
-                    <div class="problem-card"><h3>Tus datos cargados</h3><p>Productos, clientes y precios importados al arrancar.</p></div>
-                    <div class="problem-card"><h3>Facturación ARCA</h3><p>Comprobantes electrónicos sin salir del sistema.</p></div>
-                    <div class="problem-card"><h3>Resguardo diario</h3><p>Copia de seguridad de tu información todos los días.</p></div>
-                    <div class="problem-card"><h3>Instalación incluida</h3><p>Lo dejo andando, en tu local o a distancia.</p></div>
-                    <div class="problem-card"><h3>Capacitación</h3><p>Tu equipo aprende a usarlo en su trabajo real.</p></div>
-                </div>
+                <p class="prod-footnote">
+                    Veterinaria y pet shops están en preparación. Si te interesa,
+                    <a href="contacto.html">dejame tu mail</a> y te aviso cuando esté.
+                </p>
             </div>
         </section>
 
@@ -199,46 +468,122 @@
             <div class="container">
                 <div class="section-label">POR QUÉ UN SISTEMA LISTO</div>
                 <h2>Ordenado desde el primer día.</h2>
-                <div class="why-grid">
+                <div class="why-grid" style="margin-top:34px">
                     <div class="why-card">
                         <h3>Arranca rápido</h3>
                         <p>No hay meses de desarrollo: se configura con tus datos y tu equipo empieza a usarlo.</p>
                     </div>
                     <div class="why-card">
                         <h3>Ya está probado</h3>
-                        <p>Funciones pensadas para el día a día de un local, un taller o una pyme.</p>
+                        <p>Funciones pensadas para el día a día de un local, un taller o una pyme, no para un caso de laboratorio.</p>
                     </div>
                     <div class="why-card">
-                        <h3>No quedás solo</h3>
-                        <p>Instalación, capacitación y soporte opcional para lo que cambie después.</p>
+                        <h3>Se mantiene al día</h3>
+                        <p>Con el soporte mensual, las mejoras y actualizaciones siguen llegando sin volver a comprar el sistema.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SOPORTE Y MEJORAS -->
-        <section class="solution" style="padding:70px 0">
+        <!-- QUÉ RECIBÍS -->
+        <section class="services" style="padding:80px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
+            <div class="container">
+                <div class="section-label">QUÉ RECIBÍS</div>
+                <h2>Con la compra, esto es tuyo.</h2>
+                <div class="why-grid four" style="margin-top:34px">
+                    <div class="why-card">
+                        <h3>Instalador y clave</h3>
+                        <p>Te llega por email el programa para Windows y la clave de licencia. Es tuyo, no es un alquiler.</p>
+                    </div>
+                    <div class="why-card">
+                        <h3>Seis meses de soporte</h3>
+                        <p>Si algo no funciona o no sabés cómo hacerlo, me escribís por WhatsApp o email y lo resolvemos.</p>
+                    </div>
+                    <div class="why-card">
+                        <h3>Instalación como te quede cómodo</h3>
+                        <p>Te envío el instalador para que lo hagas vos, lo instalo remoto o, si hay disponibilidad, lo dejo andando en tu local.</p>
+                    </div>
+                    <div class="why-card">
+                        <h3>Unas horas de ayuda</h3>
+                        <p>Para cargar tus productos, clientes o precios con vos. No arrancás con el sistema vacío.</p>
+                    </div>
+                </div>
+                <p style="margin-top:22px;font-size:13.5px;color:var(--text-parrafos)">
+                    Tus datos quedan en tu PC, con respaldo y restauración incluidos. No dependés de una nube ajena.
+                </p>
+            </div>
+        </section>
+
+        <!-- MANTENIMIENTO -->
+        <section class="solution" style="padding:80px 0">
             <div class="container solution-grid">
                 <div>
-                    <div class="section-label">DESPUÉS DE INSTALAR</div>
+                    <div class="section-label">DESPUÉS DE LOS SEIS MESES</div>
                     <h2>Seguir andando también es parte.</h2>
                 </div>
                 <div>
-                    <p class="large-text">La suscripción es opcional: si la sumás, me ocupo del soporte, las actualizaciones y las mejoras que tu negocio va necesitando.</p>
-                    <p style="margin-top:14px">Si no, el sistema es tuyo y funciona igual. La diferencia es quién responde cuando algo cambia.</p>
+                    <p class="large-text">El soporte mensual es opcional y cada sistema tiene su valor, con un mínimo de seis meses.</p>
+                    <p style="margin-top:14px">Incluye actualizaciones, mejoras, respaldos y respuestas cuando algo cambia en tu negocio. Si no lo sumás, el sistema sigue siendo tuyo y funciona igual; la diferencia es quién está del otro lado cuando lo necesitás.</p>
                 </div>
             </div>
         </section>
 
-        <!-- CÓMO SE CONECTAN -->
+        <!-- PREGUNTAS -->
         <section style="padding:80px 0;background:var(--bg-secundario);border-top:1px solid var(--border-color)">
-            <div class="container" style="text-align:center;max-width:720px">
-                <div class="section-label">CÓMO SE CONECTAN</div>
-                <h2>OdinGO no trabaja solo.</h2>
-                <p style="color:var(--text-parrafos);margin:14px auto 26px;font-size:16px">Sumale <a href="informes.html" style="color:var(--accent-strong)">OdinTECH INFORMES</a> para ver tus números desde el celular, <a href="odinweb.html" style="color:var(--accent-strong)">OdinWEB</a> para que te encuentren en internet, u <a href="odinpro.html" style="color:var(--gold-strong)">OdinPRO</a> cuando necesites algo hecho a medida.</p>
-                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-                    <a href="contacto.html" class="button primary">Consultar un sistema →</a>
-                    <a href="informes.html" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Ver OdinTECH INFORMES</a>
+            <div class="container narrow">
+                <div class="section-label">ANTES DE COMPRAR</div>
+                <h2>Las dudas de siempre.</h2>
+                <div class="faq">
+                    <details>
+                        <summary>¿Cómo se paga?</summary>
+                        <p>En efectivo o por transferencia bancaria. El precio que figura en cada sistema es final: no cambia según el medio de pago y no hay recargos ni cargos de activación.</p>
+                    </details>
+                    <details>
+                        <summary>¿Cómo me llega y cómo se instala?</summary>
+                        <p>Por email te envío el instalador, la clave de licencia y la guía. Podés instalarlo vos con esa guía, lo hago yo de forma remota o, si estás en la zona y hay disponibilidad, lo dejo andando en tu local.</p>
+                    </details>
+                    <details>
+                        <summary>¿Incluye ayuda para cargar mis datos?</summary>
+                        <p>Sí. Después de la instalación tenés unas horas para cargar productos, clientes, precios o lo que necesites. Lo hacemos juntos y arrancás con el sistema en marcha.</p>
+                    </details>
+                    <details>
+                        <summary>¿Puedo probarlo antes de comprar?</summary>
+                        <p>Sí. Cada sistema tiene una demo en vivo con datos de ejemplo, sin instalar nada. Si querés ver tu caso puntual, escribime y lo revisamos juntos.</p>
+                    </details>
+                    <details>
+                        <summary>¿Funciona sin internet?</summary>
+                        <p>Sí. Necesitás conexión solo para activar la licencia la primera vez. Después el sistema trabaja en tu PC aunque se corte la conexión.</p>
+                    </details>
+                    <details>
+                        <summary>¿Qué pasa si cambio de computadora?</summary>
+                        <p>Desactivás la licencia en la PC anterior y la activás en la nueva. La licencia es para un equipo; si necesitás más puestos, lo vemos aparte.</p>
+                    </details>
+                    <details>
+                        <summary>¿Emite facturas electrónicas?</summary>
+                        <p>Sí, los sistemas de venta emiten comprobantes y facturación electrónica ARCA sin salir del programa. Si tu rubro no factura, se puede usar solo el ticket interno.</p>
+                    </details>
+                    <details>
+                        <summary>¿Y si mi negocio tiene varias sucursales?</summary>
+                        <p>Cada sucursal trabaja con su licencia. Si necesitás consolidar la información de todas, se suma <a href="informes.html">OdinTECH INFORMES</a> o se resuelve con <a href="odinpro.html">OdinPRO</a>.</p>
+                    </details>
+                    <details>
+                        <summary>¿Los precios están al día?</summary>
+                        <p>Sí. El precio de cada ficha es el vigente. Si cambia, se actualiza acá y lo ves antes de comprar.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- CIERRE -->
+        <section class="contact" style="padding:80px 0">
+            <div class="container" style="max-width:760px">
+                <div class="section-label">SI TE QUEDA UNA DUDA</div>
+                <p style="margin-top:14px;font-size:18px;color:var(--text-titulos);font-weight:600">
+                    Escribime y te digo con honestidad si el sistema te sirve o si conviene otro camino.
+                </p>
+                <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap">
+                    <a href="https://wa.me/5493437407273?text=Hola%2C%20quiero%20consultar%20por%20un%20sistema%20OdinGO." target="_blank" rel="noopener" class="button primary">Hablar por WhatsApp</a>
+                    <a href="mailto:odintecharg@hotmail.com?subject=Consulta%20por%20OdinGO" class="button secondary" style="color:var(--accent-strong);border-color:var(--accent-strong)">Enviar mail</a>
                 </div>
             </div>
         </section>
@@ -267,7 +612,7 @@
             </div>
             <div>
                 <h3>CONTACTO</h3>
-                <a href="contacto.html">Contame qué necesitás</a>
+                <a href="contacto.html">Escribime</a>
                 <a href="mailto:odintecharg@hotmail.com">odintecharg@hotmail.com</a>
             </div>
         </div>
@@ -276,6 +621,28 @@
             <p>OdinGO · Sistemas listos para usar</p>
         </div>
     </footer>
+
+    <!-- PEDIDO -->
+    <div class="cart-overlay" id="cart-overlay" onclick="OdinGoStore.setDrawer(false)"></div>
+    <aside class="cart-drawer" id="cart-drawer" aria-label="Tu pedido">
+        <div class="cart-head">
+            <strong>Tu pedido</strong>
+            <button onclick="OdinGoStore.setDrawer(false)" aria-label="Cerrar el pedido">✕</button>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-form">
+            <input id="buyer-nombre" placeholder="Nombre y apellido" autocomplete="name" aria-label="Nombre y apellido">
+            <input id="buyer-email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
+            <input id="buyer-tel" placeholder="Teléfono (opcional)" autocomplete="tel" aria-label="Teléfono">
+            <textarea id="buyer-notas" rows="2" placeholder="¿Algo que tenga que saber? (opcional)" aria-label="Notas"></textarea>
+        </div>
+        <div class="cart-foot">
+            <div class="cart-total-row"><span>Total</span><strong id="cart-total">$ 0</strong></div>
+            <button class="button primary" onclick="OdinGoStore.checkoutWhatsApp()">Enviar pedido por WhatsApp</button>
+            <button class="button secondary cart-mail" onclick="OdinGoStore.checkoutEmail()">Enviar por mail</button>
+            <p class="muted">Coordinamos el pago por WhatsApp: efectivo o transferencia. En esta página no se cobra nada.</p>
+        </div>
+    </aside>
 
     <script>
         const themeBtn = document.getElementById('theme-toggle');
@@ -306,7 +673,7 @@
             header.classList.toggle('scrolled', scrollY > 12);
             function arm(el, cls, d) { el.classList.add(cls); el.dataset.d = d; wired.push(el); }
             var wired = [];
-            document.querySelectorAll('.sys-grid > *, .problems-grid > *').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
+            document.querySelectorAll('.prod, .buy-step, .why-card').forEach(function (el, i) { arm(el, 'reveal-s', i % 6); });
             if (!('IntersectionObserver' in window)) { wired.forEach(function (el) { el.classList.add('in'); }); return; }
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
@@ -314,5 +681,6 @@
             wired.forEach(function (el) { io.observe(el); });
         })();
     </script>
+    <script src="odingo-tienda.js?v=20261112b"></script>
 </body>
 </html>
