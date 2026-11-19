@@ -1,10 +1,10 @@
 /* =====================================================
-   OdinGO TIENDA - Config + Carrito (100% frontend)
-   - Sin backend: el carrito vive en memoria + localStorage
+   OdinGO TIENDA - Catálogo + Carrito (100% frontend)
+   - Los precios salen de precios.json, publicado desde
+     el sistema de control OdinTECH.
+   - Si ese archivo no está, quedan los precios de abajo.
    - Checkout: arma el pedido y lo envía por WhatsApp / Email
-   - PARA EDITAR PRECIOS: ODINGO_CATALOG abajo
-   - Modelo: módulo (pago único, incluye 6 meses) +
-   -   mantenimiento opcional $25.000/mes (mínimo 6 meses)
+   - Modelo: licencia perpetua (1 PC) con 6 meses de soporte
    ===================================================== */
 
 const ODINGO_CONFIG = {
@@ -14,44 +14,29 @@ const ODINGO_CONFIG = {
   MONEDA: "$ ARS",
 };
 
-// PAGO ONLINE con Mercado Pago (links de pago fijos + suscripciones).
-// Cómo activarlo: en Mercado Pago → Cobrar → Link de pago, creá uno por
-// cada monto de abajo (y Suscripciones para los mensuales), pegá la URL
-// entre comillas y subí la página. Mientras estén vacíos, no se muestran
-// botones de pago (el carrito sigue por WhatsApp/Email).
-const MP_LINKS = {
-  modA: "", // Módulo Kiosco/Resto/Hotel ($490.000) → link de pago
-  modB: "", // Módulo Gimnasio/Turnero/Talleres/Lavadero ($250.000) → link de pago
-  mant: "", // Mantenimiento $25.000/mes → SUSCRIPCIÓN mensual
-  inf: "",  // OdinTECH INFORMES $35.000/mes → SUSCRIPCIÓN mensual
-};
-
-// ★★★ EDITA TUS PRECIOS AQUÍ ★★★
-// type: "modulo" (pago único, incluye 6 meses de mantenimiento/soporte) |
-//       "mantenimiento" (mensual, contratación mínima 6 meses) |
-//       "suscripcion" (mensual)
+// Respaldo: se usa solo si precios.json no está disponible.
+// El código de cada sistema es el mismo que usa el sistema de control.
 const ODINGO_CATALOG = [
-  { id: "comercios", tag: "OdinGO · POS EXPRESS", nombre: "Kiosco / Comercios", desc: "POS con escáner, granel, mayorista, combos, caja y cuenta corriente.", precio: 490000, type: "modulo" },
-  { id: "gastronomia", tag: "OdinGO · RESTO-ROTI", nombre: "Restaurant / Rotisería", desc: "Mesas, mostrador, delivery, cocina KDS, mixto restaurant+rotisería.", precio: 490000, type: "modulo" },
-  { id: "gimnasios", tag: "OdinGO · GIMNASIO", nombre: "Gimnasios y Academias", desc: "Socios, cuotas, clases, ingresos, congelar, recordatorios con botón de WhatsApp.", precio: 250000, type: "modulo" },
-  { id: "peluqueria", tag: "OdinGO · TURNERO", nombre: "Peluquerías y Estética", desc: "Agenda por profesional, cobranza mixta, comisiones, caja.", precio: 250000, type: "modulo" },
-  { id: "talleres", tag: "OdinGO · TALLERES", nombre: "Talleres Mecánicos", desc: "Órdenes, control de ingreso imprimible, patentes, repuestos.", precio: 250000, type: "modulo" },
-  { id: "hotel", tag: "OdinGO · HOTEL", nombre: "Hotel / Hospedaje", desc: "Reservas, recepción por colores, consumos, checkout, POS mostrador.", precio: 490000, type: "modulo" },
-  { id: "lavadero", tag: "OdinGO · LAVADEROS", nombre: "Lavaderos & Servicios", desc: "Agenda, playa kanban en vivo, abonos, operarios y comisiones.", precio: 250000, type: "modulo" },
-  { id: "mantenimiento", tag: "OdinGO · MANTENIMIENTO", nombre: "Mantenimiento OdinGO (mensual)", desc: "Actualizaciones, mejoras, mantenimiento y soporte. Contratación mínima: 6 meses.", precio: 25000, type: "mantenimiento" },
-  { id: "informes", tag: "OdinTECH INFORMES", nombre: "OdinTECH INFORMES (mensual)", desc: "Si tenés otro sistema, analizamos la integración y ves tus datos desde el celular.", precio: 35000, type: "suscripcion" },
+  { id: "ODINGO-KIOSKO", tag: "OdinGO · POS EXPRESS", nombre: "POS Express", precio: 250000, soporte: 25000 },
+  { id: "ODINGO-RESTO", tag: "OdinGO · RESTO-ROTI", nombre: "Resto-Roti", precio: 350000, soporte: 30000 },
+  { id: "ODINGO-GYM", tag: "OdinGO · GIMNASIO", nombre: "Gimnasio", precio: 150000, soporte: 25000 },
+  { id: "ODINGO-RUTINAS", tag: "OdinGO · GIMNASIO + RUTINAS", nombre: "Gimnasio + Rutinas", precio: 350000, soporte: 50000 },
+  { id: "ODINGO-TURNERO", tag: "OdinGO · TURNERO", nombre: "Turnero", precio: 100000, soporte: 10000 },
+  { id: "ODINGO-TALLER", tag: "OdinGO · TALLERES", nombre: "Talleres", precio: 280000, soporte: 20000 },
+  { id: "ODINGO-HOTEL", tag: "OdinGO · HOTEL", nombre: "Hotel", precio: 400000, soporte: 35000 },
+  { id: "ODINGO-LAVADERO", tag: "OdinGO · LAVADERO", nombre: "Lavadero", precio: 50000, soporte: 5000 },
 ];
 
 const OdinGoStore = (() => {
   let cart = [];
   try {
     cart = JSON.parse(localStorage.getItem("odingo_cart") || "[]");
-    // Limpia líneas del modelo anterior (por plan)
-    cart.forEach((l) => { delete l.plan; });
+    if (!Array.isArray(cart)) cart = [];
   } catch { cart = []; }
 
   const $ = (id) => document.getElementById(id);
-  const money = (n) => "$ " + Number(n).toLocaleString("es-AR");
+  const money = (n) => "$ " + Number(n || 0).toLocaleString("es-AR");
+  const priceText = (n) => (Number(n) > 0 ? money(n) : "A consultar");
 
   function save() {
     try { localStorage.setItem("odingo_cart", JSON.stringify(cart)); } catch {}
@@ -61,14 +46,6 @@ const OdinGoStore = (() => {
     return ODINGO_CATALOG.find((p) => p.id === id);
   }
 
-  function lineLabel(l) {
-    const p = findProduct(l.id);
-    if (!p) return "";
-    if (p.type === "modulo") return `Módulo (pago único, incluye 6 meses)`;
-    if (p.type === "mantenimiento") return `Mensual · mín. 6 meses ($150.000 el bloque)`;
-    return "Suscripción mensual";
-  }
-
   function add(id, openDrawer = true) {
     const prod = findProduct(id);
     if (!prod) return;
@@ -76,7 +53,7 @@ const OdinGoStore = (() => {
     if (line) line.qty += 1;
     else cart.push({ id, qty: 1 });
     save(); render();
-    toast(`✅ ${prod.nombre} agregado al pedido`);
+    toast(`${prod.nombre} agregado al pedido`);
     if (openDrawer) setDrawer(true);
   }
 
@@ -104,14 +81,6 @@ const OdinGoStore = (() => {
     }, 0);
   }
 
-  function mpLinkFor(l) {
-    if (l.id === "mantenimiento") return MP_LINKS.mant || "";
-    if (l.id === "informes") return MP_LINKS.inf || "";
-    const p = findProduct(l.id);
-    if (!p || p.type !== "modulo") return "";
-    return (p.precio >= 490000 ? MP_LINKS.modA : MP_LINKS.modB) || "";
-  }
-
   function buyer() {
     return {
       nombre: ($("buyer-nombre")?.value || "").trim(),
@@ -124,7 +93,7 @@ const OdinGoStore = (() => {
   function orderLines() {
     return cart.map((l) => {
       const p = findProduct(l.id);
-      return `• ${p.nombre} — ${lineLabel(l)}${l.qty > 1 ? ` x${l.qty}` : ""} — ${money(p.precio * l.qty)}`;
+      return `• ${p.nombre} — Licencia perpetua (1 PC), 6 meses de soporte${l.qty > 1 ? ` x${l.qty}` : ""} — ${priceText(p.precio * l.qty)}`;
     });
   }
 
@@ -133,7 +102,8 @@ const OdinGoStore = (() => {
     return (
       `PEDIDO OdinGO%0A%0A` +
       orderLines().map((l) => encodeURIComponent(l)).join("%0A") +
-      `%0A%0ATOTAL: ${encodeURIComponent(money(total()))}%0A%0A` +
+      `%0A%0ATOTAL: ${encodeURIComponent(priceText(total()))}%0A%0A` +
+      `Pago: efectivo o transferencia.%0A%0A` +
       `--- DATOS DEL COMPRADOR ---%0A` +
       `Nombre: ${encodeURIComponent(b.nombre || "-")}%0A` +
       `Email: ${encodeURIComponent(b.email || "-")}%0A` +
@@ -145,7 +115,8 @@ const OdinGoStore = (() => {
   function orderTextPlain() {
     const b = buyer();
     return (
-      `PEDIDO OdinGO\n\n${orderLines().join("\n")}\n\nTOTAL: ${money(total())}\n\n` +
+      `PEDIDO OdinGO\n\n${orderLines().join("\n")}\n\nTOTAL: ${priceText(total())}\n\n` +
+      `Pago: efectivo o transferencia.\n\n` +
       `--- DATOS DEL COMPRADOR ---\nNombre: ${b.nombre || "-"}\nEmail: ${b.email || "-"}\nTel: ${b.tel || "-"}\nNotas: ${b.notas || "-"}`
     );
   }
@@ -158,7 +129,7 @@ const OdinGoStore = (() => {
 
   function checkoutEmail() {
     if (!cart.length) return toast("El pedido está vacío");
-    const subject = encodeURIComponent("Pedido de licencias OdinGO");
+    const subject = encodeURIComponent("Pedido de sistemas OdinGO");
     const body = encodeURIComponent(orderTextPlain());
     window.location.href = `mailto:${ODINGO_CONFIG.EMAIL_VENTAS}?subject=${subject}&body=${body}`;
   }
@@ -168,38 +139,95 @@ const OdinGoStore = (() => {
     $("cart-overlay")?.classList.toggle("show", open);
   }
 
+  /* Aplica los precios publicados desde el sistema de control.
+     - Actualiza cada ficha y oculta los sistemas que no están activos.
+     - Descarta del pedido lo que ya no se publica. */
+  function applyPrices(sistemas) {
+    const byCode = new Map(sistemas.map((s) => [String(s.codigo), s]));
+
+    ODINGO_CATALOG.forEach((p) => {
+      const s = byCode.get(p.id);
+      if (!s) { p.activo = false; return; }
+      p.activo = true;
+      p.precio = Number(s.precio) || 0;
+      p.soporte = Number(s.soporteMensual) || 0;
+    });
+
+    document.querySelectorAll("[data-sistema]").forEach((card) => {
+      card.hidden = !byCode.has(card.getAttribute("data-sistema"));
+    });
+
+    document.querySelectorAll("[data-demo-sistema]").forEach((link) => {
+      link.hidden = !byCode.has(link.getAttribute("data-demo-sistema"));
+    });
+
+    document.querySelectorAll("[data-price-for]").forEach((el) => {
+      const s = byCode.get(el.getAttribute("data-price-for"));
+      if (s) el.textContent = priceText(s.precio);
+    });
+
+    document.querySelectorAll("[data-soporte-for]").forEach((el) => {
+      const s = byCode.get(el.getAttribute("data-soporte-for"));
+      if (s) el.textContent = money(s.soporteMensual);
+    });
+
+    cart = cart.filter((l) => {
+      const p = findProduct(l.id);
+      return p && p.activo !== false;
+    });
+    save(); render();
+  }
+
+  function loadPrices() {
+    if (!window.fetch) return;
+    fetch("precios.json?t=" + Date.now(), { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data && Array.isArray(data.sistemas) && data.sistemas.length) applyPrices(data.sistemas);
+      })
+      .catch(() => {});
+  }
+
   function render() {
-    // Limpia líneas de productos que ya no existen
-    cart = cart.filter((l) => findProduct(l.id));
+    cart = cart.filter((l) => {
+      const p = findProduct(l.id);
+      return p && p.activo !== false;
+    });
+
     const count = cart.reduce((a, l) => a + l.qty, 0);
     const badge = $("cart-count");
     if (badge) badge.textContent = count;
+
     const box = $("cart-items");
-    if (!box) return;
-    if (!cart.length) {
-      box.innerHTML = `<p class="cart-empty">Tu pedido está vacío.<br>Agregá un módulo para empezar.</p>`;
-    } else {
-      box.innerHTML = cart.map((l) => {
-        const p = findProduct(l.id);
-        const mp = mpLinkFor(l);
-        return `<div class="cart-line">
-          <div><strong>${p.nombre}</strong><small>${lineLabel(l)} · ${money(p.precio)}</small></div>
-          <div class="cart-qty">
-            <button onclick="OdinGoStore.setQty('${l.id}', ${l.qty - 1})">−</button>
-            <span>${l.qty}</span>
-            <button onclick="OdinGoStore.setQty('${l.id}', ${l.qty + 1})">+</button>
-          </div>
-          <button class="cart-del" onclick="OdinGoStore.remove('${l.id}')" aria-label="Quitar">✕</button>
-          ${mp ? `<a class="mp-pay" href="${mp}" target="_blank" rel="noopener">Pagar online</a>` : ""}
-        </div>`;
-      }).join("");
+    if (box) {
+      if (!cart.length) {
+        box.innerHTML = `<p class="cart-empty">Tu pedido está vacío.<br>Agregá un sistema para empezar.</p>`;
+      } else {
+        box.innerHTML = cart.map((l) => {
+          const p = findProduct(l.id);
+          return `<div class="cart-line">
+            <div><strong>${p.nombre}</strong><small>Licencia perpetua (1 PC) · 6 meses de soporte · ${priceText(p.precio)}</small></div>
+            <div class="cart-qty">
+              <button onclick="OdinGoStore.setQty('${l.id}', ${l.qty - 1})">−</button>
+              <span>${l.qty}</span>
+              <button onclick="OdinGoStore.setQty('${l.id}', ${l.qty + 1})">+</button>
+            </div>
+            <button class="cart-del" onclick="OdinGoStore.remove('${l.id}')" aria-label="Quitar">✕</button>
+          </div>`;
+        }).join("");
+      }
     }
+
     const t = $("cart-total");
-    if (t) t.textContent = money(total());
-    // Precios en botones de la página
+    if (t) t.textContent = priceText(total());
+
     document.querySelectorAll("[data-price-for]").forEach((el) => {
       const p = findProduct(el.getAttribute("data-price-for"));
-      if (p) el.textContent = `${money(p.precio)}${p.type === "modulo" ? "" : "/mes"}`;
+      if (p) el.textContent = priceText(p.precio);
+    });
+    document.querySelectorAll("[data-soporte-for]").forEach((el) => {
+      const p = findProduct(el.getAttribute("data-soporte-for"));
+      if (p) el.textContent = money(p.soporte);
     });
   }
 
@@ -216,7 +244,16 @@ const OdinGoStore = (() => {
     t._h = setTimeout(() => t.classList.remove("show"), 2200);
   }
 
-  document.addEventListener("DOMContentLoaded", render);
+  function init() {
+    render();
+    loadPrices();
+  }
 
-  return { add, remove, setQty, clear, total, render, setDrawer, checkoutWhatsApp, checkoutEmail, toast };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  return { add, remove, setQty, clear, total, render, setDrawer, checkoutWhatsApp, checkoutEmail, toast, applyPrices };
 })();
