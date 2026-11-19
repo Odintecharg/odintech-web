@@ -1,7 +1,7 @@
 /* =====================================================
    OdinGO TIENDA - Catálogo + Carrito (100% frontend)
    - Los precios salen de precios.json, publicado desde
-     el sistema de control OdinTECH.
+     el sistema de control OdinTECH (junto con la promo).
    - Si ese archivo no está, quedan los precios de abajo.
    - Checkout: arma el pedido y lo envía por WhatsApp / Email
    - Modelo: licencia perpetua (1 PC) con 6 meses de soporte
@@ -34,6 +34,9 @@ const OdinGoStore = (() => {
     if (!Array.isArray(cart)) cart = [];
   } catch { cart = []; }
 
+  let promo = null;      // { porcentaje, hasta, etiqueta }, publicado desde Control
+  let promoWatch = null; // controla el vencimiento con la página abierta
+
   const $ = (id) => document.getElementById(id);
   const money = (n) => "$ " + Number(n || 0).toLocaleString("es-AR");
   const priceText = (n) => (Number(n) > 0 ? money(n) : "A consultar");
@@ -44,6 +47,81 @@ const OdinGoStore = (() => {
 
   function findProduct(id) {
     return ODINGO_CATALOG.find((p) => p.id === id);
+  }
+
+  /* La promo rige hasta el 23:59 del día "hasta" (AAAA-MM-DD).
+     Pasada esa fecha, la web muestra el precio normal sin tocar nada. */
+  function promoVigente() {
+    if (!promo) return false;
+    const pct = Number(promo.porcentaje) || 0;
+    const hasta = String(promo.hasta || "");
+    if (pct <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(hasta)) return false;
+    const [y, m, d] = hasta.split("-").map(Number);
+    const fin = new Date(y, m - 1, d, 23, 59, 59, 999);
+    return new Date() <= fin;
+  }
+
+  function fechaFinTexto() {
+    const hasta = String((promo && promo.hasta) || "");
+    const m = hasta.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return m ? `${m[3]}/${m[2]}/${m[1]}` : hasta;
+  }
+
+  function precioFinal(p) {
+    if (!p) return 0;
+    const base = Number(p.precio) || 0;
+    if (!promoVigente()) return base;
+    return Math.round(base * (1 - (Number(promo.porcentaje) || 0) / 100));
+  }
+
+  function finalText(p) {
+    if (!p || !(Number(p.precio) > 0)) return "A consultar";
+    return money(precioFinal(p));
+  }
+
+  function promoFrase() {
+    return `${promo.porcentaje}% de descuento en todos los OdinGO hasta el ${fechaFinTexto()}`;
+  }
+
+  function renderPromo() {
+    const activa = promoVigente();
+    const etiqueta = (promo && promo.etiqueta) || "Promo de lanzamiento";
+
+    const strip = $("promo-strip");
+    if (strip) {
+      strip.hidden = !activa;
+      const et = strip.querySelector("[data-promo-etiqueta]");
+      const tx = strip.querySelector("[data-promo-texto]");
+      if (et) et.textContent = etiqueta;
+      if (tx) tx.textContent = promoFrase();
+    }
+
+    const faq = $("faq-promo");
+    if (faq) {
+      faq.hidden = !activa;
+      const pc = faq.querySelector("[data-promo-porcentaje]");
+      const pf = faq.querySelector("[data-promo-fechafin]");
+      if (pc) pc.textContent = `${promo.porcentaje}%`;
+      if (pf) pf.textContent = fechaFinTexto();
+    }
+
+    const cartPromo = $("cart-promo");
+    if (cartPromo) {
+      cartPromo.hidden = !activa;
+      cartPromo.textContent = `${etiqueta}: ${promoFrase()}.`;
+    }
+  }
+
+  function watchPromo() {
+    if (promoWatch) { clearInterval(promoWatch); promoWatch = null; }
+    if (!promoVigente()) return;
+    promoWatch = setInterval(() => {
+      if (promoVigente()) return;
+      clearInterval(promoWatch);
+      promoWatch = null;
+      renderPromo();
+      render();
+    }, 60000);
   }
 
   function add(id, openDrawer = true) {
@@ -77,7 +155,7 @@ const OdinGoStore = (() => {
   function total() {
     return cart.reduce((acc, l) => {
       const p = findProduct(l.id);
-      return acc + (p ? p.precio * l.qty : 0);
+      return acc + (p ? precioFinal(p) * l.qty : 0);
     }, 0);
   }
 
@@ -93,16 +171,21 @@ const OdinGoStore = (() => {
   function orderLines() {
     return cart.map((l) => {
       const p = findProduct(l.id);
-      return `• ${p.nombre} — Licencia perpetua (1 PC), 6 meses de soporte${l.qty > 1 ? ` x${l.qty}` : ""} — ${priceText(p.precio * l.qty)}`;
+      const precio = money(precioFinal(p) * l.qty);
+      return `• ${p.nombre} — Licencia perpetua (1 PC), 6 meses de soporte${l.qty > 1 ? ` x${l.qty}` : ""} — ${precio}`;
     });
   }
 
   function orderText() {
     const b = buyer();
+    const promoLinea = promoVigente()
+      ? `Promo aplicada: ${encodeURIComponent(promoFrase())}.%0A`
+      : "";
     return (
       `PEDIDO OdinGO%0A%0A` +
       orderLines().map((l) => encodeURIComponent(l)).join("%0A") +
-      `%0A%0ATOTAL: ${encodeURIComponent(priceText(total()))}%0A%0A` +
+      `%0A%0ATOTAL: ${encodeURIComponent(money(total()))}%0A%0A` +
+      promoLinea +
       `Pago: efectivo o transferencia.%0A%0A` +
       `--- DATOS DEL COMPRADOR ---%0A` +
       `Nombre: ${encodeURIComponent(b.nombre || "-")}%0A` +
@@ -114,8 +197,10 @@ const OdinGoStore = (() => {
 
   function orderTextPlain() {
     const b = buyer();
+    const promoLinea = promoVigente() ? `Promo aplicada: ${promoFrase()}.\n` : "";
     return (
-      `PEDIDO OdinGO\n\n${orderLines().join("\n")}\n\nTOTAL: ${priceText(total())}\n\n` +
+      `PEDIDO OdinGO\n\n${orderLines().join("\n")}\n\nTOTAL: ${money(total())}\n\n` +
+      promoLinea +
       `Pago: efectivo o transferencia.\n\n` +
       `--- DATOS DEL COMPRADOR ---\nNombre: ${b.nombre || "-"}\nEmail: ${b.email || "-"}\nTel: ${b.tel || "-"}\nNotas: ${b.notas || "-"}`
     );
@@ -139,10 +224,11 @@ const OdinGoStore = (() => {
     $("cart-overlay")?.classList.toggle("show", open);
   }
 
-  /* Aplica los precios publicados desde el sistema de control.
+  /* Aplica precios y promo publicados desde el sistema de control.
      - Actualiza cada ficha y oculta los sistemas que no están activos.
      - Descarta del pedido lo que ya no se publica. */
-  function applyPrices(sistemas) {
+  function applyPrices(sistemas, promocion) {
+    promo = promocion || null;
     const byCode = new Map(sistemas.map((s) => [String(s.codigo), s]));
 
     ODINGO_CATALOG.forEach((p) => {
@@ -162,8 +248,20 @@ const OdinGoStore = (() => {
     });
 
     document.querySelectorAll("[data-price-for]").forEach((el) => {
-      const s = byCode.get(el.getAttribute("data-price-for"));
-      if (s) el.textContent = priceText(s.precio);
+      const code = el.getAttribute("data-price-for");
+      const p = findProduct(code);
+      if (!p) return;
+      el.textContent = finalText(p);
+      const old = document.querySelector(`[data-old-for="${code}"]`);
+      if (old) {
+        old.hidden = !promoVigente();
+        old.textContent = priceText(p.precio);
+      }
+      const note = document.querySelector(`[data-promo-note-for="${code}"]`);
+      if (note) {
+        note.hidden = !promoVigente();
+        note.textContent = `${promo.porcentaje}% OFF · ${promo.etiqueta || "Promo de lanzamiento"}`;
+      }
     });
 
     document.querySelectorAll("[data-soporte-for]").forEach((el) => {
@@ -175,6 +273,8 @@ const OdinGoStore = (() => {
       const p = findProduct(l.id);
       return p && p.activo !== false;
     });
+    renderPromo();
+    watchPromo();
     save(); render();
   }
 
@@ -183,7 +283,8 @@ const OdinGoStore = (() => {
     fetch("precios.json?t=" + Date.now(), { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
-        if (data && Array.isArray(data.sistemas) && data.sistemas.length) applyPrices(data.sistemas);
+        if (data && Array.isArray(data.sistemas) && data.sistemas.length)
+          applyPrices(data.sistemas, data.promocion);
       })
       .catch(() => {});
   }
@@ -206,7 +307,7 @@ const OdinGoStore = (() => {
         box.innerHTML = cart.map((l) => {
           const p = findProduct(l.id);
           return `<div class="cart-line">
-            <div><strong>${p.nombre}</strong><small>Licencia perpetua (1 PC) · 6 meses de soporte · ${priceText(p.precio)}</small></div>
+            <div><strong>${p.nombre}</strong><small>Licencia perpetua (1 PC) · 6 meses de soporte · ${finalText(p)}</small></div>
             <div class="cart-qty">
               <button onclick="OdinGoStore.setQty('${l.id}', ${l.qty - 1})">−</button>
               <span>${l.qty}</span>
@@ -219,11 +320,11 @@ const OdinGoStore = (() => {
     }
 
     const t = $("cart-total");
-    if (t) t.textContent = priceText(total());
+    if (t) t.textContent = money(total());
 
     document.querySelectorAll("[data-price-for]").forEach((el) => {
       const p = findProduct(el.getAttribute("data-price-for"));
-      if (p) el.textContent = priceText(p.precio);
+      if (p) el.textContent = finalText(p);
     });
     document.querySelectorAll("[data-soporte-for]").forEach((el) => {
       const p = findProduct(el.getAttribute("data-soporte-for"));
@@ -255,5 +356,5 @@ const OdinGoStore = (() => {
     init();
   }
 
-  return { add, remove, setQty, clear, total, render, setDrawer, checkoutWhatsApp, checkoutEmail, toast, applyPrices };
+  return { add, remove, setQty, clear, total, render, setDrawer, checkoutWhatsApp, checkoutEmail, toast, applyPrices, promoVigente };
 })();
