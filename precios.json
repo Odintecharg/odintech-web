@@ -1,0 +1,54 @@
+{
+  "actualizado": "2026-11-12 11:22:17",
+  "moneda": "ARS",
+  "sistemas": [
+    {
+      "codigo": "ODINGO-GYM",
+      "nombre": "OdinGO Gimnasio",
+      "precio": 150000,
+      "soporteMensual": 25000
+    },
+    {
+      "codigo": "ODINGO-RUTINAS",
+      "nombre": "OdinGO Gimnasio + Rutinas",
+      "precio": 350000,
+      "soporteMensual": 50000
+    },
+    {
+      "codigo": "ODINGO-HOTEL",
+      "nombre": "OdinGO Hotel",
+      "precio": 400000,
+      "soporteMensual": 35000
+    },
+    {
+      "codigo": "ODINGO-KIOSKO",
+      "nombre": "OdinGO Kiosko / Comercio",
+      "precio": 250000,
+      "soporteMensual": 25000
+    },
+    {
+      "codigo": "ODINGO-LAVADERO",
+      "nombre": "OdinGO Lavadero",
+      "precio": 50000,
+      "soporteMensual": 5000
+    },
+    {
+      "codigo": "ODINGO-RESTO",
+      "nombre": "OdinGO Resto / Rotiseria",
+      "precio": 350000,
+      "soporteMensual": 30000
+    },
+    {
+      "codigo": "ODINGO-TALLER",
+      "nombre": "OdinGO Talleres",
+      "precio": 280000,
+      "soporteMensual": 20000
+    },
+    {
+      "codigo": "ODINGO-TURNERO",
+      "nombre": "OdinGO Turnero",
+      "precio": 100000,
+      "soporteMensual": 10000
+    }
+  ]
+}
