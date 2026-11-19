@@ -1,6 +1,11 @@
 {
-  "actualizado": "2026-11-12 11:22:17",
+  "actualizado": "2026-11-19 18:29:30",
   "moneda": "ARS",
+  "promocion": {
+    "porcentaje": 50,
+    "hasta": "2027-02-28",
+    "etiqueta": "Promo de lanzamiento"
+  },
   "sistemas": [
     {
       "codigo": "ODINGO-GYM",
